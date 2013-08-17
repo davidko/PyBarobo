@@ -110,6 +110,7 @@ class BaroboCtx:
     self.phys = None
     self.children = [] # List of Linkbots
     self.scannedIDs = {}
+    self.scannedIDs_cond = threading.Condition()
     pass
 
   def connectDongleTTY(self, ttyfilename):
@@ -122,28 +123,56 @@ class BaroboCtx:
     self.commsOutThread = threading.Thread(target=self._commsOutEngine)
     self.commsOutThread.daemon = True
     self.commsOutThread.start()
+    self.__getDongleID()
 
   def handlePacket(self, packet):
     self.readQueue.put(packet)
 
   def scanForRobots(self):
     buf = [ self.CMD_QUERYADDRESSES, 3, 0x00 ]
-    self.link.write(buf, 0)
+    self.writePacket(Packet(buf, 0x0000))
 
   def getScannedRobots(self):
     return self.scannedIDs
 
+  def getLinkbot(self, serialID):
+    if serialID not in self.scannedIDs:
+      self.findRobot(serialID)
+      self.waitForRobot(serialID)
+    linkbot = Linkbot(self.scannedIDs[serialID], serialID, self)
+    return linkbot
+
+  def findRobot(self, serialID):
+    if serialID in self.scannedIDs:
+      return
+    buf = bytearray([ self.CMD_FINDMOBOT, 7 ])
+    buf += bytearray(serialID)
+    buf += bytearray([0])
+    self.writePacket(Packet(buf, 0x0000))
+
+  def waitForRobot(self, serialID, timeout=2.0):
+    self.scannedIDs_cond.acquire()
+    while serialID not in self.scannedIDs:
+      self.scannedIDs_cond.wait(2)
+    self.scannedIDs_cond.release()
+    return serialID in self.scannedIDs
+
+  def writePacket(self, packet):
+    self.writeQueue.put(packet)
+
   def _commsInEngine(self):
     while True:
       packet = self.readQueue.get(block=True, timeout=None)
-      print "Got packet"
       # First, see if these are "Report Address" events. We want to filter
       # those out and use them for our own purposes
       if packet.data[0] == self.EVENT_REPORTADDRESS:
-        botid = struct.unpack('!4s', packet.data[4:8])
+        botid = struct.unpack('!4s', packet.data[4:8])[0]
         zigbeeAddr = struct.unpack('!H', packet[2:4])[0]
         if botid not in self.scannedIDs:
+          self.scannedIDs_cond.acquire()
           self.scannedIDs[botid] = zigbeeAddr
+          self.scannedIDs_cond.notify()
+          self.scannedIDs_cond.release()
         continue
       # Get the zigbee address from the packet 
       zigbeeAddr = packet.addr
@@ -159,6 +188,18 @@ class BaroboCtx:
     while True:
       packet = self.writeQueue.get()
       self.link.write(packet.data, packet.addr)
+
+  def __getDongleID(self):
+    buf = [ self.CMD_GETSERIALID, 3, 0x00 ]
+    self.writePacket(Packet(buf, 0x0000))
+    response = self.ctxReadQueue.get(block=True, timeout=2.0)
+    serialID = struct.unpack('!4s', response[2:6])[0]
+    buf = [self.CMD_GETADDRESS, 3, 0x00]
+    self.writePacket(Packet(buf, 0x0000))
+    response = self.ctxReadQueue.get(block=True, timeout=2.0)
+    zigbeeAddr = struct.unpack('!H', response[2:4])[0]
+    self.scannedIDs[serialID] = zigbeeAddr
+    
 
 class Packet:
   def __init__(self, data=None, addr=None):
@@ -187,7 +228,7 @@ class LinkLayer_Dummy:
                             1 ])
     newpacket += bytearray(packet)
     self.writeLock.acquire()
-    print "Write: {}".format(map(hex, newpacket))
+    print "Send: {}".format(map(hex, newpacket))
     self.phys.write(newpacket)
     self.writeLock.release()
 
@@ -195,6 +236,8 @@ class LinkLayer_Dummy:
     # Try to read byte from physical layer
     self.readbuf = bytearray([])
     self.phys.flush()
+    self.phys.flushInput()
+    self.phys.flushOutput()
     while True:
       byte = self.phys.read()
       if byte is None:
@@ -204,13 +247,12 @@ class LinkLayer_Dummy:
         continue
       if len(self.readbuf) == self.readbuf[1]:
         # Received whole packet
+        print "Recv: {}".format(map(hex, self.readbuf))
         zigbeeAddr = struct.unpack('!H', self.readbuf[2:4])[0]
         if self.readbuf[0] != BaroboCtx.EVENT_REPORTADDRESS:
           pkt = Packet(self.readbuf[5:-1], zigbeeAddr)
         else:
           pkt = Packet(self.readbuf, zigbeeAddr)
-        print "Packet: {}".format(map(hex, self.readbuf))
-        print "Packet: {} {}".format(map(hex, pkt.data), hex(pkt.addr))
         self.deliver(pkt)
         self.readbuf = self.readbuf[self.readbuf[1]:]
 
@@ -220,11 +262,30 @@ class LinkLayer_Dummy:
     self.thread.start()
 
 class Linkbot:
-  def __init__(self):
+  def __init__(self, zigbeeAddr, serialID, baroboContext):
+    self.responseQueue = Queue.Queue()
     self.readQueue = Queue.Queue()
     self.writeQueue = Queue.Queue()
-    self.zigbeeAddr = 0
-    pass
+    self.zigbeeAddr = zigbeeAddr
+    self.serialID = serialID
+    self.baroboCtx = baroboContext
+
+  def __transactMessage(self, buf):
+    baroboContext.writePacket(Packet(buf, self.zigbeeAddr))
+    response = self.responseQueue.get(block=True, timeout = 2.0)
+    if response is None:
+      raise BaroboException('Did not receive response from robot.')
+    else:
+      return response
+
+  def setBuzzerFrequency(self, freq):
+    buf = bytearray([0x6A, 0x05, (freq>>8)&0xff, freq&0xff, 0x00])
+    self.__transactMessage(buf)
+
+
+
+
+
 
   def connectTTY(self, ttyfilename):
     self.serialdevice = serial.Serial(ttyfilename, baudrate=230400)
@@ -235,10 +296,6 @@ class Linkbot:
     recv = self.comms.start(buf, 7, self.zigbeeAddr)
     r = array.array('B', recv[2:6]).tostring()
     return r
-
-  def setBuzzerFrequency(self, freq):
-    buf = bytearray([0x6A, 0x05, (freq>>8)&0xff, freq&0xff, 0x00])
-    recv = self.comms.start(buf, 3, self.zigbeeAddr)
 
   def setLEDColor(self, r, g, b):
     buf = bytearray([0x67, 0x08, 0xff, 0xff, 0xff, r, g, b, 0x00])
@@ -256,7 +313,8 @@ class Linkbot:
 if __name__ == "__main__":
   ctx = BaroboCtx()
   ctx.connectDongleTTY('/dev/ttyACM0')
-  time.sleep(0.5)
+  time.sleep(1.5)
   ctx.scanForRobots()
+  ctx.findRobot('7WJ3')
   time.sleep(2)
   print ctx.getScannedRobots()
