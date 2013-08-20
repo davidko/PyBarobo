@@ -8,8 +8,8 @@ import threading
 import struct
 
 class BaroboException(Exception):
-  def __init__(self):
-    Exception.__init__(self)
+  def __init__(self, *args, **kwargs):
+    Exception.__init__(self, *args, **kwargs)
 
 class BaroboCtx:
   RESP_OK = 0x10
@@ -144,6 +144,7 @@ class BaroboCtx:
       self.findRobot(serialID)
       self.waitForRobot(serialID)
     linkbot = Linkbot(self.scannedIDs[serialID], serialID, self)
+    self.children.append(linkbot)
     return linkbot
 
   def findRobot(self, serialID):
@@ -268,11 +269,23 @@ class LinkLayer_Dummy:
 class Linkbot:
   def __init__(self, zigbeeAddr, serialID, baroboContext):
     self.responseQueue = Queue.Queue()
+    self.eventQueue = Queue.Queue()
     self.readQueue = Queue.Queue()
     self.writeQueue = Queue.Queue()
     self.zigbeeAddr = zigbeeAddr
     self.serialID = serialID
     self.baroboCtx = baroboContext
+    self.messageThread = threading.Thread(target=self.__messageThread)
+    self.messageThread.daemon = True
+    self.messageThread.start()
+
+  def setBuzzerFrequency(self, freq):
+    buf = bytearray([0x6A, 0x05, (freq>>8)&0xff, freq&0xff, 0x00])
+    self.__transactMessage(buf)
+
+  def setLEDColor(self, r, g, b):
+    buf = bytearray([BaroboCtx.CMD_RGBLED, 8, 0xff, 0xff, 0xff, r, g, b, 0x00])
+    self.__transactMessage(buf)
 
   def __transactMessage(self, buf):
     self.baroboCtx.writePacket(Packet(buf, self.zigbeeAddr))
@@ -280,12 +293,20 @@ class Linkbot:
       response = self.responseQueue.get(block=True, timeout = 2.0)
     except:
       raise BaroboException('Did not receive response from robot.')
-    else:
-      return response
+    if response[0] != BaroboCtx.RESP_OK:
+      raise BaroboException('Robot returned error status.')
+    return response
 
-  def setBuzzerFrequency(self, freq):
-    buf = bytearray([0x6A, 0x05, (freq>>8)&0xff, freq&0xff, 0x00])
-    self.__transactMessage(buf)
+  def __messageThread(self):
+    # Scan and act on incoming messages
+    while True:
+      pkt = self.readQueue.get(block=True, timeout=None)
+      if (pkt[0] == BaroboCtx.RESP_OK) or \
+         (pkt[0] == BaroboCtx.RESP_ERR) or \
+         (pkt[0] == BaroboCtx.RESP_ALREADY_PAIRED):
+        self.responseQueue.put(pkt)
+      else:
+        self.eventQueue.put(pkt)
 
 
 
@@ -302,10 +323,6 @@ class Linkbot:
     r = array.array('B', recv[2:6]).tostring()
     return r
 
-  def setLEDColor(self, r, g, b):
-    buf = bytearray([0x67, 0x08, 0xff, 0xff, 0xff, r, g, b, 0x00])
-    recv = self.comms.start(buf, 3, self.zigbeeAddr)
-
   def setID(self, idstr):
     if len(idstr) != 4:
       raise Exception("The ID String must be an alphanumeric string containing 4 characters.")
@@ -320,10 +337,11 @@ if __name__ == "__main__":
   ctx.connectDongleTTY('/dev/ttyACM0')
   time.sleep(1.5)
   ctx.scanForRobots()
-  ctx.findRobot('7WJ3')
-  linkbot = ctx.getLinkbot('7WJ3')
-  linkbot.setBuzzerFrequency(440)
+  ctx.findRobot('ZK53')
+  linkbot = ctx.getLinkbot('ZK53')
+  print hex(linkbot.zigbeeAddr)
+  linkbot.setLEDColor(0xff, 0, 0)
   time.sleep(0.5)
-  linkbot.setBuzzerFrequency(0)
+  linkbot.setLEDColor(0x0, 0xff, 0xff)
   time.sleep(2)
   print ctx.getScannedRobots()
