@@ -6,6 +6,13 @@ import array
 import Queue
 import threading
 import struct
+import math
+
+def deg2rad(deg):
+  return deg*math.pi/180.0
+
+def rad2deg(rad):
+  return rad*180.0/math.pi
 
 class BaroboException(Exception):
   def __init__(self, *args, **kwargs):
@@ -278,6 +285,7 @@ class Linkbot:
     self.messageThread = threading.Thread(target=self.__messageThread)
     self.messageThread.daemon = True
     self.messageThread.start()
+    self.messageLock = threading.Lock()
 
   def setBuzzerFrequency(self, freq):
     buf = bytearray([0x6A, 0x05, (freq>>8)&0xff, freq&0xff, 0x00])
@@ -287,14 +295,39 @@ class Linkbot:
     buf = bytearray([BaroboCtx.CMD_RGBLED, 8, 0xff, 0xff, 0xff, r, g, b, 0x00])
     self.__transactMessage(buf)
 
+  def moveTo(self, angle1, angle2, angle3):
+    buf = bytearray([BaroboCtx.CMD_SETMOTORANGLESABS, 0x13])
+    buf += bytearray(struct.pack('<4f', angle1, angle2, angle3, 0.0))
+    buf += bytearray([0x00])
+    self.__transactMessage(buf)
+
+  def moveWait(self):
+    isMoving = True
+    while isMoving:
+      buf = bytearray([BaroboCtx.CMD_IS_MOVING, 3, 0])
+      response = self.__transactMessage(buf)
+      isMoving = response[2]
+      if isMoving:
+        time.sleep(0.1)
+
+  def getJointAngles(self):
+    buf = bytearray([BaroboCtx.CMD_GETMOTORANGLESABS, 3, 0])
+    response = self.__transactMessage(buf)
+    angles = struct.unpack('<4f', response[2:18])
+    return map(rad2deg, angles)
+    
   def __transactMessage(self, buf):
+    self.messageLock.acquire()
     self.baroboCtx.writePacket(Packet(buf, self.zigbeeAddr))
     try:
       response = self.responseQueue.get(block=True, timeout = 2.0)
     except:
+      self.messageLock.release()
       raise BaroboException('Did not receive response from robot.')
     if response[0] != BaroboCtx.RESP_OK:
+      self.messageLock.release()
       raise BaroboException('Robot returned error status.')
+    self.messageLock.release()
     return response
 
   def __messageThread(self):
@@ -343,5 +376,8 @@ if __name__ == "__main__":
   linkbot.setLEDColor(0xff, 0, 0)
   time.sleep(0.5)
   linkbot.setLEDColor(0x0, 0xff, 0xff)
+  linkbot.moveTo(0, 0, 0)
+  linkbot.moveWait()
+  print linkbot.getJointAngles()
   time.sleep(2)
   print ctx.getScannedRobots()
