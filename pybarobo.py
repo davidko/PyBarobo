@@ -7,6 +7,10 @@ import Queue
 import threading
 import struct
 
+class BaroboException(Exception):
+  def __init__(self):
+    Exception.__init__(self)
+
 class BaroboCtx:
   RESP_OK = 0x10
   RESP_END = 0x11
@@ -271,9 +275,10 @@ class Linkbot:
     self.baroboCtx = baroboContext
 
   def __transactMessage(self, buf):
-    baroboContext.writePacket(Packet(buf, self.zigbeeAddr))
-    response = self.responseQueue.get(block=True, timeout = 2.0)
-    if response is None:
+    self.baroboCtx.writePacket(Packet(buf, self.zigbeeAddr))
+    try:
+      response = self.responseQueue.get(block=True, timeout = 2.0)
+    except:
       raise BaroboException('Did not receive response from robot.')
     else:
       return response
@@ -316,5 +321,9 @@ if __name__ == "__main__":
   time.sleep(1.5)
   ctx.scanForRobots()
   ctx.findRobot('7WJ3')
+  linkbot = ctx.getLinkbot('7WJ3')
+  linkbot.setBuzzerFrequency(440)
+  time.sleep(0.5)
+  linkbot.setBuzzerFrequency(0)
   time.sleep(2)
   print ctx.getScannedRobots()
