@@ -301,6 +301,16 @@ class Linkbot:
     buf += bytearray([0x00])
     self.__transactMessage(buf)
 
+  def smoothMoveTo(self, joint, accel0, accelf, vmax, angle):
+    _accel0 = rad2deg(accel0)
+    _accelf = rad2deg(accelf)
+    _vmax = rad2deg(vmax)
+    _angle = rad2deg(angle)
+    buf = bytearray([BaroboCtx.CMD_SMOOTHMOVE, 20, joint])
+    buf += bytearray(struct.pack('<4f', _accel0, _accelf, _vmax, _angle))
+    buf += bytearray([0x00])
+    self.__transactMessage(buf)
+
   def moveWait(self):
     isMoving = True
     while isMoving:
@@ -315,7 +325,12 @@ class Linkbot:
     response = self.__transactMessage(buf)
     angles = struct.unpack('<4f', response[2:18])
     return map(rad2deg, angles)
-    
+
+  def getVersion(self):
+    buf = bytearray([BaroboCtx.CMD_GETVERSION, 3, 0])
+    response = self.__transactMessage(buf)
+    return response[2]
+
   def __transactMessage(self, buf):
     self.messageLock.acquire()
     self.baroboCtx.writePacket(Packet(buf, self.zigbeeAddr))
@@ -368,6 +383,9 @@ class Linkbot:
 if __name__ == "__main__":
   ctx = BaroboCtx()
   ctx.connectDongleTTY('/dev/ttyACM0')
+  linkbot = ctx.getLinkbot('M8FL')
+  print linkbot.getVersion()
+  """
   time.sleep(1.5)
   ctx.scanForRobots()
   ctx.findRobot('ZK53')
@@ -381,3 +399,4 @@ if __name__ == "__main__":
   print linkbot.getJointAngles()
   time.sleep(2)
   print ctx.getScannedRobots()
+  """
