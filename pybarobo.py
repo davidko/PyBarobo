@@ -109,6 +109,10 @@ class BaroboCtx:
   CMD_TWI_SENDRECV = 0x7E
   CMD_PLACEHOLDER201306271044 = 0x7F
   CMD_PLACEHOLDER201307101241 = 0x80
+  CMD_SETMOTORSTATES = 0x81
+
+  MOTOR_FORWARD = 1
+  MOTOR_BACKWARD = 2
 
   def __init__(self):
     # Queue going to the robot
@@ -331,6 +335,30 @@ class Linkbot:
     response = self.__transactMessage(buf)
     return response[2]
 
+  def setMotorDir(self, joint, direction):
+    buf = bytearray([BaroboCtx.CMD_SETMOTORDIR, 5, joint-1, direction, 0])
+    self.__transactMessage(buf)
+
+  def setMotorSpeed(self, joint, speed):
+    _speed = deg2rad(speed)
+    buf = bytearray([BaroboCtx.CMD_SETMOTORSPEED, 8, joint-1])
+    buf += bytearray(struct.pack('<f', _speed))
+    buf += bytearray([0x00])
+    self.__transactMessage(buf)
+
+  def setMotorStates(self, directions, speeds):
+    if len(directions) < 4:
+      directions += [0]*(4-len(directions))
+    if len(speeds) < 4:
+      speeds += [0.0]*(4-len(speeds))
+    speeds = map(deg2rad, speeds)
+    buf = bytearray([BaroboCtx.CMD_SETMOTORSTATES, 23])
+    buf += bytearray(directions)
+    buf += bytearray(struct.pack('<4f', speeds[0], speeds[1], speeds[2], speeds[3]))
+    buf += bytearray([0x00])
+    self.__transactMessage(buf)
+    
+
   def __transactMessage(self, buf):
     self.messageLock.acquire()
     self.baroboCtx.writePacket(Packet(buf, self.zigbeeAddr))
@@ -383,8 +411,14 @@ class Linkbot:
 if __name__ == "__main__":
   ctx = BaroboCtx()
   ctx.connectDongleTTY('/dev/ttyACM0')
-  linkbot = ctx.getLinkbot('M8FL')
+  linkbot = ctx.getLinkbot('4V21')
   print linkbot.getVersion()
+  while True:
+    linkbot.setMotorStates([1, 0, 2, 0], [ 120, 0, 120, 0 ])
+    time.sleep(2)
+    linkbot.setMotorStates([2, 0, 1, 0], [ 120, 0, 120, 0 ])
+    time.sleep(2)
+
   """
   time.sleep(1.5)
   ctx.scanForRobots()
