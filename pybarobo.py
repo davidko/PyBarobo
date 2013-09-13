@@ -7,6 +7,7 @@ import Queue
 import threading
 import struct
 import math
+import socket
 
 def deg2rad(deg):
   return deg*math.pi/180.0
@@ -128,16 +129,29 @@ class BaroboCtx:
     self.scannedIDs_cond = threading.Condition()
     pass
 
-  def connectDongleTTY(self, ttyfilename):
-    self.phys = PhysicalLayer_TTY(ttyfilename)
-    self.link = LinkLayer_Dummy(self.phys, self.handlePacket)
-    self.link.start()
+  def __init_comms(self):
     self.commsInThread = threading.Thread(target=self._commsInEngine)
     self.commsInThread.daemon = True
     self.commsInThread.start()
     self.commsOutThread = threading.Thread(target=self._commsOutEngine)
     self.commsOutThread.daemon = True
     self.commsOutThread.start()
+
+  def addLinkbot(self, linkbot):
+    self.children.append(linkbot)
+
+  def connect(self):
+    # Try to connect to BaroboLink running on localhost
+    self.phys = PhysicalLayer_Socket('localhost', 5768)
+    self.link = LinkLayer_Socket(self.phys, self.handlePacket)
+    self.link.start()
+    self.__init_comms()
+
+  def connectDongleTTY(self, ttyfilename):
+    self.phys = PhysicalLayer_TTY(ttyfilename)
+    self.link = LinkLayer_TTY(self.phys, self.handlePacket)
+    self.link.start()
+    self.__init_comms()
     self.__getDongleID()
 
   def handlePacket(self, packet):
@@ -230,11 +244,39 @@ class PhysicalLayer_TTY(serial.Serial):
     serial.Serial.__init__(self, ttyfilename, baudrate=230400)
     self.timeout = None
 
-class LinkLayer_Dummy:
+class PhysicalLayer_Socket(socket.socket):
+  def __init__(self, hostname, port):
+    socket.socket.__init__(self)
+    self.connect((hostname, port))
+
+  def flush(self):
+    pass
+  def flushInput(self):
+    pass
+  def flushOutput(self):
+    pass
+
+  def read(self):
+    # Read and return a single byte
+    return self.recv(1)
+
+  def write(self, packet):
+    self.sendall(packet)
+
+class LinkLayer_Base:
   def __init__(self, physicalLayer, readCallback):
     self.phys = physicalLayer
     self.deliver = readCallback
     self.writeLock = threading.Lock()
+
+  def start(self):
+    self.thread = threading.Thread(target=self._run)
+    self.thread.daemon = True
+    self.thread.start()
+
+class LinkLayer_TTY(LinkLayer_Base):
+  def __init__(self, physicalLayer, readCallback):
+    LinkLayer_Base.__init__(self, physicalLayer, readCallback)
 
   def write(self, packet, address):
     newpacket = bytearray([ packet[0],
@@ -244,7 +286,7 @@ class LinkLayer_Dummy:
                             1 ])
     newpacket += bytearray(packet)
     self.writeLock.acquire()
-    print "Send: {}".format(map(hex, newpacket))
+    #print "Send: {}".format(map(hex, newpacket))
     self.phys.write(newpacket)
     self.writeLock.release()
 
@@ -272,13 +314,39 @@ class LinkLayer_Dummy:
         self.deliver(pkt)
         self.readbuf = self.readbuf[self.readbuf[1]:]
 
-  def start(self):
-    self.thread = threading.Thread(target=self._run)
-    self.thread.daemon = True
-    self.thread.start()
+class LinkLayer_Socket(LinkLayer_Base):
+  def __init__(self, physicalLayer, readCallback):
+    LinkLayer_Base.__init__(self, physicalLayer, readCallback)
+
+  def write(self, packet, address):
+    self.writeLock.acquire()
+    print "Send: {}".format(map(hex, packet))
+    self.phys.write(packet)
+    self.writeLock.release()
+
+  def _run(self):
+    # Try to read byte from physical layer
+    self.readbuf = bytearray([])
+    self.phys.flush()
+    self.phys.flushInput()
+    self.phys.flushOutput()
+    while True:
+      byte = self.phys.read()
+      if byte is None:
+        continue
+      self.readbuf += bytearray(byte)
+      if (len(self.readbuf) <= 2):
+        continue
+      if len(self.readbuf) == self.readbuf[1]:
+        # Received whole packet
+        print "Recv: {}".format(map(hex, self.readbuf))
+        pkt = Packet(self.readbuf, 0x8000)
+        self.deliver(pkt)
+        self.readbuf = self.readbuf[self.readbuf[1]:]
+
 
 class Linkbot:
-  def __init__(self, zigbeeAddr, serialID, baroboContext):
+  def __init__(self, zigbeeAddr = None, serialID = None, baroboContext = None):
     self.responseQueue = Queue.Queue()
     self.eventQueue = Queue.Queue()
     self.readQueue = Queue.Queue()
@@ -290,6 +358,17 @@ class Linkbot:
     self.messageThread.daemon = True
     self.messageThread.start()
     self.messageLock = threading.Lock()
+
+  def connect(self):
+    # Connect to a running instance of BaroboLink
+    # First, make sure we have a BaroboCtx
+    self.zigbeeAddr = 0x8000
+    if not self.baroboCtx:
+      self.baroboCtx = BaroboCtx()
+      self.baroboCtx.connect()
+      self.baroboCtx.addLinkbot(self)
+    self.getSerialID()
+
 
   def setBuzzerFrequency(self, freq):
     buf = bytearray([0x6A, 0x05, (freq>>8)&0xff, freq&0xff, 0x00])
@@ -324,6 +403,12 @@ class Linkbot:
       if isMoving:
         time.sleep(0.1)
 
+  def getADCVolts(self, adc):
+    buf = bytearray([BaroboCtx.CMD_GETENCODERVOLTAGE, 4, adc, 0])
+    response = self.__transactMessage(buf)
+    voltage = struct.unpack('<f', response[2:6])[0]
+    return voltage
+
   def getJointAngles(self):
     buf = bytearray([BaroboCtx.CMD_GETMOTORANGLESABS, 3, 0])
     response = self.__transactMessage(buf)
@@ -357,7 +442,13 @@ class Linkbot:
     buf += bytearray(struct.pack('<4f', speeds[0], speeds[1], speeds[2], speeds[3]))
     buf += bytearray([0x00])
     self.__transactMessage(buf)
-    
+   
+  def getSerialID(self):
+    buf = bytearray([BaroboCtx.CMD_GETSERIALID, 3, 0])
+    response = self.__transactMessage(buf) 
+    botid = struct.unpack('!4s', response[2:6])[0]
+    print botid
+    self.serialID = botid
 
   def __transactMessage(self, buf):
     self.messageLock.acquire()
@@ -385,34 +476,11 @@ class Linkbot:
         self.eventQueue.put(pkt)
 
 
-
-
-
-
-  def connectTTY(self, ttyfilename):
-    self.serialdevice = serial.Serial(ttyfilename, baudrate=230400)
-    self.comms = _CommsEngine(self.serialdevice)
-
-  def getID(self):
-    buf = bytearray([0x61, 0x03, 0x00])
-    recv = self.comms.start(buf, 7, self.zigbeeAddr)
-    r = array.array('B', recv[2:6]).tostring()
-    return r
-
-  def setID(self, idstr):
-    if len(idstr) != 4:
-      raise Exception("The ID String must be an alphanumeric string containing 4 characters.")
-    buf = bytearray([0x62, 0x07])
-    buf += bytearray(idstr)
-    buf += bytearray([0x00])
-    recv = self.comms.start(buf, 3, self.zigbeeAddr)
-  
-
 if __name__ == "__main__":
-  ctx = BaroboCtx()
-  ctx.connectDongleTTY('/dev/ttyACM0')
-  linkbot = ctx.getLinkbot('4V21')
+  linkbot = Linkbot()
+  linkbot.connect()
   print linkbot.getVersion()
+
   while True:
     linkbot.setMotorStates([1, 0, 2, 0], [ 120, 0, 120, 0 ])
     time.sleep(2)
