@@ -204,6 +204,9 @@ class BaroboCtx:
           self.scannedIDs_cond.notify()
           self.scannedIDs_cond.release()
         continue
+      elif packet.data[0] == self.EVENT_DEBUG_MSG:
+        print packet.data[2:]
+        continue
       # Get the zigbee address from the packet 
       zigbeeAddr = packet.addr
       if 0 == zigbeeAddr:
@@ -379,6 +382,9 @@ class Linkbot:
     self.__transactMessage(buf)
 
   def moveTo(self, angle1, angle2, angle3):
+    angle1 = deg2rad(angle1)
+    angle2 = deg2rad(angle2)
+    angle3 = deg2rad(angle3)
     buf = bytearray([BaroboCtx.CMD_SETMOTORANGLESABS, 0x13])
     buf += bytearray(struct.pack('<4f', angle1, angle2, angle3, 0.0))
     buf += bytearray([0x00])
@@ -449,6 +455,7 @@ class Linkbot:
     botid = struct.unpack('!4s', response[2:6])[0]
     print botid
     self.serialID = botid
+    return botid
 
   def __transactMessage(self, buf):
     self.messageLock.acquire()
@@ -480,12 +487,21 @@ if __name__ == "__main__":
   linkbot = Linkbot()
   linkbot.connect()
   print linkbot.getVersion()
+  for i in range(1,4):
+    linkbot.setMotorSpeed(i, 120)
+  while True:
+    linkbot.moveTo(360, 0, -360)
+    linkbot.moveWait()
+    linkbot.moveTo(0, 0, 0)
+    linkbot.moveWait()
 
+  """
   while True:
     linkbot.setMotorStates([1, 0, 2, 0], [ 120, 0, 120, 0 ])
     time.sleep(2)
     linkbot.setMotorStates([2, 0, 1, 0], [ 120, 0, 120, 0 ])
     time.sleep(2)
+  """
 
   """
   time.sleep(1.5)
