@@ -29,6 +29,13 @@ class Linkbot:
     self.messageThread.daemon = True
     self.messageThread.start()
     self.messageLock = threading.Lock()
+    self.eventThread = threading.Thread(target=self.__eventThread)
+    self.eventThread.daemon = True
+    self.eventThread.start()
+
+    if self.baroboCtx is not None:
+      self.form = self.getFormFactor()
+    self.callbackEnabled = False
 
   def connect(self):
     """
@@ -42,6 +49,17 @@ class Linkbot:
       self.baroboCtx.connect()
       self.baroboCtx.addLinkbot(self)
     self.getSerialID()
+    self.form = self.getFormFactor()
+
+  def disableButtonCallback(self):
+    """
+    Disable the button callback.
+
+    See also: enableButtonCallback()
+    """
+    self.callbackEnabled = False
+    buf = bytearray([BaroboCtx.CMD_ENABLEBUTTONHANDLER, 0x04, 0x00, 0x00])
+    self.__transactMessage(buf)
 
   def disconnect(self):
     """
@@ -95,6 +113,29 @@ class Linkbot:
     buf = bytearray([BaroboCtx.CMD_SETMOTORANGLESPID, 0x13])
     buf += bytearray(struct.pack('<4f', angle1, angle2, angle3, 0.0))
     buf += bytearray([0x00])
+    self.__transactMessage(buf)
+
+  def enableButtonCallback(self, userdata, callbackfunc):
+    """
+    Enable button callbacks. This function temporarily disables the
+    robot's default button actions. Instead, whenever a button is
+    pressed or released, the function given as the parameter 'callbackfunc'
+    is called.
+
+    See also: disableButtonCallback()
+
+    @type userdata: Anything
+    @param userdata: This is data that will be passed into the callbackfunc
+      whenever it is called.
+    @type callbackfunc: function: func(buttonMask, buttonDown) . The 
+      'buttonMask' parameter of the callback function will contain a bitmask
+      indicating which buttons have changed. The buttonDown parameter
+      is another bitmask, indicating the current state of each button.
+    """
+    self.callbackfunc = callbackfunc
+    self.callbackUserData = userdata
+    self.callbackEnabled = True  
+    buf = bytearray([BaroboCtx.CMD_ENABLEBUTTONHANDLER, 0x04, 0x01, 0x00])
     self.__transactMessage(buf)
 
   def _getADCVolts(self, adc):
@@ -161,6 +202,15 @@ class Linkbot:
     response = self.__transactMessage(buf)
     return struct.unpack('<3B', response[2:5])
 
+  def getFormFactor(self):
+    """
+    Get the form factor.
+
+    @rtype: Robot Form
+    @return: Returns barobo.ROBOTFORM_MOBOT, barobo.ROBOTFORM_I, 
+      barobo.ROBOTFORM_L, or barobo.ROBOTFORM_T
+    """
+
   def getJointAngle(self, joint):
     """
     Get the current angle position of a joint.
@@ -211,7 +261,6 @@ class Linkbot:
     buf = bytearray([BaroboCtx.CMD_GETSERIALID, 3, 0])
     response = self.__transactMessage(buf) 
     botid = struct.unpack('!4s', response[2:6])[0]
-    print botid
     self.serialID = botid
     return botid
 
@@ -373,6 +422,25 @@ class Linkbot:
         self.recordThread.angles[2])
     pylab.show()
 
+  def reset(self):
+    """
+    Reset the multi-revolution counter on the joints.
+    """
+    buf = bytearray([BaroboCtx.CMD_RESETABSCOUNTER, 0x03, 0x00])
+    self.__transactMessage(buf)
+
+  def resetToZero(self):
+    """
+    Reset the multi-revolution counter and move all the joints to zero
+    positions.
+    """
+    self.reset()
+    self.moveToZero()
+
+  def resetToZeroNB(self):
+    self.reset()
+    self.moveToZeroNB()
+
   def setBuzzerFrequency(self, freq):
     """
     Set the buzzer to begin playing a tone.
@@ -394,6 +462,74 @@ class Linkbot:
     """
 
     buf = bytearray([BaroboCtx.CMD_RGBLED, 8, 0xff, 0xff, 0xff, r, g, b, 0x00])
+    self.__transactMessage(buf)
+
+  def setJointSpeed(self, joint, speed):
+    """
+    Set the speed of a joint.
+
+    @type joint: number
+    @param joint: The joint to change the speed. Can be 1, 2, or 3
+    @type speed: number
+    @param speed: The speed to set the joint to, in degrees/second.
+    """
+    buf = bytearray([BaroboCtx.CMD_SETMOTORSPEED, 0x08, joint])
+    buf += bytearray(struct.pack('<f', deg2rad(speed)))
+    buf += bytearray([0x00])
+    self.__transactMessage(buf)
+
+  def setJointSpeeds(self, speed1, speed2, speed3):
+    """
+    Set all three motor speed simultaneously. Parameters in degrees/second.
+    """
+    self.setJointSpeed(1, speed1)
+    self.setJointSpeed(2, speed2)
+    self.setJointSpeed(3, speed3)
+    
+  def setMotorPower(self, joint, power):
+    """
+    Set the power of a motor.
+
+    @type joint: number
+    @param joint: The joint to control. Can be 1, 2, or 3
+    @type power: integer
+    @param power: An integer between -255 and 255.
+    """
+    buf = bytearray([BaroboCtx.CMD_SETMOTORPOWER, 0x0A, 1<<joint])
+    buf +=bytearray(struct.pack('>3h', power, power, power))
+    buf +=bytearray([0x00])
+    self.__transactMessage(buf)
+
+  def setMotorPowers(self, power1, power2, power3):
+    buf = bytearray([BaroboCtx.CMD_SETMOTORPOWER, 0x0A, 0x07])
+    buf +=bytearray(struct.pack('>3h', power1, power2, power3))
+    buf +=bytearray([0x00])
+    self.__transactMessage(buf)
+
+  def setMovementState(self, state1, state2, state3):
+    """
+    Set the movement state for all three motors.
+
+    @type state1: movement_state
+    @param state1: Valid movement states are barobo.ROBOT_NEUTRAL, 
+      barobo.ROBOT_BACKWARD, barobo.ROBOT_FORWARD, barobo.ROBOT_HOLD,
+      barobo.ROBOT_POSITIVE, and barobo.ROBOT_NEGATIVE.
+    """
+    if self.form == ROBOTFORM_I:
+      if state3 == ROBOT_FORWARD:
+        state3 = ROBOT_BACKWARD
+      elif state3 == ROBOT_BACKWARD:
+        state3 = ROBOT_FORWARD
+      elif state3 == ROBOT_POSITIVE:
+        state3 = ROBOT_FORWARD
+      elif state3 == ROBOT_NEGATIVE:
+        state3 = ROBOT_BACKWARD
+    states = [state1, state2, state3, 0]
+    buf = bytearray([BaroboCtx.CMD_TIMEDACTION, 28])
+    for state in states:
+      buf += bytearray([state1, ROBOT_HOLD])
+      buf += bytearray(struct.pack('<i', -1))
+    buf += bytearray([0x00])
     self.__transactMessage(buf)
 
   def smoothMoveTo(self, joint, accel0, accelf, vmax, angle):
@@ -442,6 +578,10 @@ class Linkbot:
     buf += bytearray(directions)
     buf += bytearray(struct.pack('<4f', speeds[0], speeds[1], speeds[2], speeds[3]))
     buf += bytearray([0x00])
+    self.__transactMessage(buf)
+
+  def stop(self):
+    buf = bytearray([BaroboCtx.CMD_STOP, 0x03, 0x00])
     self.__transactMessage(buf)
 
   def twiRecv(self, addr, size):
@@ -520,6 +660,15 @@ class Linkbot:
       else:
         self.eventQueue.put(pkt)
 
+  def __eventThread(self):
+    while True:
+      evt = self.eventQueue.get(block=True, timeout=None)
+      if (evt[0] == BaroboCtx.EVENT_BUTTON) and self.callbackEnabled:
+        self.callbackfunc(evt[6], evt[7])
+      elif evt[0] == BaroboCtx.EVENT_DEBUG_MSG:
+        s = struct.unpack(s, evt[2:-1])
+        print "Debug msg from {}: {}".format(self.serialID, s)
+
 class _LinkbotRecordThread(threading.Thread):
   def __init__(self, linkbot, delay):
     self.delay = delay
@@ -545,7 +694,6 @@ class _LinkbotRecordThread(threading.Thread):
       try:
         numtries = 0
         data = self.linkbot.getJointAnglesTime()
-        print data
         self.time.append(data[0])
         self.angles[0].append(data[1])
         self.angles[1].append(data[2])

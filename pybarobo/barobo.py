@@ -5,6 +5,12 @@ import Queue
 import threading
 import comms
 import linkbot as barobo_linkbot
+
+ROBOTFORM_MOBOT=1
+ROBOTFORM_I=2
+ROBOTFORM_L=3
+ROBOTFORM_T=4
+
 class BaroboException(Exception):
   def __init__(self, *args, **kwargs):
     Exception.__init__(self, *args, **kwargs)
