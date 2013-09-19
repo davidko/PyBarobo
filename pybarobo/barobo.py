@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
+import struct
 import Queue
 import threading
-from comms import *
-
+import comms
+import linkbot as barobo_linkbot
 class BaroboException(Exception):
   def __init__(self, *args, **kwargs):
     Exception.__init__(self, *args, **kwargs)
@@ -131,14 +132,14 @@ class BaroboCtx:
 
   def connect(self):
     # Try to connect to BaroboLink running on localhost
-    self.phys = PhysicalLayer_Socket('localhost', 5768)
-    self.link = LinkLayer_Socket(self.phys, self.handlePacket)
+    self.phys = comms.PhysicalLayer_Socket('localhost', 5768)
+    self.link = comms.LinkLayer_Socket(self.phys, self.handlePacket)
     self.link.start()
     self.__init_comms()
 
   def connectDongleTTY(self, ttyfilename):
-    self.phys = PhysicalLayer_TTY(ttyfilename)
-    self.link = LinkLayer_TTY(self.phys, self.handlePacket)
+    self.phys = comms.PhysicalLayer_TTY(ttyfilename)
+    self.link = comms.LinkLayer_TTY(self.phys, self.handlePacket)
     self.link.start()
     self.__init_comms()
     self.__getDongleID()
@@ -148,7 +149,7 @@ class BaroboCtx:
 
   def scanForRobots(self):
     buf = [ self.CMD_QUERYADDRESSES, 3, 0x00 ]
-    self.writePacket(Packet(buf, 0x0000))
+    self.writePacket(comms.Packet(buf, 0x0000))
 
   def getScannedRobots(self):
     return self.scannedIDs
@@ -157,9 +158,9 @@ class BaroboCtx:
     if serialID not in self.scannedIDs:
       self.findRobot(serialID)
       self.waitForRobot(serialID)
-    linkbot = Linkbot(self.scannedIDs[serialID], serialID, self)
-    self.children.append(linkbot)
-    return linkbot
+    l = barobo_linkbot.Linkbot(self.scannedIDs[serialID], serialID, self)
+    self.children.append(l)
+    return l
 
   def findRobot(self, serialID):
     if serialID in self.scannedIDs:
@@ -167,7 +168,7 @@ class BaroboCtx:
     buf = bytearray([ self.CMD_FINDMOBOT, 7 ])
     buf += bytearray(serialID)
     buf += bytearray([0])
-    self.writePacket(Packet(buf, 0x0000))
+    self.writePacket(comms.Packet(buf, 0x0000))
 
   def waitForRobot(self, serialID, timeout=2.0):
     self.scannedIDs_cond.acquire()
@@ -213,11 +214,11 @@ class BaroboCtx:
 
   def __getDongleID(self):
     buf = [ self.CMD_GETSERIALID, 3, 0x00 ]
-    self.writePacket(Packet(buf, 0x0000))
+    self.writePacket(comms.Packet(buf, 0x0000))
     response = self.ctxReadQueue.get(block=True, timeout=2.0)
     serialID = struct.unpack('!4s', response[2:6])[0]
     buf = [self.CMD_GETADDRESS, 3, 0x00]
-    self.writePacket(Packet(buf, 0x0000))
+    self.writePacket(comms.Packet(buf, 0x0000))
     response = self.ctxReadQueue.get(block=True, timeout=2.0)
     zigbeeAddr = struct.unpack('!H', response[2:4])[0]
     self.scannedIDs[serialID] = zigbeeAddr

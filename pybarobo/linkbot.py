@@ -32,7 +32,6 @@ class Linkbot:
       self.baroboCtx.addLinkbot(self)
     self.getSerialID()
 
-
   def setBuzzerFrequency(self, freq):
     buf = bytearray([0x6A, 0x05, (freq>>8)&0xff, freq&0xff, 0x00])
     self.__transactMessage(buf)

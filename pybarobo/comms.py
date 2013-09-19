@@ -3,6 +3,8 @@
 import socket
 import serial
 import threading
+import struct
+from barobo import BaroboCtx
 
 class Packet:
   def __init__(self, data=None, addr=None):
@@ -59,7 +61,7 @@ class LinkLayer_TTY(LinkLayer_Base):
                             1 ])
     newpacket += bytearray(packet)
     self.writeLock.acquire()
-    #print "Send: {}".format(map(hex, newpacket))
+    print "Send: {}".format(map(hex, newpacket))
     self.phys.write(newpacket)
     self.writeLock.release()
 

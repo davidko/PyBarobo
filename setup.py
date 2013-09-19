@@ -7,5 +7,6 @@ setup(name='PyBarobo',
     description='Native Pythor Barobo robotics control library',
     author='David Ko',
     author_email='david@barobo.com',
-    py_modules=['pybarobo']
+    packages=['pybarobo']
+    #py_modules=['pybarobo']
     )
