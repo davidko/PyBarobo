@@ -17,7 +17,9 @@ class BaroboCtx:
 
   EVENT_BUTTON = 0x20
   EVENT_REPORTADDRESS = 0x21
-  EVENT_DEBUG_MSG = 0x22
+  TWI_REGACCESS = 0x22
+  EVENT_DEBUG_MSG = 0x23
+
 
   CMD_STATUS = 0x30
   CMD_DEMO = 0x31
@@ -158,7 +160,10 @@ class BaroboCtx:
     if serialID not in self.scannedIDs:
       self.findRobot(serialID)
       self.waitForRobot(serialID)
-    l = barobo_linkbot.Linkbot(self.scannedIDs[serialID], serialID, self)
+    l = barobo_linkbot.Linkbot()
+    l.zigbeeAddr = self.scannedIDs[serialID]
+    l.serialID = serialID
+    l.baroboCtx = self
     self.children.append(l)
     return l
 
