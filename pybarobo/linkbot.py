@@ -196,10 +196,11 @@ class Linkbot:
     """
     buf = bytearray([BaroboCtx.CMD_GETMOTORANGLESTIMESTAMPABS, 0x03, 0x00])
     response = self.__transactMessage(buf)
-    data = struct.unpack('<L<4f', response[2:-1])
-    data[0] = data[0] / 1000.0
-    data = map(rad2deg, data[1:])
-    return data
+    millis = struct.unpack('<L', response[2:6])[0]
+    data = struct.unpack('<4f', response[6:-1])
+    rc = [millis/1000.0]
+    rc += map(rad2deg, data[:3])
+    return rc
 
   def getSerialID(self):
     """
@@ -324,6 +325,53 @@ class Linkbot:
     """
     while self.isMoving():
       time.sleep(0.1)
+
+  def reboot(self):
+    """
+    Reboot the connect robot. Note that communications with the robot will 
+    not succeed while the robot is booting back up.
+    """
+    buf = bytearray([BaroboCtx.CMD_REBOOT, 0x03, 0x00])
+    self.__transactMessage(buf)
+
+  def recordAnglesBegin(self, delay=0.05):
+    """
+    Begin recording joint angles.
+
+    @type delay: number
+    @param delay: The number of seconds to delay between joint angles readings.
+    """
+    self.recordThread = _LinkbotRecordThread(self, delay)
+    self.recordThread.start()
+
+  def recordAnglesEnd(self):
+    """ End recording angles and return a list consisting of [time_values,
+    joint1angles, joint2angles, joint3angles]"""
+    self.recordThread.runflag_lock.acquire()
+    self.recordThread.runflag = False
+    self.recordThread.runflag_lock.release()
+    # Wait for recording to end
+    while self.recordThread.isRunning:
+      time.sleep(0.5)
+    return [map(lambda x: x-self.recordThread.time[0], self.recordThread.time), 
+        self.recordThread.angles[0], 
+        self.recordThread.angles[1], 
+        self.recordThread.angles[2]]
+
+  def recordAnglesPlot(self):
+    import pylab
+    """Plot recorded angles.
+
+    See recordAnglesBegin() and recordAnglesEnd() to record joint motions.
+    """
+    pylab.plot(
+        self.recordThread.time, 
+        self.recordThread.angles[0],
+        self.recordThread.time, 
+        self.recordThread.angles[1],
+        self.recordThread.time, 
+        self.recordThread.angles[2])
+    pylab.show()
 
   def setBuzzerFrequency(self, freq):
     """
@@ -472,3 +520,41 @@ class Linkbot:
       else:
         self.eventQueue.put(pkt)
 
+class _LinkbotRecordThread(threading.Thread):
+  def __init__(self, linkbot, delay):
+    self.delay = delay
+    self.linkbot = linkbot
+    self.runflag = False
+    self.isRunning = False;
+    self.runflag_lock = threading.Lock()
+    self.time = []
+    self.angles = [ [], [], [] ]
+    threading.Thread.__init__(self)
+    self.daemon = True
+
+  def run(self):
+    self.runflag = True
+    self.isRunning = True
+    while True:
+      self.runflag_lock.acquire()
+      if self.runflag == False:
+        self.runflag_lock.release()
+        break
+      self.runflag_lock.release()
+      # Get the joint angles and stick them into our data struct
+      try:
+        numtries = 0
+        data = self.linkbot.getJointAnglesTime()
+        print data
+        self.time.append(data[0])
+        self.angles[0].append(data[1])
+        self.angles[1].append(data[2])
+        self.angles[2].append(data[3])
+        time.sleep(self.delay)
+      except IOError:
+        numtries += 1
+        if numtries >= 3:
+          raise
+          break
+        continue
+    self.isRunning = False
