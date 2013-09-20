@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from pybarobo import Linkbot, BaroboCtx
+from barobo import Linkbot, BaroboCtx
 import time
 
 def callback(mask, buttons, userdata):

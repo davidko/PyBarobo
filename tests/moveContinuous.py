@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-import pybarobo
-from pybarobo import Linkbot, BaroboCtx
+import barobo
+from barobo import Linkbot, BaroboCtx
 import time
 
 if __name__ == "__main__":
@@ -12,6 +12,6 @@ if __name__ == "__main__":
   linkbot.resetToZero()
   print "Moving joints forwards for 4 seconds..."
   linkbot.setJointSpeeds(90, 90, 90)
-  linkbot.moveContinuous(pybarobo.ROBOT_FORWARD, pybarobo.ROBOT_FORWARD, pybarobo.ROBOT_FORWARD)
+  linkbot.moveContinuous(barobo.ROBOT_FORWARD, barobo.ROBOT_FORWARD, barobo.ROBOT_FORWARD)
   time.sleep(4)
   linkbot.stop()
