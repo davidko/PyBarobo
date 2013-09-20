@@ -6,6 +6,8 @@ import threading
 import struct
 from barobo import BaroboCtx
 
+DEBUG=False
+
 class Packet:
   def __init__(self, data=None, addr=None):
     self.data = data
@@ -64,7 +66,8 @@ class LinkLayer_TTY(LinkLayer_Base):
                             1 ])
     newpacket += bytearray(packet)
     self.writeLock.acquire()
-    #print "Send: {}".format(map(hex, newpacket))
+    if DEBUG:
+      print "Send: {}".format(map(hex, newpacket))
     self.phys.write(newpacket)
     self.writeLock.release()
 
@@ -83,7 +86,8 @@ class LinkLayer_TTY(LinkLayer_Base):
         continue
       if len(self.readbuf) == self.readbuf[1]:
         # Received whole packet
-        #print "Recv: {}".format(map(hex, self.readbuf))
+        if DEBUG:
+          print "Recv: {}".format(map(hex, self.readbuf))
         zigbeeAddr = struct.unpack('!H', self.readbuf[2:4])[0]
         if self.readbuf[0] != BaroboCtx.EVENT_REPORTADDRESS:
           pkt = Packet(self.readbuf[5:-1], zigbeeAddr)

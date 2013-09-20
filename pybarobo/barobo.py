@@ -114,7 +114,7 @@ class BaroboCtx:
   CMD_TWI_RECV = 0x7D
   CMD_TWI_SENDRECV = 0x7E
   CMD_PLACEHOLDER201306271044 = 0x7F
-  CMD_PLACEHOLDER201307101241 = 0x80
+  CMD_SMOOTHMOVE = 0x80
   CMD_SETMOTORSTATES = 0x81
 
   MOTOR_FORWARD = 1
@@ -169,7 +169,10 @@ class BaroboCtx:
   def getScannedRobots(self):
     return self.scannedIDs
 
-  def getLinkbot(self, serialID):
+  def getLinkbot(self, serialID=None):
+    if serialID is None:
+      serialID = self.scannedIDs.keys()[0]
+
     if serialID not in self.scannedIDs:
       self.findRobot(serialID)
       self.waitForRobot(serialID)
@@ -178,6 +181,7 @@ class BaroboCtx:
     l.serialID = serialID
     l.baroboCtx = self
     self.children.append(l)
+    l.form = l.getFormFactor()
     return l
 
   def findRobot(self, serialID):

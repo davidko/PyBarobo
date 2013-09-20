@@ -33,8 +33,6 @@ class Linkbot:
     self.eventThread.daemon = True
     self.eventThread.start()
 
-    if self.baroboCtx is not None:
-      self.form = self.getFormFactor()
     self.callbackEnabled = False
 
   def connect(self):
@@ -78,7 +76,7 @@ class Linkbot:
     @type angle: number
     @param angle: The angle to move the joint to, in degrees
     """
-    self.driveJointToNB(self, joint, angle)
+    self.driveJointToNB(joint, angle)
     self.moveWait()
 
   def driveJointToNB(self, joint, angle):
@@ -86,6 +84,7 @@ class Linkbot:
     Non-blocking version of driveJointTo(). Please see driveJointTo() for more
     details.
     """
+    angle = deg2rad(angle)
     buf = bytearray([BaroboCtx.CMD_SETMOTORANGLEPID, 0x08, joint-1])
     buf += bytearray(struct.pack('<f', angle))
     buf += bytearray([0x00])
@@ -110,12 +109,15 @@ class Linkbot:
     """
     Non-blocking version of driveTo(). See driveTo() for more details
     """
+    angle1 = deg2rad(angle1)
+    angle2 = deg2rad(angle2)
+    angle3 = deg2rad(angle3)
     buf = bytearray([BaroboCtx.CMD_SETMOTORANGLESPID, 0x13])
     buf += bytearray(struct.pack('<4f', angle1, angle2, angle3, 0.0))
     buf += bytearray([0x00])
     self.__transactMessage(buf)
 
-  def enableButtonCallback(self, userdata, callbackfunc):
+  def enableButtonCallback(self, callbackfunc, userdata=None):
     """
     Enable button callbacks. This function temporarily disables the
     robot's default button actions. Instead, whenever a button is
@@ -127,7 +129,7 @@ class Linkbot:
     @type userdata: Anything
     @param userdata: This is data that will be passed into the callbackfunc
       whenever it is called.
-    @type callbackfunc: function: func(buttonMask, buttonDown) . The 
+    @type callbackfunc: function: func(buttonMask, buttonDown, userdata) . The 
       'buttonMask' parameter of the callback function will contain a bitmask
       indicating which buttons have changed. The buttonDown parameter
       is another bitmask, indicating the current state of each button.
@@ -210,6 +212,9 @@ class Linkbot:
     @return: Returns barobo.ROBOTFORM_MOBOT, barobo.ROBOTFORM_I, 
       barobo.ROBOTFORM_L, or barobo.ROBOTFORM_T
     """
+    buf = bytearray([BaroboCtx.CMD_GETFORMFACTOR, 0x03, 0x00])
+    response = self.__transactMessage(buf)
+    return response[2] 
 
   def getJointAngle(self, joint):
     """
@@ -317,7 +322,8 @@ class Linkbot:
     """
     Non-blocking version of moveJointTo. See moveJointTo for more details.
     """
-    buf = bytearray([BaroboCtx.CMD_SETMOTORANGLEABS, joint-1])
+    angle = deg2rad(angle)
+    buf = bytearray([BaroboCtx.CMD_SETMOTORANGLEABS, 0x08, joint-1])
     buf += bytearray(struct.pack('<f', angle))
     buf += bytearray([0x00])
     self.__transactMessage(buf)
@@ -330,7 +336,7 @@ class Linkbot:
     @param angle1: Number of degrees to move joint 1. Similar for parameters
       'angle2' and 'angle3'.
     """
-    self.moveNB(angel1, angle2, angle3)
+    self.moveNB(angle1, angle2, angle3)
     self.moveWait()
 
   def moveNB(self, angle1, angle2, angle3):
@@ -452,7 +458,7 @@ class Linkbot:
     positions.
     """
     self.reset()
-    self.moveToZero()
+    self.moveTo(0, 0, 0)
 
   def resetToZeroNB(self):
     self.reset()
@@ -624,11 +630,12 @@ class Linkbot:
       elif state3 == ROBOT_NEGATIVE:
         state3 = ROBOT_BACKWARD
     states = [state1, state2, state3, 0]
-    buf = bytearray([BaroboCtx.CMD_TIMEDACTION, 28])
+    buf = bytearray([BaroboCtx.CMD_TIMEDACTION, 0, 0x07])
     for state in states:
       buf += bytearray([state1, ROBOT_HOLD])
       buf += bytearray(struct.pack('<i', -1))
     buf += bytearray([0x00])
+    buf[1] = len(buf)
     self.__transactMessage(buf)
 
   def smoothMoveTo(self, joint, accel0, accelf, vmax, angle):
@@ -647,13 +654,14 @@ class Linkbot:
     @type angle: number
     @param angle: The absolute angle to move the joint to, in degrees
     """
-    _accel0 = rad2deg(accel0)
-    _accelf = rad2deg(accelf)
-    _vmax = rad2deg(vmax)
-    _angle = rad2deg(angle)
+    _accel0 = deg2rad(accel0)
+    _accelf = deg2rad(accelf)
+    _vmax = deg2rad(vmax)
+    _angle = deg2rad(angle)
     buf = bytearray([BaroboCtx.CMD_SMOOTHMOVE, 20, joint-1])
     buf += bytearray(struct.pack('<4f', _accel0, _accelf, _vmax, _angle))
     buf += bytearray([0x00])
+    buf[1] = len(buf)
     self.__transactMessage(buf)
 
   def stop(self):
@@ -740,7 +748,7 @@ class Linkbot:
     while True:
       evt = self.eventQueue.get(block=True, timeout=None)
       if (evt[0] == BaroboCtx.EVENT_BUTTON) and self.callbackEnabled:
-        self.callbackfunc(evt[6], evt[7])
+        self.callbackfunc(evt[6], evt[7], self.callbackUserData)
       elif evt[0] == BaroboCtx.EVENT_DEBUG_MSG:
         s = struct.unpack(s, evt[2:-1])
         print "Debug msg from {}: {}".format(self.serialID, s)
