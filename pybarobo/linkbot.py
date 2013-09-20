@@ -86,7 +86,7 @@ class Linkbot:
     Non-blocking version of driveJointTo(). Please see driveJointTo() for more
     details.
     """
-    buf = bytearray([BaroboCtx.CMD_SETMOTORANGLEPID, 0x08, joint])
+    buf = bytearray([BaroboCtx.CMD_SETMOTORANGLEPID, 0x08, joint-1])
     buf += bytearray(struct.pack('<f', angle))
     buf += bytearray([0x00])
     self.__transactMessage(buf)
@@ -220,7 +220,7 @@ class Linkbot:
     @rtype: number
     @return: Return the joint angle in degrees
     """
-    buf = bytearray([BaroboCtx.CMD_GETMOTORANGLE, 0x04, joint, 0x00])
+    buf = bytearray([BaroboCtx.CMD_GETMOTORANGLE, 0x04, joint-1, 0x00])
     response = self.__transactMessage(buf)
     return rad2deg(struct.unpack('<f', response[2:6])[0])
 
@@ -317,7 +317,7 @@ class Linkbot:
     """
     Non-blocking version of moveJointTo. See moveJointTo for more details.
     """
-    buf = bytearray([BaroboCtx.CMD_SETMOTORANGLEABS, joint])
+    buf = bytearray([BaroboCtx.CMD_SETMOTORANGLEABS, joint-1])
     buf += bytearray(struct.pack('<f', angle))
     buf += bytearray([0x00])
     self.__transactMessage(buf)
@@ -339,6 +339,23 @@ class Linkbot:
     """
     angles = self.getJointAngles()
     self.moveToNB(angle1+angles[0], angle2+angles[1], angle3+angles[2])
+
+  def moveContinuous(self, dir1, dir2, dir3):
+    """
+    Make the joints begin moving continuously.
+
+    @type dir1: Barobo Direction Macro
+    @param dir1: This parameter may take the following values:
+      - ROBOT_NEUTRAL: Makes the joint relax
+      - ROBOT_FORWARD: Rotates the joint to move the robot in the "forward"
+        direction, if the robot has wheels.
+      - ROBOT_BACKWARD: Same as above but backwards
+      - ROBOT_HOLD: Hold the joint at its current position
+      - ROBOT_POSITIVE: Rotates the joint in the "positive" direction,
+        according to the right-hand-rule.
+      - ROBOT_NEGATIVE: Same as above but in the negative direction.
+    """
+    self.setMovementState(dir1, dir2, dir3)
 
   def moveTo(self, angle1, angle2, angle3):
     self.moveToNB(angle1, angle2, angle3)
@@ -464,6 +481,33 @@ class Linkbot:
     buf = bytearray([BaroboCtx.CMD_RGBLED, 8, 0xff, 0xff, 0xff, r, g, b, 0x00])
     self.__transactMessage(buf)
 
+  def setJointMovementState(self, joint, state):
+    """
+    Set a joint movement state
+
+    @type state: Barobo Direction Macro
+    @param state: This parameter may take the following values:
+      - ROBOT_NEUTRAL: Makes the joint relax
+      - ROBOT_FORWARD: Rotates the joint to move the robot in the "forward"
+        direction, if the robot has wheels.
+      - ROBOT_BACKWARD: Same as above but backwards
+      - ROBOT_HOLD: Hold the joint at its current position
+      - ROBOT_POSITIVE: Rotates the joint in the "positive" direction,
+        according to the right-hand-rule.
+      - ROBOT_NEGATIVE: Same as above but in the negative direction.
+    """
+    if (self.form == ROBOTFORM_I) and (joint==3):
+      if state == ROBOT_FORWARD:
+        state = ROBOT_BACKWARD
+      elif state == ROBOT_BACKWARD:
+        state = ROBOT_FORWARD
+      elif state == ROBOT_POSITIVE:
+        state = ROBOT_FORWARD
+      elif state == ROBOT_NEGATIVE:
+        state = ROBOT_BACKWARD
+    buf = bytearray([BaroboCtx.CMD_SETMOTORDIR, 0x05, joint-1, state, 0x00])
+    self.__transactMessage(buf)
+
   def setJointSpeed(self, joint, speed):
     """
     Set the speed of a joint.
@@ -473,8 +517,9 @@ class Linkbot:
     @type speed: number
     @param speed: The speed to set the joint to, in degrees/second.
     """
-    buf = bytearray([BaroboCtx.CMD_SETMOTORSPEED, 0x08, joint])
-    buf += bytearray(struct.pack('<f', deg2rad(speed)))
+    _speed = deg2rad(speed)
+    buf = bytearray([BaroboCtx.CMD_SETMOTORSPEED, 0x08, joint-1])
+    buf += bytearray(struct.pack('<f', _speed))
     buf += bytearray([0x00])
     self.__transactMessage(buf)
 
@@ -486,6 +531,54 @@ class Linkbot:
     self.setJointSpeed(2, speed2)
     self.setJointSpeed(3, speed3)
     
+  def setJointState(self, joint, state):
+    """
+    Set a joint's movement state.
+
+    @param joint: The joint id: 1, 2, or 3
+    @type state: Barobo Direction Macro
+    @param state: This parameter may take the following values:
+      - ROBOT_NEUTRAL: Makes the joint relax
+      - ROBOT_FORWARD: Rotates the joint to move the robot in the "forward"
+        direction, if the robot has wheels.
+      - ROBOT_BACKWARD: Same as above but backwards
+      - ROBOT_HOLD: Hold the joint at its current position
+      - ROBOT_POSITIVE: Rotates the joint in the "positive" direction,
+        according to the right-hand-rule.
+      - ROBOT_NEGATIVE: Same as above but in the negative direction.
+    """
+    buf = bytearray([BaroboCtx.CMD_SETMOTORDIR, 5, joint-1, state, 0])
+    self.__transactMessage(buf)
+
+  def setJointStates(self, states, speeds):
+    """
+    Set the joint states for all 3 joints simultaneously.
+
+    @type states: [state1, state2...]
+    @param states: Each state may take the following values:
+      - ROBOT_NEUTRAL: Makes the joint relax
+      - ROBOT_FORWARD: Rotates the joint to move the robot in the "forward"
+        direction, if the robot has wheels.
+      - ROBOT_BACKWARD: Same as above but backwards
+      - ROBOT_HOLD: Hold the joint at its current position
+      - ROBOT_POSITIVE: Rotates the joint in the "positive" direction,
+        according to the right-hand-rule.
+      - ROBOT_NEGATIVE: Same as above but in the negative direction.
+    @type speeds: [speed1, speed2 ...]
+    @param speeds: The speeds to set each joint
+
+    """
+    if len(states) < 4:
+      states += [0]*(4-len(states))
+    if len(speeds) < 4:
+      speeds += [0.0]*(4-len(speeds))
+    speeds = map(deg2rad, speeds)
+    buf = bytearray([BaroboCtx.CMD_SETMOTORSTATES, 23])
+    buf += bytearray(states)
+    buf += bytearray(struct.pack('<4f', speeds[0], speeds[1], speeds[2], speeds[3]))
+    buf += bytearray([0x00])
+    self.__transactMessage(buf)
+
   def setMotorPower(self, joint, power):
     """
     Set the power of a motor.
@@ -511,9 +604,15 @@ class Linkbot:
     Set the movement state for all three motors.
 
     @type state1: movement_state
-    @param state1: Valid movement states are barobo.ROBOT_NEUTRAL, 
-      barobo.ROBOT_BACKWARD, barobo.ROBOT_FORWARD, barobo.ROBOT_HOLD,
-      barobo.ROBOT_POSITIVE, and barobo.ROBOT_NEGATIVE.
+    @param state1: This parameter may take the following values:
+      - ROBOT_NEUTRAL: Makes the joint relax
+      - ROBOT_FORWARD: Rotates the joint to move the robot in the "forward"
+        direction, if the robot has wheels.
+      - ROBOT_BACKWARD: Same as above but backwards
+      - ROBOT_HOLD: Hold the joint at its current position
+      - ROBOT_POSITIVE: Rotates the joint in the "positive" direction,
+        according to the right-hand-rule.
+      - ROBOT_NEGATIVE: Same as above but in the negative direction.
     """
     if self.form == ROBOTFORM_I:
       if state3 == ROBOT_FORWARD:
@@ -552,31 +651,8 @@ class Linkbot:
     _accelf = rad2deg(accelf)
     _vmax = rad2deg(vmax)
     _angle = rad2deg(angle)
-    buf = bytearray([BaroboCtx.CMD_SMOOTHMOVE, 20, joint])
+    buf = bytearray([BaroboCtx.CMD_SMOOTHMOVE, 20, joint-1])
     buf += bytearray(struct.pack('<4f', _accel0, _accelf, _vmax, _angle))
-    buf += bytearray([0x00])
-    self.__transactMessage(buf)
-
-  def setMotorDir(self, joint, direction):
-    buf = bytearray([BaroboCtx.CMD_SETMOTORDIR, 5, joint-1, direction, 0])
-    self.__transactMessage(buf)
-
-  def setMotorSpeed(self, joint, speed):
-    _speed = deg2rad(speed)
-    buf = bytearray([BaroboCtx.CMD_SETMOTORSPEED, 8, joint-1])
-    buf += bytearray(struct.pack('<f', _speed))
-    buf += bytearray([0x00])
-    self.__transactMessage(buf)
-
-  def setMotorStates(self, directions, speeds):
-    if len(directions) < 4:
-      directions += [0]*(4-len(directions))
-    if len(speeds) < 4:
-      speeds += [0.0]*(4-len(speeds))
-    speeds = map(deg2rad, speeds)
-    buf = bytearray([BaroboCtx.CMD_SETMOTORSTATES, 23])
-    buf += bytearray(directions)
-    buf += bytearray(struct.pack('<4f', speeds[0], speeds[1], speeds[2], speeds[3]))
     buf += bytearray([0x00])
     self.__transactMessage(buf)
 

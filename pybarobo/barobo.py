@@ -11,6 +11,13 @@ ROBOTFORM_I=2
 ROBOTFORM_L=3
 ROBOTFORM_T=4
 
+ROBOT_NEUTRAL=0
+ROBOT_FORWARD=1
+ROBOT_BACKWARD=2
+ROBOT_HOLD=3
+ROBOT_POSITIVE=4
+ROBOT_NEGATIVE=5
+
 class BaroboException(Exception):
   def __init__(self, *args, **kwargs):
     Exception.__init__(self, *args, **kwargs)
