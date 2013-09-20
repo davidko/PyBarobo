@@ -235,9 +235,19 @@ class BaroboCtx:
       self.link.write(packet.data, packet.addr)
 
   def __getDongleID(self):
-    buf = [ self.CMD_GETSERIALID, 3, 0x00 ]
-    self.writePacket(comms.Packet(buf, 0x0000))
-    response = self.ctxReadQueue.get(block=True, timeout=2.0)
+    numtries = 0
+    maxtries = 3
+    while numtries < maxtries:
+      buf = [ self.CMD_GETSERIALID, 3, 0x00 ]
+      self.writePacket(comms.Packet(buf, 0x0000))
+      try:
+        response = self.ctxReadQueue.get(block=True, timeout=2.0)
+        break
+      except:
+        if numtries < maxtries:
+          numtries+=1
+        else:
+          raise
     serialID = struct.unpack('!4s', response[2:6])[0]
     buf = [self.CMD_GETADDRESS, 3, 0x00]
     self.writePacket(comms.Packet(buf, 0x0000))

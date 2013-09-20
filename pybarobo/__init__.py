@@ -17,6 +17,11 @@ You may also use this package to control Linkbots without BaroboLink. In that
 case, a typical control program will look something like this::
   from pybarobo import Linkbot, BaroboCtx
 
+  ctx = BaroboCtx()
+  ctx.connectDongleTTY('COM3')
+  linkbot = ctx.getLinkbot() # or linkbot = ctx.getLinkbot('2B2C')
+  linkbot.moveTo(180, 0, -180)
+
 For more documentation, please refer to the documentation under the
 pybarobo.linkbot module.
 """

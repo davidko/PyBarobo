@@ -721,12 +721,19 @@ class Linkbot:
 
   def __transactMessage(self, buf):
     self.messageLock.acquire()
-    self.baroboCtx.writePacket(Packet(buf, self.zigbeeAddr))
-    try:
-      response = self.responseQueue.get(block=True, timeout = 2.0)
-    except:
-      self.messageLock.release()
-      raise BaroboException('Did not receive response from robot.')
+    numTries = 0
+    maxTries = 3
+    while numTries < maxTries:
+      self.baroboCtx.writePacket(Packet(buf, self.zigbeeAddr))
+      try:
+        response = self.responseQueue.get(block=True, timeout = 2.0)
+        break
+      except:
+        if numTries < maxTries:
+          numTries+=1
+        else:
+          self.messageLock.release()
+          raise BaroboException('Did not receive response from robot.')
     if response[0] != BaroboCtx.RESP_OK:
       self.messageLock.release()
       raise BaroboException('Robot returned error status.')

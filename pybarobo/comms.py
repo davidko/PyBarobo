@@ -4,6 +4,7 @@ import socket
 import serial
 import threading
 import struct
+import time
 from barobo import BaroboCtx
 
 DEBUG=False
@@ -81,6 +82,8 @@ class LinkLayer_TTY(LinkLayer_Base):
       byte = self.phys.read()
       if byte is None:
         continue
+      if DEBUG:
+        print "Byte: {}".format(map(hex, bytearray(byte)))
       self.readbuf += bytearray(byte)
       if (len(self.readbuf) <= 2):
         continue
