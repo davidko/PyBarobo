@@ -9,5 +9,5 @@ if __name__ == "__main__":
   linkbot = ctx.getLinkbot()
 
   linkbot.resetToZero()
-  print "Moving all joints 90 degrees..."
+  print ("Moving all joints 90 degrees...")
   linkbot.move(90, 90, 90)

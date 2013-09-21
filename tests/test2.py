@@ -7,8 +7,8 @@ if __name__ == "__main__":
   ctx = BaroboCtx()
   ctx.connectDongleTTY('/dev/ttyACM0')
   linkbot = ctx.getLinkbot('BNQD')
-  print linkbot
-  print linkbot.getVersion()
+  print (linkbot)
+  print (linkbot.getVersion())
   linkbot.recordAnglesBegin()
   s = raw_input('Press enter to continue...')
   linkbot.recordAnglesEnd()

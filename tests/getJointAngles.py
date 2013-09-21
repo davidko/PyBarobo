@@ -8,4 +8,4 @@ if __name__ == "__main__":
   ctx.connectDongleTTY('/dev/ttyACM0')
   linkbot = ctx.getLinkbot()
 
-  print linkbot.getJointAngles()
+  print (linkbot.getJointAngles())

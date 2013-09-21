@@ -4,7 +4,7 @@ from barobo import Linkbot, BaroboCtx
 import time
 
 def callback(mask, buttons, userdata):
-  print "Button press! mask: {} buttons: {}".format(hex(mask), hex(buttons))
+  print ("Button press! mask: {} buttons: {}".format(hex(mask), hex(buttons)))
 
 if __name__ == "__main__":
   ctx = BaroboCtx()

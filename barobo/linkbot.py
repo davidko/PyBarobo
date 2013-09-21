@@ -183,13 +183,13 @@ class Linkbot:
     @return: Volts
     """
     # set the ADC channel
-    buf = bytearray([BaroboCtx.MSG_REGACCESS, 0x7C, 0x40|(adc&0x0f) ])
+    buf = bytearray([BaroboCtx.TWI_REGACCESS, 0x7C, 0x40|(adc&0x0f) ])
     self.twiSend(0x02, buf)
     # Start the conversion
-    buf = bytearray([BaroboCtx.MSG_REGACCESS, 0x7A, 0xC7])
+    buf = bytearray([BaroboCtx.TWI_REGACCESS, 0x7A, 0xC7])
     self.twiSend(0x02, buf)
     # Get the result
-    buf = bytearray([BaroboCtx.MSG_REGACCESS, 0x78])
+    buf = bytearray([BaroboCtx.TWI_REGACCESS, 0x78])
     data = self.twiSendRecv(0x02, buf, 2) 
     return struct.unpack('<h', data)[0]
 
@@ -758,7 +758,7 @@ class Linkbot:
         self.callbackfunc(evt[6], evt[7], self.callbackUserData)
       elif evt[0] == BaroboCtx.EVENT_DEBUG_MSG:
         s = struct.unpack(s, evt[2:-1])
-        print "Debug msg from {}: {}".format(self.serialID, s)
+        print ("Debug msg from {}: {}".format(self.serialID, s))
 
 class _LinkbotRecordThread(threading.Thread):
   def __init__(self, linkbot, delay):

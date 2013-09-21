@@ -9,5 +9,5 @@ if __name__ == "__main__":
   linkbot = ctx.getLinkbot()
 
   for _ in range(5):
-    print linkbot.getBatteryVoltage()
+    print (linkbot.getBatteryVoltage())
     time.sleep(0.5)

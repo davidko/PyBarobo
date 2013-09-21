@@ -9,5 +9,5 @@ if __name__ == "__main__":
   linkbot = ctx.getLinkbot()
 
   for _ in range(20):
-    print linkbot.getAccelerometerData()
+    print (linkbot.getAccelerometerData())
     time.sleep(0.5)

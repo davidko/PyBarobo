@@ -10,8 +10,8 @@ if __name__ == "__main__":
   linkbot = ctx.getLinkbot()
 
   linkbot.resetToZero()
-  print "Moving joints forwards for 4 seconds..."
-  linkbot.setJointSpeeds(90, 90, 90)
+  print ("Moving joints forwards for 4 seconds...")
+  linkbot.setJointSpeeds(120, 120, 120)
   linkbot.moveContinuous(barobo.ROBOT_FORWARD, barobo.ROBOT_FORWARD, barobo.ROBOT_FORWARD)
-  time.sleep(4)
+  raw_input("Press enter to stop.")
   linkbot.stop()

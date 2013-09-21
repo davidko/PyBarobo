@@ -18,6 +18,39 @@ ROBOT_HOLD=3
 ROBOT_POSITIVE=4
 ROBOT_NEGATIVE=5
 
+def _getSerialPorts():
+  if os.name == 'nt':
+    available = []
+    for i in range(256):
+      try:
+        s = serial.Serial(i)
+        available.append('\\\\.\\COM'+str(i+1))
+        s.close()
+      except Serial.SerialException:
+        pass
+    return available
+  else:
+    from serial.tools import list_ports
+    return [port[0] for port in list_ports.comports()]
+
+# Check if a device connected at 'comport' is a Linkbot
+def __checkLinkbotTTY(comport):
+  s = serial.Serial(comport, baudrate=230400)
+  s.timeout = 2
+  numtries = 0
+  maxtries = 3
+  while numtries < maxtries:
+    try:
+      s.write(bytearray([0x30, 0x03, 0x00]))
+      r = s.recv(3)
+      if r == [0x10, 0x03, 0x11]:
+        break
+    except:
+      if numtries < maxtries:
+        numtries+=1
+      else:
+        return True
+
 class BaroboException(Exception):
   def __init__(self, *args, **kwargs):
     Exception.__init__(self, *args, **kwargs)
@@ -145,6 +178,26 @@ class BaroboCtx:
   def addLinkbot(self, linkbot):
     self.children.append(linkbot)
 
+  def __autoConnectWorker(self, comport):
+    pass
+
+  def autoConnect(self):
+    import threading
+    # Try to connect to all COM ports simultaneously.
+    self.__foundComPort = None
+    self.__foundComPortCond= threading.Condition()
+    myports = _getSerialPorts()
+    self.__workerThreads = []
+    for port in myports:
+      thread = threading.Thread(target=self.__autoConnectWorker, args=(port))
+      self.__workerThreads.append(thread)
+      thread.daemon = True
+      thread.start()
+    self.foundComPortCond.acquire()
+    while self.__foundComPort == None:
+      self.foundComPortCond.wait()
+    
+
   def connect(self):
     # Try to connect to BaroboLink running on localhost
     self.phys = comms.PhysicalLayer_Socket('localhost', 5768)
@@ -217,7 +270,7 @@ class BaroboCtx:
           self.scannedIDs_cond.release()
         continue
       elif packet.data[0] == self.EVENT_DEBUG_MSG:
-        print packet.data[2:]
+        print (packet.data[2:])
         continue
       # Get the zigbee address from the packet 
       zigbeeAddr = packet.addr
@@ -254,4 +307,5 @@ class BaroboCtx:
     response = self.ctxReadQueue.get(block=True, timeout=2.0)
     zigbeeAddr = struct.unpack('!H', response[2:4])[0]
     self.scannedIDs[serialID] = zigbeeAddr
-    
+   
+
