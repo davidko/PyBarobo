@@ -105,6 +105,8 @@ class LinkLayer_Socket(LinkLayer_Base):
 
   def write(self, packet, address):
     self.writeLock.acquire()
+    if DEBUG:
+      print ("Send: {}".format(map(hex, packet)))
     self.phys.write(packet)
     self.writeLock.release()
 
@@ -116,6 +118,8 @@ class LinkLayer_Socket(LinkLayer_Base):
     self.phys.flushOutput()
     while True:
       byte = self.phys.read()
+      if DEBUG:
+        print ("Byte: {}".format(map(hex, bytearray(byte))))
       if byte is None:
         continue
       self.readbuf += bytearray(byte)
@@ -123,6 +127,8 @@ class LinkLayer_Socket(LinkLayer_Base):
         continue
       if len(self.readbuf) == self.readbuf[1]:
         # Received whole packet
+        if DEBUG:
+          print ("Recv: {}".format(map(hex, self.readbuf)))
         pkt = Packet(self.readbuf, 0x8000)
         self.deliver(pkt)
         self.readbuf = self.readbuf[self.readbuf[1]:]
