@@ -149,6 +149,7 @@ class BaroboCtx:
   CMD_PLACEHOLDER201306271044 = 0x7F
   CMD_SMOOTHMOVE = 0x80
   CMD_SETMOTORSTATES = 0x81
+  CMD_SETGLOBALACCEL = 0x82
 
   MOTOR_FORWARD = 1
   MOTOR_BACKWARD = 2
@@ -299,6 +300,7 @@ class BaroboCtx:
       except:
         if numtries < maxtries:
           numtries+=1
+          continue
         else:
           raise
     serialID = struct.unpack('!4s', response[2:6])[0]

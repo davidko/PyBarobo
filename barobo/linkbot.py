@@ -464,6 +464,18 @@ class Linkbot:
     self.reset()
     self.moveToZeroNB()
 
+  def setAcceleration(self, accel):
+    """
+    Set the acceleration of a joint. Each joint motion will begin with this
+    acceleration after calling this function. Set the acceleration to 0 to
+    disable this feature. 
+    """
+    buf = bytearray([BaroboCtx.CMD_SETGLOBALACCEL, 0])
+    buf += struct.pack('<f', deg2rad(accel))
+    buf += bytearray([0x00])
+    buf[1] = len(buf)
+    self.__transactMessage(buf)
+
   def setBuzzerFrequency(self, freq):
     """
     Set the buzzer to begin playing a tone.
@@ -473,18 +485,6 @@ class Linkbot:
       zero to turn the buzzer off.
     """
     buf = bytearray([0x6A, 0x05, (freq>>8)&0xff, freq&0xff, 0x00])
-    self.__transactMessage(buf)
-
-  def setLEDColor(self, r, g, b):
-    """
-    Set the LED color
-
-    @type r: number [0, 255]
-    @type g: number [0, 255]
-    @type b: number [0, 255]
-    """
-
-    buf = bytearray([BaroboCtx.CMD_RGBLED, 8, 0xff, 0xff, 0xff, r, g, b, 0x00])
     self.__transactMessage(buf)
 
   def setJointMovementState(self, joint, state):
@@ -583,6 +583,18 @@ class Linkbot:
     buf += bytearray(states)
     buf += bytearray(struct.pack('<4f', speeds[0], speeds[1], speeds[2], speeds[3]))
     buf += bytearray([0x00])
+    self.__transactMessage(buf)
+
+  def setLEDColor(self, r, g, b):
+    """
+    Set the LED color
+
+    @type r: number [0, 255]
+    @type g: number [0, 255]
+    @type b: number [0, 255]
+    """
+
+    buf = bytearray([BaroboCtx.CMD_RGBLED, 8, 0xff, 0xff, 0xff, r, g, b, 0x00])
     self.__transactMessage(buf)
 
   def setMotorPower(self, joint, power):
@@ -731,6 +743,7 @@ class Linkbot:
       except:
         if numTries < maxTries:
           numTries+=1
+          continue
         else:
           self.messageLock.release()
           raise BaroboException('Did not receive response from robot.')
