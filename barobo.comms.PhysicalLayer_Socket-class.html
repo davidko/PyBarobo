@@ -57,44 +57,14 @@
 </table>
 <!-- ==================== CLASS DESCRIPTION ==================== -->
 <h1 class="epydoc">Class PhysicalLayer_Socket</h1><p class="nomargin-top"><span class="codelink"><a href="barobo.comms-pysrc.html#PhysicalLayer_Socket">source&nbsp;code</a></span></p>
-<center>
-<center>  <map id="uml_class_diagram_for_barobo_c_4" name="uml_class_diagram_for_barobo_c_4">
-<area shape="rect" id="node12" href="barobo.comms.PhysicalLayer_Socket-class.html#__init__" title="x.__init__(...) initializes x; see help(type(x)) for signature" alt="" coords="47,559,223,577"/>
-<area shape="rect" id="node12" href="barobo.comms.PhysicalLayer_Socket-class.html#flush" title="barobo.comms.PhysicalLayer_Socket.flush" alt="" coords="47,577,223,596"/>
-<area shape="rect" id="node12" href="barobo.comms.PhysicalLayer_Socket-class.html#flushInput" title="barobo.comms.PhysicalLayer_Socket.flushInput" alt="" coords="47,596,223,615"/>
-<area shape="rect" id="node12" href="barobo.comms.PhysicalLayer_Socket-class.html#flushOutput" title="barobo.comms.PhysicalLayer_Socket.flushOutput" alt="" coords="47,615,223,633"/>
-<area shape="rect" id="node12" href="barobo.comms.PhysicalLayer_Socket-class.html#read" title="barobo.comms.PhysicalLayer_Socket.read" alt="" coords="47,633,223,652"/>
-<area shape="rect" id="node12" href="barobo.comms.PhysicalLayer_Socket-class.html#write" title="barobo.comms.PhysicalLayer_Socket.write" alt="" coords="47,652,223,671"/>
-<area shape="rect" id="node1" href="barobo.comms.PhysicalLayer_Socket-class.html" title="barobo.comms.PhysicalLayer_Socket" alt="" coords="35,526,235,677"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="socket._socketobject.__doc__" alt="" coords="17,31,252,49"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="the socket family" alt="" coords="17,49,252,68"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="the socket type" alt="" coords="17,68,252,87"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="the socket protocol" alt="" coords="17,87,252,105"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="socket._socketobject.recv" alt="" coords="17,105,252,124"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="socket._socketobject.recv_into" alt="" coords="17,124,252,143"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="socket._socketobject.recvfrom" alt="" coords="17,143,252,161"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="socket._socketobject.recvfrom_into" alt="" coords="17,161,252,180"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="socket._socketobject.send" alt="" coords="17,180,252,199"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="socket._socketobject.sendto" alt="" coords="17,199,252,217"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="Close the socket." alt="" coords="17,220,252,239"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="Wait for an incoming connection." alt="" coords="17,239,252,257"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="Return a new socket object connected to the same system resource." alt="" coords="17,257,252,276"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="Return a regular file object corresponding to the socket." alt="" coords="17,276,252,295"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="Bind the socket to a local address." alt="" coords="17,295,252,313"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="Connect the socket to a remote address." alt="" coords="17,313,252,332"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="This is like connect(address), but returns an error code (the errno value) &#160;instead of raising an exception when an error occurs." alt="" coords="17,332,252,351"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="Return the integer file descriptor of the socket." alt="" coords="17,351,252,369"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="Return the address of the remote endpoint." alt="" coords="17,369,252,388"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="Return the address of the local endpoint." alt="" coords="17,388,252,407"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="Get a socket option." alt="" coords="17,407,252,425"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="Returns the timeout in seconds (float) associated with socket operations." alt="" coords="17,425,252,444"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="Enable a server to accept connections." alt="" coords="17,444,252,463"/>
-<area shape="rect" id="node13" href="javascript:void(0);" title="Shut down the reading side of the socket (flag == SHUT_RD), the writing &#160;side of the socket (flag == SHUT_WR), or both ends (flag == SHUT_RDWR)." alt="" coords="17,481,252,500"/>
-<area shape="rect" id="node2" href="javascript:void(0);" title="socket([family[, type[, proto]]]) &#45;&gt; socket object" alt="" coords="5,6,264,506"/>
-</map>
-  <img src="uml_class_diagram_for_barobo_c_4.gif" alt='' usemap="#uml_class_diagram_for_barobo_c_4" ismap="ismap" class="graph-without-title" />
-</center>
-</center>
+<pre class="base-tree">
+          object --+    
+                   |    
+socket._socketobject --+
+                       |
+                      <strong class="uidshort">PhysicalLayer_Socket</strong>
+</pre>
+
 <hr />
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
@@ -394,7 +364,7 @@ socket object
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Sep 20 13:31:05 2013
+    Generated by Epydoc 3.0.1 on Tue Sep 24 18:09:34 2013
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

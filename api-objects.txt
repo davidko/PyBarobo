@@ -12,7 +12,9 @@ barobo.barobo.ROBOT_HOLD	barobo.barobo-module.html#ROBOT_HOLD
 barobo.barobo.__package__	barobo.barobo-module.html#__package__
 barobo.barobo.ROBOT_FORWARD	barobo.barobo-module.html#ROBOT_FORWARD
 barobo.barobo.ROBOT_NEUTRAL	barobo.barobo-module.html#ROBOT_NEUTRAL
+barobo.barobo.__checkLinkbotTTY	barobo.barobo-module.html#__checkLinkbotTTY
 barobo.barobo.ROBOT_POSITIVE	barobo.barobo-module.html#ROBOT_POSITIVE
+barobo.barobo._getSerialPorts	barobo.barobo-module.html#_getSerialPorts
 barobo.barobo.ROBOTFORM_T	barobo.barobo-module.html#ROBOTFORM_T
 barobo.comms	barobo.comms-module.html
 barobo.comms.__package__	barobo.comms-module.html#__package__
@@ -33,6 +35,7 @@ abc.ABCMeta.__subclasscheck__	abc.ABCMeta-class.html#__subclasscheck__
 abc.ABCMeta.register	abc.ABCMeta-class.html#register
 abc.ABCMeta._dump_registry	abc.ABCMeta-class.html#_dump_registry
 barobo.barobo.BaroboCtx	barobo.barobo.BaroboCtx-class.html
+barobo.barobo.BaroboCtx.autoConnect	barobo.barobo.BaroboCtx-class.html#autoConnect
 barobo.barobo.BaroboCtx.CMD_GETMOTORMAXSPEED	barobo.barobo.BaroboCtx-class.html#CMD_GETMOTORMAXSPEED
 barobo.barobo.BaroboCtx.CMD_PLACEHOLDER201304161605	barobo.barobo.BaroboCtx-class.html#CMD_PLACEHOLDER201304161605
 barobo.barobo.BaroboCtx.CMD_SET_GRP_SLAVE	barobo.barobo.BaroboCtx-class.html#CMD_SET_GRP_SLAVE
@@ -118,6 +121,7 @@ barobo.barobo.BaroboCtx.CMD_SETMOTORANGLEPID	barobo.barobo.BaroboCtx-class.html#
 barobo.barobo.BaroboCtx.CMD_SETMOTORPOWER	barobo.barobo.BaroboCtx-class.html#CMD_SETMOTORPOWER
 barobo.barobo.BaroboCtx.RESP_ERR	barobo.barobo.BaroboCtx-class.html#RESP_ERR
 barobo.barobo.BaroboCtx.CMD_STOP	barobo.barobo.BaroboCtx-class.html#CMD_STOP
+barobo.barobo.BaroboCtx.CMD_SETGLOBALACCEL	barobo.barobo.BaroboCtx-class.html#CMD_SETGLOBALACCEL
 barobo.barobo.BaroboCtx.CMD_SETMOTORSAFETYLIMIT	barobo.barobo.BaroboCtx-class.html#CMD_SETMOTORSAFETYLIMIT
 barobo.barobo.BaroboCtx.CMD_GETBUTTONVOLTAGE	barobo.barobo.BaroboCtx-class.html#CMD_GETBUTTONVOLTAGE
 barobo.barobo.BaroboCtx.__init_comms	barobo.barobo.BaroboCtx-class.html#__init_comms
@@ -131,6 +135,7 @@ barobo.barobo.BaroboCtx.CMD_ENABLEBUTTONHANDLER	barobo.barobo.BaroboCtx-class.ht
 barobo.barobo.BaroboCtx.CMD_STATUS	barobo.barobo.BaroboCtx-class.html#CMD_STATUS
 barobo.barobo.BaroboCtx.CMD_MOVE_TO_POSE	barobo.barobo.BaroboCtx-class.html#CMD_MOVE_TO_POSE
 barobo.barobo.BaroboCtx.CMD_SETHWREV	barobo.barobo.BaroboCtx-class.html#CMD_SETHWREV
+barobo.barobo.BaroboCtx.__autoConnectWorker	barobo.barobo.BaroboCtx-class.html#__autoConnectWorker
 barobo.barobo.BaroboCtx.CMD_SETMOTORANGLE	barobo.barobo.BaroboCtx-class.html#CMD_SETMOTORANGLE
 barobo.barobo.BaroboCtx.CMD_SETMOTORANGLESABS	barobo.barobo.BaroboCtx-class.html#CMD_SETMOTORANGLESABS
 barobo.barobo.BaroboCtx.CMD_GETMOTORANGLES	barobo.barobo.BaroboCtx-class.html#CMD_GETMOTORANGLES
@@ -171,6 +176,7 @@ io.IOBase.__metaclass__	abc.ABCMeta-class.html
 barobo.comms.PhysicalLayer_TTY.__init__	barobo.comms.PhysicalLayer_TTY-class.html#__init__
 barobo.linkbot.Linkbot	barobo.linkbot.Linkbot-class.html
 barobo.linkbot.Linkbot.moveTo	barobo.linkbot.Linkbot-class.html#moveTo
+barobo.linkbot.Linkbot.setAcceleration	barobo.linkbot.Linkbot-class.html#setAcceleration
 barobo.linkbot.Linkbot.driveJointTo	barobo.linkbot.Linkbot-class.html#driveJointTo
 barobo.linkbot.Linkbot.getBatteryVoltage	barobo.linkbot.Linkbot-class.html#getBatteryVoltage
 barobo.linkbot.Linkbot.move	barobo.linkbot.Linkbot-class.html#move

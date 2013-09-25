@@ -769,11 +769,11 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#setBuzzerFrequency" class="summary-sig-name">setBuzzerFrequency</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">freq</span>)</span><br />
-      Set the buzzer to begin playing a tone.</td>
+          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#setAcceleration" class="summary-sig-name">setAcceleration</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">accel</span>)</span><br />
+      Set the acceleration of a joint.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setBuzzerFrequency">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setAcceleration">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -787,13 +787,11 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#setLEDColor" class="summary-sig-name">setLEDColor</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">r</span>,
-        <span class="summary-sig-arg">g</span>,
-        <span class="summary-sig-arg">b</span>)</span><br />
-      Set the LED color</td>
+          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#setBuzzerFrequency" class="summary-sig-name">setBuzzerFrequency</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">freq</span>)</span><br />
+      Set the buzzer to begin playing a tone.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setLEDColor">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setBuzzerFrequency">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -890,6 +888,26 @@
       Set the joint states for all 3 joints simultaneously.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setJointStates">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#setLEDColor" class="summary-sig-name">setLEDColor</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">r</span>,
+        <span class="summary-sig-arg">g</span>,
+        <span class="summary-sig-arg">b</span>)</span><br />
+      Set the LED color</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setLEDColor">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -1756,6 +1774,28 @@
   </dl>
 </td></tr></table>
 </div>
+<a name="setAcceleration"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setAcceleration</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">accel</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setAcceleration">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set the acceleration of a joint. Each joint motion will begin with 
+  this acceleration after calling this function. Set the acceleration to 0 
+  to disable this feature.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
 <a name="setBuzzerFrequency"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -1777,34 +1817,6 @@
     <dd><ul class="nomargin-top">
         <li><strong class="pname"><code>freq</code></strong> (number in Hz) - The frequency in Hertz (Hz) for the buzzer to play. Set to zero 
           to turn the buzzer off.</li>
-    </ul></dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="setLEDColor"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">setLEDColor</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">r</span>,
-        <span class="sig-arg">g</span>,
-        <span class="sig-arg">b</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setLEDColor">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Set the LED color</p>
-  <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>r</code></strong> (number [0, 255])</li>
-        <li><strong class="pname"><code>b</code></strong> (number [0, 255])</li>
-        <li><strong class="pname"><code>g</code></strong> (number [0, 255])</li>
     </ul></dd>
   </dl>
 </td></tr></table>
@@ -1997,6 +2009,34 @@
             </li>
           </ul></li>
         <li><strong class="pname"><code>speeds</code></strong> ([speed1, speed2 ...]) - The speeds to set each joint</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="setLEDColor"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setLEDColor</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">r</span>,
+        <span class="sig-arg">g</span>,
+        <span class="sig-arg">b</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setLEDColor">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set the LED color</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>r</code></strong> (number [0, 255])</li>
+        <li><strong class="pname"><code>b</code></strong> (number [0, 255])</li>
+        <li><strong class="pname"><code>g</code></strong> (number [0, 255])</li>
     </ul></dd>
   </dl>
 </td></tr></table>
@@ -2221,7 +2261,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Sep 20 13:31:05 2013
+    Generated by Epydoc 3.0.1 on Tue Sep 24 18:09:34 2013
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
