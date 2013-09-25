@@ -23,7 +23,7 @@ case, a typical control program will look something like this::
   linkbot.moveTo(180, 0, -180)
 
 For more documentation, please refer to the documentation under the
-pybarobo.linkbot module.
+L{Linkbot<barobo.linkbot.Linkbot>} class.
 """
 
 from linkbot import *

@@ -65,6 +65,8 @@ class Linkbot:
     """
     buf = bytearray([BaroboCtx.CMD_UNPAIRPARENT, 3, 0])
     response = self.__transactMessage(buf)
+    self.baroboCtx.disconnect()
+    self.baroboCtx = None
 
   def driveJointTo(self, joint, angle):
     """
@@ -180,19 +182,38 @@ class Linkbot:
     @type adc: number
     @param adc: The ADC channel to get the value from [0, 7]
     @rtype: number
-    @return: Volts
+    @return: Value from 0-1023
     """
-    # set the ADC channel
-    buf = bytearray([BaroboCtx.TWI_REGACCESS, 0x7C, 0x40|(adc&0x0f) ])
-    self.twiSend(0x02, buf)
-    # Start the conversion
-    buf = bytearray([BaroboCtx.TWI_REGACCESS, 0x7A, 0xC7])
-    self.twiSend(0x02, buf)
-    # Get the result
-    buf = bytearray([BaroboCtx.TWI_REGACCESS, 0x78])
-    data = self.twiSendRecv(0x02, buf, 2) 
-    return struct.unpack('<h', data)[0]
+    buf = bytearray([BaroboCtx.TWIMSG_HEADER, BaroboCtx.TWIMSG_ANALOGREADPIN, adc])
+    data = self.twiSendRecv(0x02, buf, 2)
+    return struct.unpack('!h', data)[0]
 
+  def getBreakoutADCVolts(self, adc):
+    """
+    Get the voltage reading of an ADC pin.
+
+    Note that the voltage is calibrated using the AVCC reference. If the
+    reference is changed using the setBreakoutADCReference() function, the
+    values reported by this function may no longer be accurate.
+
+    @type adc: number
+    @param adc: The ADC channel to get the value from [0, 7]
+    @rtype: number
+    @return: Floating point voltage from 0 to 5
+    """
+    return self.getBreakoutADC(adc)/1024.0 * 5
+
+  def getBreakoutDigitalPin(self, pin):
+    """
+    Read value from digital I/O pin.
+
+    @rtype: integer
+    @return: Returns 0 if pin is grounded, or 1 in pin is high.
+    """
+    buf = bytearray([BaroboCtx.TWIMSG_HEADER, BaroboCtx.TWIMSG_DIGITALREADPIN, pin])
+    data = self.twiSendRecv(0x02, buf, 1)
+    return data[0]
+    
   def getColorRGB(self):
     """
     Get the current RGB values of the rgbled
@@ -466,7 +487,7 @@ class Linkbot:
 
   def setAcceleration(self, accel):
     """
-    Set the acceleration of a joint. Each joint motion will begin with this
+    Set the acceleration of all joints. Each joint motion will begin with this
     acceleration after calling this function. Set the acceleration to 0 to
     disable this feature. 
     """
@@ -475,6 +496,51 @@ class Linkbot:
     buf += bytearray([0x00])
     buf[1] = len(buf)
     self.__transactMessage(buf)
+
+  def setBreakoutAnalogPin(self, pin, value):
+    """
+    Set an analog output pin (PWM) to a value between 0-255. This can be used
+    to set the power of a motor, dim a LED, or more. 
+
+    @type pin: integer from 0-7
+    @param pin: The pin parameter must be a pin the supports analog output. 
+      These pins are indicated by a tilde (~) symbol next to the pin number
+      printed on the breakout board.
+    @type value: integer from 0-255
+    @param value: The amount to power the pin: 0 is equivalent to no power, 255
+      is maximum power.
+    """
+    buf = bytearray([BaroboCtx.TWIMSG_HEADER, BaroboCtx.TWIMSG_ANALOGWRITEPIN, pin, value])
+    self.twiSend(0x02, buf)
+
+  def setBreakoutAnalogRef(self, pin, ref):
+    """
+    Set the reference voltage of an analog input pin. 
+
+    @type pin: integer from 0-7
+    @param ref: Valid values are barobo.AREF_DEFAULT, barobo.AREF_INTERNAL,
+      barobo.AREF_INTERNAL1V1, barobo.AREF_INTERNAL2V56, and
+      barobo.AREF_EXTERNAL.
+    """
+    buf = bytearray([BaroboCtx.TWIMSG_HEADER, BaroboCtx.TWIMSG_ANALOGREF, pin, ref])
+    self.twiSend(0x02, buf)
+
+  def setBreakoutDigitalPin(self, pin, value):
+    """
+    Set a digital I/O pin to either a high or low value. The pin will be set
+    high if the parameter 'value' is non-zero, or set to ground otherwise.
+    """
+    buf = bytearray([BaroboCtx.TWIMSG_HEADER, BaroboCtx.TWIMSG_DIGITALWRITEPIN, pin, value])
+    self.twiSend(0x02, buf)
+
+  def setBreakoutPinMode(self, pin, mode):
+    """
+    Set the mode of a digital I/O pin on the breakout board. Valid modes are
+    barobo.PINMODE_INPUT, barobo.PINMODE_OUTPUT, and
+    barobo.PINMODE_INPUTPULLUP.
+    """
+    buf = bytearray([BaroboCtx.TWIMSG_HEADER, BaroboCtx.TWIMSG_SETPINMODE, pin, mode])
+    self.twiSend(0x02, buf)
 
   def setBuzzerFrequency(self, freq):
     """
@@ -725,9 +791,10 @@ class Linkbot:
     @rtype: bytearray
     """
     twibuf = bytearray(senddata)
-    buf = bytearray([BaroboCtx.CMD_TWI_SENDRECV, len(twibuf)+6, addr, len(twibuf)])
+    buf = bytearray([BaroboCtx.CMD_TWI_SENDRECV, 0, addr, len(twibuf)])
     buf += twibuf
     buf += bytearray([recvsize, 0x00])
+    buf[1] = len(buf)
     response = self.__transactMessage(buf)
     return bytearray(response[2:-1])
 

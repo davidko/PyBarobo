@@ -18,6 +18,16 @@ ROBOT_HOLD=3
 ROBOT_POSITIVE=4
 ROBOT_NEGATIVE=5
 
+PINMODE_INPUT = 0x00
+PINMODE_OUTPUT = 0x01
+PINMODE_INPUTPULLUP = 0x02
+
+AREF_DEFAULT = 0x00
+AREF_INTERNAL = 0x01
+AREF_INTERNAL1V1 = 0x02
+AREF_INTERNAL2V56 = 0x03
+AREF_EXTERNAL = 0x04
+
 def _getSerialPorts():
   if os.name == 'nt':
     available = []
@@ -154,6 +164,15 @@ class BaroboCtx:
   MOTOR_FORWARD = 1
   MOTOR_BACKWARD = 2
 
+  TWIMSG_HEADER = 0x22
+  TWIMSG_REGACCESS = 0x01
+  TWIMSG_SETPINMODE = 0x02
+  TWIMSG_DIGITALWRITEPIN = 0x03
+  TWIMSG_DIGITALREADPIN = 0x04
+  TWIMSG_ANALOGWRITEPIN = 0x05
+  TWIMSG_ANALOGREADPIN = 0x06
+  TWIMSG_ANALOGREF = 0x07
+
   def __init__(self):
     # Queue going to the robot
     self.writeQueue = Queue.Queue() 
@@ -212,6 +231,9 @@ class BaroboCtx:
     self.link.start()
     self.__init_comms()
     self.__getDongleID()
+
+  def disconnect(self):
+    self.phys.disconnect()
 
   def handlePacket(self, packet):
     self.readQueue.put(packet)

@@ -25,10 +25,16 @@ class PhysicalLayer_TTY(serial.Serial):
     serial.Serial.__init__(self, ttyfilename, baudrate=230400)
     self.timeout = None
 
+  def disconnect(self):
+    pass
+
 class PhysicalLayer_Socket(socket.socket):
   def __init__(self, hostname, port):
     socket.socket.__init__(self)
     self.connect((hostname, port))
+
+  def disconnect(self):
+    self.close()
 
   def flush(self):
     pass

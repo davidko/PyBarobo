@@ -8,5 +8,5 @@ if __name__ == "__main__":
   ctx.connectDongleTTY('/dev/ttyACM0')
   linkbot = ctx.getLinkbot()
 
-  adcs = map(linkbot.getBreakoutADC, range(0,8))
-  print map(lambda x: x/1024.0*5.0, adcs)
+  adcs = map(linkbot.getBreakoutADCVolts, range(0,8))
+  print adcs
