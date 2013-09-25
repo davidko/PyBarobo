@@ -7,7 +7,7 @@ import struct
 import time
 from barobo import BaroboCtx
 
-DEBUG=False
+DEBUG=True
 
 class Packet:
   def __init__(self, data=None, addr=None):
@@ -49,6 +49,31 @@ class PhysicalLayer_Socket(socket.socket):
 
   def write(self, packet):
     self.sendall(packet)
+
+try:
+  import bluetooth
+  class PhysicalLayer_Bluetooth(bluetooth.BluetoothSocket):
+    def __init__(self, bluetooth_mac_addr):
+      bluetooth.BluetoothSocket.__init__(self, bluetooth.RFCOMM)
+      self.connect((bluetooth_mac_addr, 1))
+
+    def disconnect(self):
+      self.close()
+
+    def flush(self):
+      pass
+    def flushInput(self):
+      pass
+    def flushOutput(self):
+      pass
+
+    def read(self):
+      return self.recv(1)
+
+    def write(self, packet):
+      self.sendall(str(packet))
+except:
+  pass
 
 class LinkLayer_Base:
   def __init__(self, physicalLayer, readCallback):

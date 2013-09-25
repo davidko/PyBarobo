@@ -49,6 +49,22 @@ class Linkbot:
     self.getSerialID()
     self.form = self.getFormFactor()
 
+  def connectBluetooth(self, bluetooth_mac_addr):
+    """
+    Connect to a bluetooth enabled Linkbot.
+
+    @type bluetooth_mac_addr: string
+    @param bluetooth_mac_addr: The MAC address of the bluetooth Linkbot. Should
+      be something like '00:06:66:6D:12:34'
+    """
+    self.zigbeeAddr = 0x8000
+    if not self.baroboCtx:
+      self.baroboCtx = BaroboCtx()
+      self.baroboCtx.connectBluetooth(bluetooth_mac_addr)
+      self.baroboCtx.addLinkbot(self)
+    self.getSerialID()
+    self.form = self.getFormFactor()
+
   def disableButtonCallback(self):
     """
     Disable the button callback.

@@ -225,6 +225,12 @@ class BaroboCtx:
     self.link.start()
     self.__init_comms()
 
+  def connectBluetooth(self, macaddr):
+    self.phys = comms.PhysicalLayer_Bluetooth(macaddr)
+    self.link = comms.LinkLayer_Socket(self.phys, self.handlePacket)
+    self.link.start()
+    self.__init_comms()
+
   def connectDongleTTY(self, ttyfilename):
     self.phys = comms.PhysicalLayer_TTY(ttyfilename)
     self.link = comms.LinkLayer_TTY(self.phys, self.handlePacket)
