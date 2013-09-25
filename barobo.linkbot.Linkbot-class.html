@@ -317,6 +317,42 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">number</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#getBreakoutADCVolts" class="summary-sig-name">getBreakoutADCVolts</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">adc</span>)</span><br />
+      Get the voltage reading of an ADC pin.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.getBreakoutADCVolts">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">integer</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#getBreakoutDigitalPin" class="summary-sig-name">getBreakoutDigitalPin</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>)</span><br />
+      Read value from digital I/O pin.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.getBreakoutDigitalPin">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">[number, number, number]</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -771,9 +807,85 @@
         <tr>
           <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#setAcceleration" class="summary-sig-name">setAcceleration</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">accel</span>)</span><br />
-      Set the acceleration of a joint.</td>
+      Set the acceleration of all joints.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setAcceleration">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#setBreakoutAnalogPin" class="summary-sig-name">setBreakoutAnalogPin</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>,
+        <span class="summary-sig-arg">value</span>)</span><br />
+      Set an analog output pin (PWM) to a value between 0-255.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setBreakoutAnalogPin">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#setBreakoutAnalogRef" class="summary-sig-name">setBreakoutAnalogRef</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>,
+        <span class="summary-sig-arg">ref</span>)</span><br />
+      Set the reference voltage of an analog input pin.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setBreakoutAnalogRef">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#setBreakoutDigitalPin" class="summary-sig-name">setBreakoutDigitalPin</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>,
+        <span class="summary-sig-arg">value</span>)</span><br />
+      Set a digital I/O pin to either a high or low value.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setBreakoutDigitalPin">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#setBreakoutPinMode" class="summary-sig-name">setBreakoutPinMode</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>,
+        <span class="summary-sig-arg">mode</span>)</span><br />
+      Set the mode of a digital I/O pin on the breakout board.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setBreakoutPinMode">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -1360,7 +1472,58 @@
         <li><strong class="pname"><code>adc</code></strong> (number) - The ADC channel to get the value from [0, 7]</li>
     </ul></dd>
     <dt>Returns: number</dt>
-        <dd>Volts</dd>
+        <dd>Value from 0-1023</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="getBreakoutADCVolts"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getBreakoutADCVolts</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">adc</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.getBreakoutADCVolts">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get the voltage reading of an ADC pin.</p>
+  <p>Note that the voltage is calibrated using the AVCC reference. If the 
+  reference is changed using the setBreakoutADCReference() function, the 
+  values reported by this function may no longer be accurate.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>adc</code></strong> (number) - The ADC channel to get the value from [0, 7]</li>
+    </ul></dd>
+    <dt>Returns: number</dt>
+        <dd>Floating point voltage from 0 to 5</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="getBreakoutDigitalPin"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getBreakoutDigitalPin</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.getBreakoutDigitalPin">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Read value from digital I/O pin.</p>
+  <dl class="fields">
+    <dt>Returns: integer</dt>
+        <dd>Returns 0 if pin is grounded, or 1 in pin is high.</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1789,9 +1952,113 @@
     </td>
   </tr></table>
   
-  <p>Set the acceleration of a joint. Each joint motion will begin with 
+  <p>Set the acceleration of all joints. Each joint motion will begin with 
   this acceleration after calling this function. Set the acceleration to 0 
   to disable this feature.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="setBreakoutAnalogPin"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setBreakoutAnalogPin</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>,
+        <span class="sig-arg">value</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setBreakoutAnalogPin">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set an analog output pin (PWM) to a value between 0-255. This can be 
+  used to set the power of a motor, dim a LED, or more.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pin</code></strong> (integer from 0-7) - The pin parameter must be a pin the supports analog output. These
+          pins are indicated by a tilde (~) symbol next to the pin number 
+          printed on the breakout board.</li>
+        <li><strong class="pname"><code>value</code></strong> (integer from 0-255) - The amount to power the pin: 0 is equivalent to no power, 255 is 
+          maximum power.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="setBreakoutAnalogRef"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setBreakoutAnalogRef</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>,
+        <span class="sig-arg">ref</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setBreakoutAnalogRef">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set the reference voltage of an analog input pin.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>ref</code></strong> - Valid values are barobo.AREF_DEFAULT, barobo.AREF_INTERNAL, 
+          barobo.AREF_INTERNAL1V1, barobo.AREF_INTERNAL2V56, and 
+          barobo.AREF_EXTERNAL.</li>
+        <li><strong class="pname"><code>pin</code></strong> (integer from 0-7)</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="setBreakoutDigitalPin"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setBreakoutDigitalPin</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>,
+        <span class="sig-arg">value</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setBreakoutDigitalPin">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set a digital I/O pin to either a high or low value. The pin will be 
+  set high if the parameter 'value' is non-zero, or set to ground 
+  otherwise.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="setBreakoutPinMode"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setBreakoutPinMode</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>,
+        <span class="sig-arg">mode</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setBreakoutPinMode">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set the mode of a digital I/O pin on the breakout board. Valid modes 
+  are barobo.PINMODE_INPUT, barobo.PINMODE_OUTPUT, and 
+  barobo.PINMODE_INPUTPULLUP.</p>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -2261,7 +2528,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Tue Sep 24 18:09:34 2013
+    Generated by Epydoc 3.0.1 on Wed Sep 25 13:41:24 2013
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
