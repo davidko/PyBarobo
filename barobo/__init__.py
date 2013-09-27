@@ -27,7 +27,10 @@ L{Linkbot<barobo.linkbot.Linkbot>} class.
 """
 
 import struct
-import Queue
+try:
+  import Queue
+except:
+  import queue as Queue
 import threading
 import barobo._comms as _comms
 from barobo.linkbot import Linkbot
@@ -296,14 +299,19 @@ class BaroboCtx():
     if serialID in self.scannedIDs:
       return
     buf = bytearray([ self.CMD_FINDMOBOT, 7 ])
-    buf += bytearray(serialID)
+    buf += bytearray(serialID.encode('ascii'))
     buf += bytearray([0])
     self.writePacket(_comms.Packet(buf, 0x0000))
 
   def waitForRobot(self, serialID, timeout=2.0):
     self.scannedIDs_cond.acquire()
+    numtries = 0
     while serialID not in self.scannedIDs:
       self.scannedIDs_cond.wait(2)
+      numtries += 1
+      if numtries >= 3:
+        self.scannedIDs_cond.release()
+        raise BaroboException('Robot {} not found.'.format(serialID))
     self.scannedIDs_cond.release()
     return serialID in self.scannedIDs
 
@@ -320,7 +328,7 @@ class BaroboCtx():
         zigbeeAddr = struct.unpack('!H', packet[2:4])[0]
         if botid not in self.scannedIDs:
           self.scannedIDs_cond.acquire()
-          self.scannedIDs[botid] = zigbeeAddr
+          self.scannedIDs[botid.decode('ascii')] = zigbeeAddr
           self.scannedIDs_cond.notify()
           self.scannedIDs_cond.release()
         continue

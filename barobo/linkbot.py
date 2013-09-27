@@ -3,11 +3,14 @@
 import threading
 import time
 import struct
-import Queue
+try:
+  import Queue
+except:
+  import queue as Queue
 
 import barobo
-import _comms
-import _util
+import barobo._comms as _comms
+import barobo._util as _util
 
 class Linkbot:
   """
