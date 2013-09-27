@@ -5,7 +5,7 @@ import serial
 import threading
 import struct
 import time
-from barobo import BaroboCtx
+import barobo
 
 DEBUG=True
 
@@ -147,7 +147,7 @@ class LinkLayer_TTY(LinkLayer_Base):
         if DEBUG:
           print ("Recv: {}".format(map(hex, self.readbuf)))
         zigbeeAddr = struct.unpack('!H', self.readbuf[2:4])[0]
-        if self.readbuf[0] != BaroboCtx.EVENT_REPORTADDRESS:
+        if self.readbuf[0] != barobo.BaroboCtx.EVENT_REPORTADDRESS:
           pkt = Packet(self.readbuf[5:-1], zigbeeAddr)
         else:
           pkt = Packet(self.readbuf, zigbeeAddr)

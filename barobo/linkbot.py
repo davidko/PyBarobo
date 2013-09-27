@@ -3,10 +3,11 @@
 import threading
 import time
 import struct
+import Queue
 
-from barobo.comms import *
-from barobo import *
-from barobo.util import *
+import barobo
+import _comms
+import _util
 
 class Linkbot:
   """
@@ -43,7 +44,7 @@ class Linkbot:
     # First, make sure we have a BaroboCtx
     self.zigbeeAddr = 0x8000
     if not self.baroboCtx:
-      self.baroboCtx = BaroboCtx()
+      self.baroboCtx = barobo.BaroboCtx()
       self.baroboCtx.connect()
       self.baroboCtx.addLinkbot(self)
     self.getSerialID()
@@ -59,7 +60,7 @@ class Linkbot:
     """
     self.zigbeeAddr = 0x8000
     if not self.baroboCtx:
-      self.baroboCtx = BaroboCtx()
+      self.baroboCtx = barobo.BaroboCtx()
       self.baroboCtx.connectBluetooth(bluetooth_mac_addr)
       self.baroboCtx.addLinkbot(self)
     self.getSerialID()
@@ -72,14 +73,14 @@ class Linkbot:
     See also: enableButtonCallback()
     """
     self.callbackEnabled = False
-    buf = bytearray([BaroboCtx.CMD_ENABLEBUTTONHANDLER, 0x04, 0x00, 0x00])
+    buf = bytearray([barobo.BaroboCtx.CMD_ENABLEBUTTONHANDLER, 0x04, 0x00, 0x00])
     self.__transactMessage(buf)
 
   def disconnect(self):
     """
     Disconnect from the Linkbot.
     """
-    buf = bytearray([BaroboCtx.CMD_UNPAIRPARENT, 3, 0])
+    buf = bytearray([barobo.BaroboCtx.CMD_UNPAIRPARENT, 3, 0])
     response = self.__transactMessage(buf)
     self.baroboCtx.disconnect()
     self.baroboCtx = None
@@ -102,8 +103,8 @@ class Linkbot:
     Non-blocking version of driveJointTo(). Please see driveJointTo() for more
     details.
     """
-    angle = deg2rad(angle)
-    buf = bytearray([BaroboCtx.CMD_SETMOTORANGLEPID, 0x08, joint-1])
+    angle = _util.deg2rad(angle)
+    buf = bytearray([barobo.BaroboCtx.CMD_SETMOTORANGLEPID, 0x08, joint-1])
     buf += bytearray(struct.pack('<f', angle))
     buf += bytearray([0x00])
     self.__transactMessage(buf)
@@ -127,10 +128,10 @@ class Linkbot:
     """
     Non-blocking version of driveTo(). See driveTo() for more details
     """
-    angle1 = deg2rad(angle1)
-    angle2 = deg2rad(angle2)
-    angle3 = deg2rad(angle3)
-    buf = bytearray([BaroboCtx.CMD_SETMOTORANGLESPID, 0x13])
+    angle1 = _util.deg2rad(angle1)
+    angle2 = _util.deg2rad(angle2)
+    angle3 = _util.deg2rad(angle3)
+    buf = bytearray([barobo.BaroboCtx.CMD_SETMOTORANGLESPID, 0x13])
     buf += bytearray(struct.pack('<4f', angle1, angle2, angle3, 0.0))
     buf += bytearray([0x00])
     self.__transactMessage(buf)
@@ -155,11 +156,11 @@ class Linkbot:
     self.callbackfunc = callbackfunc
     self.callbackUserData = userdata
     self.callbackEnabled = True  
-    buf = bytearray([BaroboCtx.CMD_ENABLEBUTTONHANDLER, 0x04, 0x01, 0x00])
+    buf = bytearray([barobo.BaroboCtx.CMD_ENABLEBUTTONHANDLER, 0x04, 0x01, 0x00])
     self.__transactMessage(buf)
 
   def _getADCVolts(self, adc):
-    buf = bytearray([BaroboCtx.CMD_GETENCODERVOLTAGE, 4, adc, 0])
+    buf = bytearray([barobo.BaroboCtx.CMD_GETENCODERVOLTAGE, 4, adc, 0])
     response = self.__transactMessage(buf)
     voltage = struct.unpack('<f', response[2:6])[0]
     return voltage
@@ -173,7 +174,7 @@ class Linkbot:
       Accelerometer values are in units of "G's", where 1 G is standard earth
       gravitational acceleration (9.8m/s/s)
     """
-    buf = bytearray([BaroboCtx.CMD_GETACCEL, 0x03, 0x00])
+    buf = bytearray([barobo.BaroboCtx.CMD_GETACCEL, 0x03, 0x00])
     response = self.__transactMessage(buf)
     values = struct.unpack('<3h', response[2:8])
     return map(lambda x: x/16384.0, values)
@@ -185,7 +186,7 @@ class Linkbot:
     @rtype: number
     @return: Returns a value in Volts
     """
-    buf = bytearray([BaroboCtx.CMD_GETBATTERYVOLTAGE, 0x03, 0x00])
+    buf = bytearray([barobo.BaroboCtx.CMD_GETBATTERYVOLTAGE, 0x03, 0x00])
     response = self.__transactMessage(buf)
     voltage = struct.unpack('<f', response[2:6])[0]
     return voltage
@@ -200,7 +201,7 @@ class Linkbot:
     @rtype: number
     @return: Value from 0-1023
     """
-    buf = bytearray([BaroboCtx.TWIMSG_HEADER, BaroboCtx.TWIMSG_ANALOGREADPIN, adc])
+    buf = bytearray([barobo.BaroboCtx.TWIMSG_HEADER, barobo.BaroboCtx.TWIMSG_ANALOGREADPIN, adc])
     data = self.twiSendRecv(0x02, buf, 2)
     return struct.unpack('!h', data)[0]
 
@@ -226,7 +227,7 @@ class Linkbot:
     @rtype: integer
     @return: Returns 0 if pin is grounded, or 1 in pin is high.
     """
-    buf = bytearray([BaroboCtx.TWIMSG_HEADER, BaroboCtx.TWIMSG_DIGITALREADPIN, pin])
+    buf = bytearray([barobo.BaroboCtx.TWIMSG_HEADER, barobo.BaroboCtx.TWIMSG_DIGITALREADPIN, pin])
     data = self.twiSendRecv(0x02, buf, 1)
     return data[0]
     
@@ -237,7 +238,7 @@ class Linkbot:
     @rtype: [number, number, number]
     @return: The red, green, and blue values from 0 to 255
     """
-    buf = bytearray([BaroboCtx.CMD_GETRGB, 0x03, 0x00])
+    buf = bytearray([barobo.BaroboCtx.CMD_GETRGB, 0x03, 0x00])
     response = self.__transactMessage(buf)
     return struct.unpack('<3B', response[2:5])
 
@@ -249,7 +250,7 @@ class Linkbot:
     @return: Returns barobo.ROBOTFORM_MOBOT, barobo.ROBOTFORM_I, 
       barobo.ROBOTFORM_L, or barobo.ROBOTFORM_T
     """
-    buf = bytearray([BaroboCtx.CMD_GETFORMFACTOR, 0x03, 0x00])
+    buf = bytearray([barobo.BaroboCtx.CMD_GETFORMFACTOR, 0x03, 0x00])
     response = self.__transactMessage(buf)
     return response[2] 
 
@@ -262,9 +263,9 @@ class Linkbot:
     @rtype: number
     @return: Return the joint angle in degrees
     """
-    buf = bytearray([BaroboCtx.CMD_GETMOTORANGLE, 0x04, joint-1, 0x00])
+    buf = bytearray([barobo.BaroboCtx.CMD_GETMOTORANGLE, 0x04, joint-1, 0x00])
     response = self.__transactMessage(buf)
-    return rad2deg(struct.unpack('<f', response[2:6])[0])
+    return _util.rad2deg(struct.unpack('<f', response[2:6])[0])
 
   def getJointAngles(self):
     """
@@ -273,10 +274,10 @@ class Linkbot:
     @rtype: [float, float, float]
     @return: The joint angles in degrees
     """
-    buf = bytearray([BaroboCtx.CMD_GETMOTORANGLESABS, 3, 0])
+    buf = bytearray([barobo.BaroboCtx.CMD_GETMOTORANGLESABS, 3, 0])
     response = self.__transactMessage(buf)
     angles = struct.unpack('<4f', response[2:18])
-    return map(rad2deg, angles[:3])
+    return map(_util.rad2deg, angles[:3])
 
   def getJointAnglesTime(self):
     """
@@ -286,12 +287,12 @@ class Linkbot:
     @rtype: [numbers]
     @return: [seconds, angle1, angle2, angle3], all angles in degrees
     """
-    buf = bytearray([BaroboCtx.CMD_GETMOTORANGLESTIMESTAMPABS, 0x03, 0x00])
+    buf = bytearray([barobo.BaroboCtx.CMD_GETMOTORANGLESTIMESTAMPABS, 0x03, 0x00])
     response = self.__transactMessage(buf)
     millis = struct.unpack('<L', response[2:6])[0]
     data = struct.unpack('<4f', response[6:-1])
     rc = [millis/1000.0]
-    rc += map(rad2deg, data[:3])
+    rc += map(_util.rad2deg, data[:3])
     return rc
 
   def getSerialID(self):
@@ -300,7 +301,7 @@ class Linkbot:
 
     @return: A four character string
     """
-    buf = bytearray([BaroboCtx.CMD_GETSERIALID, 3, 0])
+    buf = bytearray([barobo.BaroboCtx.CMD_GETSERIALID, 3, 0])
     response = self.__transactMessage(buf) 
     botid = struct.unpack('!4s', response[2:6])[0]
     self.serialID = botid
@@ -310,12 +311,12 @@ class Linkbot:
     """
     Get the firmware version of the Linkbot
     """
-    buf = bytearray([BaroboCtx.CMD_GETVERSION, 3, 0])
+    buf = bytearray([barobo.BaroboCtx.CMD_GETVERSION, 3, 0])
     response = self.__transactMessage(buf)
     return response[2]
 
   def isMoving(self):
-    buf = bytearray([BaroboCtx.CMD_IS_MOVING, 3, 0])
+    buf = bytearray([barobo.BaroboCtx.CMD_IS_MOVING, 3, 0])
     response = self.__transactMessage(buf)
     return response[2]
 
@@ -359,8 +360,8 @@ class Linkbot:
     """
     Non-blocking version of moveJointTo. See moveJointTo for more details.
     """
-    angle = deg2rad(angle)
-    buf = bytearray([BaroboCtx.CMD_SETMOTORANGLEABS, 0x08, joint-1])
+    angle = _util.deg2rad(angle)
+    buf = bytearray([barobo.BaroboCtx.CMD_SETMOTORANGLEABS, 0x08, joint-1])
     buf += bytearray(struct.pack('<f', angle))
     buf += bytearray([0x00])
     self.__transactMessage(buf)
@@ -420,10 +421,10 @@ class Linkbot:
     @type angle3: number
     @param angle3: Position to move the joint, in degrees
     """
-    angle1 = deg2rad(angle1)
-    angle2 = deg2rad(angle2)
-    angle3 = deg2rad(angle3)
-    buf = bytearray([BaroboCtx.CMD_SETMOTORANGLESABS, 0x13])
+    angle1 = _util.deg2rad(angle1)
+    angle2 = _util.deg2rad(angle2)
+    angle3 = _util.deg2rad(angle3)
+    buf = bytearray([barobo.BaroboCtx.CMD_SETMOTORANGLESABS, 0x13])
     buf += bytearray(struct.pack('<4f', angle1, angle2, angle3, 0.0))
     buf += bytearray([0x00])
     self.__transactMessage(buf)
@@ -435,12 +436,25 @@ class Linkbot:
     while self.isMoving():
       time.sleep(0.1)
 
+  def ping(self, numbytes=4):
+    import random
+    now = time.time()
+    buf = bytearray([barobo.BaroboCtx.CMD_PING, 0])
+    randbytes = bytearray([random.randint(0, 255) for _ in range(numbytes)])
+    buf += randbytes
+    buf += bytearray([0x00])
+    buf[1] = len(buf)
+    response = self.__transactMessage(buf, maxtries = 1, timeout = 0.5)
+    if response != randbytes:
+      raise BaroboException('Ping did not receive correct bytes.')
+    return time.time() - now
+
   def reboot(self):
     """
     Reboot the connect robot. Note that communications with the robot will 
     not succeed while the robot is booting back up.
     """
-    buf = bytearray([BaroboCtx.CMD_REBOOT, 0x03, 0x00])
+    buf = bytearray([barobo.BaroboCtx.CMD_REBOOT, 0x03, 0x00])
     self.__transactMessage(buf)
 
   def recordAnglesBegin(self, delay=0.05):
@@ -486,7 +500,7 @@ class Linkbot:
     """
     Reset the multi-revolution counter on the joints.
     """
-    buf = bytearray([BaroboCtx.CMD_RESETABSCOUNTER, 0x03, 0x00])
+    buf = bytearray([barobo.BaroboCtx.CMD_RESETABSCOUNTER, 0x03, 0x00])
     self.__transactMessage(buf)
 
   def resetToZero(self):
@@ -507,8 +521,8 @@ class Linkbot:
     acceleration after calling this function. Set the acceleration to 0 to
     disable this feature. 
     """
-    buf = bytearray([BaroboCtx.CMD_SETGLOBALACCEL, 0])
-    buf += struct.pack('<f', deg2rad(accel))
+    buf = bytearray([barobo.BaroboCtx.CMD_SETGLOBALACCEL, 0])
+    buf += struct.pack('<f', _util.deg2rad(accel))
     buf += bytearray([0x00])
     buf[1] = len(buf)
     self.__transactMessage(buf)
@@ -526,7 +540,7 @@ class Linkbot:
     @param value: The amount to power the pin: 0 is equivalent to no power, 255
       is maximum power.
     """
-    buf = bytearray([BaroboCtx.TWIMSG_HEADER, BaroboCtx.TWIMSG_ANALOGWRITEPIN, pin, value])
+    buf = bytearray([barobo.BaroboCtx.TWIMSG_HEADER, barobo.BaroboCtx.TWIMSG_ANALOGWRITEPIN, pin, value])
     self.twiSend(0x02, buf)
 
   def setBreakoutAnalogRef(self, pin, ref):
@@ -538,7 +552,7 @@ class Linkbot:
       barobo.AREF_INTERNAL1V1, barobo.AREF_INTERNAL2V56, and
       barobo.AREF_EXTERNAL.
     """
-    buf = bytearray([BaroboCtx.TWIMSG_HEADER, BaroboCtx.TWIMSG_ANALOGREF, pin, ref])
+    buf = bytearray([barobo.BaroboCtx.TWIMSG_HEADER, barobo.BaroboCtx.TWIMSG_ANALOGREF, pin, ref])
     self.twiSend(0x02, buf)
 
   def setBreakoutDigitalPin(self, pin, value):
@@ -546,7 +560,7 @@ class Linkbot:
     Set a digital I/O pin to either a high or low value. The pin will be set
     high if the parameter 'value' is non-zero, or set to ground otherwise.
     """
-    buf = bytearray([BaroboCtx.TWIMSG_HEADER, BaroboCtx.TWIMSG_DIGITALWRITEPIN, pin, value])
+    buf = bytearray([barobo.BaroboCtx.TWIMSG_HEADER, barobo.BaroboCtx.TWIMSG_DIGITALWRITEPIN, pin, value])
     self.twiSend(0x02, buf)
 
   def setBreakoutPinMode(self, pin, mode):
@@ -555,7 +569,7 @@ class Linkbot:
     barobo.PINMODE_INPUT, barobo.PINMODE_OUTPUT, and
     barobo.PINMODE_INPUTPULLUP.
     """
-    buf = bytearray([BaroboCtx.TWIMSG_HEADER, BaroboCtx.TWIMSG_SETPINMODE, pin, mode])
+    buf = bytearray([barobo.BaroboCtx.TWIMSG_HEADER, barobo.BaroboCtx.TWIMSG_SETPINMODE, pin, mode])
     self.twiSend(0x02, buf)
 
   def setBuzzerFrequency(self, freq):
@@ -593,7 +607,7 @@ class Linkbot:
         state = ROBOT_FORWARD
       elif state == ROBOT_NEGATIVE:
         state = ROBOT_BACKWARD
-    buf = bytearray([BaroboCtx.CMD_SETMOTORDIR, 0x05, joint-1, state, 0x00])
+    buf = bytearray([barobo.BaroboCtx.CMD_SETMOTORDIR, 0x05, joint-1, state, 0x00])
     self.__transactMessage(buf)
 
   def setJointSpeed(self, joint, speed):
@@ -605,8 +619,8 @@ class Linkbot:
     @type speed: number
     @param speed: The speed to set the joint to, in degrees/second.
     """
-    _speed = deg2rad(speed)
-    buf = bytearray([BaroboCtx.CMD_SETMOTORSPEED, 0x08, joint-1])
+    _speed = _util.deg2rad(speed)
+    buf = bytearray([barobo.BaroboCtx.CMD_SETMOTORSPEED, 0x08, joint-1])
     buf += bytearray(struct.pack('<f', _speed))
     buf += bytearray([0x00])
     self.__transactMessage(buf)
@@ -635,7 +649,7 @@ class Linkbot:
         according to the right-hand-rule.
       - ROBOT_NEGATIVE: Same as above but in the negative direction.
     """
-    buf = bytearray([BaroboCtx.CMD_SETMOTORDIR, 5, joint-1, state, 0])
+    buf = bytearray([barobo.BaroboCtx.CMD_SETMOTORDIR, 5, joint-1, state, 0])
     self.__transactMessage(buf)
 
   def setJointStates(self, states, speeds):
@@ -660,8 +674,8 @@ class Linkbot:
       states += [0]*(4-len(states))
     if len(speeds) < 4:
       speeds += [0.0]*(4-len(speeds))
-    speeds = map(deg2rad, speeds)
-    buf = bytearray([BaroboCtx.CMD_SETMOTORSTATES, 23])
+    speeds = map(_util.deg2rad, speeds)
+    buf = bytearray([barobo.BaroboCtx.CMD_SETMOTORSTATES, 23])
     buf += bytearray(states)
     buf += bytearray(struct.pack('<4f', speeds[0], speeds[1], speeds[2], speeds[3]))
     buf += bytearray([0x00])
@@ -676,7 +690,7 @@ class Linkbot:
     @type b: number [0, 255]
     """
 
-    buf = bytearray([BaroboCtx.CMD_RGBLED, 8, 0xff, 0xff, 0xff, r, g, b, 0x00])
+    buf = bytearray([barobo.BaroboCtx.CMD_RGBLED, 8, 0xff, 0xff, 0xff, r, g, b, 0x00])
     self.__transactMessage(buf)
 
   def setMotorPower(self, joint, power):
@@ -688,13 +702,13 @@ class Linkbot:
     @type power: integer
     @param power: An integer between -255 and 255.
     """
-    buf = bytearray([BaroboCtx.CMD_SETMOTORPOWER, 0x0A, 1<<joint])
+    buf = bytearray([barobo.BaroboCtx.CMD_SETMOTORPOWER, 0x0A, 1<<joint])
     buf +=bytearray(struct.pack('>3h', power, power, power))
     buf +=bytearray([0x00])
     self.__transactMessage(buf)
 
   def setMotorPowers(self, power1, power2, power3):
-    buf = bytearray([BaroboCtx.CMD_SETMOTORPOWER, 0x0A, 0x07])
+    buf = bytearray([barobo.BaroboCtx.CMD_SETMOTORPOWER, 0x0A, 0x07])
     buf +=bytearray(struct.pack('>3h', power1, power2, power3))
     buf +=bytearray([0x00])
     self.__transactMessage(buf)
@@ -724,7 +738,7 @@ class Linkbot:
       elif state3 == ROBOT_NEGATIVE:
         state3 = ROBOT_BACKWARD
     states = [state1, state2, state3, 0]
-    buf = bytearray([BaroboCtx.CMD_TIMEDACTION, 0, 0x07])
+    buf = bytearray([barobo.BaroboCtx.CMD_TIMEDACTION, 0, 0x07])
     for state in states:
       buf += bytearray([state1, ROBOT_HOLD])
       buf += bytearray(struct.pack('<i', -1))
@@ -748,18 +762,18 @@ class Linkbot:
     @type angle: number
     @param angle: The absolute angle to move the joint to, in degrees
     """
-    _accel0 = deg2rad(accel0)
-    _accelf = deg2rad(accelf)
-    _vmax = deg2rad(vmax)
-    _angle = deg2rad(angle)
-    buf = bytearray([BaroboCtx.CMD_SMOOTHMOVE, 20, joint-1])
+    _accel0 = _util.deg2rad(accel0)
+    _accelf = _util.deg2rad(accelf)
+    _vmax = _util.deg2rad(vmax)
+    _angle = _util.deg2rad(angle)
+    buf = bytearray([barobo.BaroboCtx.CMD_SMOOTHMOVE, 20, joint-1])
     buf += bytearray(struct.pack('<4f', _accel0, _accelf, _vmax, _angle))
     buf += bytearray([0x00])
     buf[1] = len(buf)
     self.__transactMessage(buf)
 
   def stop(self):
-    buf = bytearray([BaroboCtx.CMD_STOP, 0x03, 0x00])
+    buf = bytearray([barobo.BaroboCtx.CMD_STOP, 0x03, 0x00])
     self.__transactMessage(buf)
 
   def twiRecv(self, addr, size):
@@ -770,7 +784,7 @@ class Linkbot:
     @rtype: bytearray
     """
     twibuf = bytearray(data)
-    buf = bytearray([BaroboCtx.CMD_TWI_SEND, len(data)+5, addr, len(data)])
+    buf = bytearray([barobo.BaroboCtx.CMD_TWI_SEND, len(data)+5, addr, len(data)])
     buf += bytearray(data)
     buf += bytearray([0x00])
     response = self.__transactMessage(buf)
@@ -789,7 +803,7 @@ class Linkbot:
     @param data: The byte data to send to the peripheral
     """
     twibuf = bytearray(data)
-    buf = bytearray([BaroboCtx.CMD_TWI_SEND, len(twibuf)+5, addr, len(twibuf)])
+    buf = bytearray([barobo.BaroboCtx.CMD_TWI_SEND, len(twibuf)+5, addr, len(twibuf)])
     buf += twibuf
     buf += bytearray([0x00])
     self.__transactMessage(buf)
@@ -807,21 +821,20 @@ class Linkbot:
     @rtype: bytearray
     """
     twibuf = bytearray(senddata)
-    buf = bytearray([BaroboCtx.CMD_TWI_SENDRECV, 0, addr, len(twibuf)])
+    buf = bytearray([barobo.BaroboCtx.CMD_TWI_SENDRECV, 0, addr, len(twibuf)])
     buf += twibuf
     buf += bytearray([recvsize, 0x00])
     buf[1] = len(buf)
     response = self.__transactMessage(buf)
     return bytearray(response[2:-1])
 
-  def __transactMessage(self, buf):
+  def __transactMessage(self, buf, maxTries = 3, timeout = 2.0):
     self.messageLock.acquire()
     numTries = 0
-    maxTries = 3
     while numTries < maxTries:
-      self.baroboCtx.writePacket(Packet(buf, self.zigbeeAddr))
+      self.baroboCtx.writePacket(_comms.Packet(buf, self.zigbeeAddr))
       try:
-        response = self.responseQueue.get(block=True, timeout = 2.0)
+        response = self.responseQueue.get(block=True, timeout = timeout)
         break
       except:
         if numTries < maxTries:
@@ -830,7 +843,7 @@ class Linkbot:
         else:
           self.messageLock.release()
           raise BaroboException('Did not receive response from robot.')
-    if response[0] != BaroboCtx.RESP_OK:
+    if response[0] != barobo.BaroboCtx.RESP_OK:
       self.messageLock.release()
       raise BaroboException('Robot returned error status.')
     self.messageLock.release()
@@ -840,9 +853,9 @@ class Linkbot:
     # Scan and act on incoming messages
     while True:
       pkt = self.readQueue.get(block=True, timeout=None)
-      if (pkt[0] == BaroboCtx.RESP_OK) or \
-         (pkt[0] == BaroboCtx.RESP_ERR) or \
-         (pkt[0] == BaroboCtx.RESP_ALREADY_PAIRED):
+      if (pkt[0] == barobo.BaroboCtx.RESP_OK) or \
+         (pkt[0] == barobo.BaroboCtx.RESP_ERR) or \
+         (pkt[0] == barobo.BaroboCtx.RESP_ALREADY_PAIRED):
         self.responseQueue.put(pkt)
       else:
         self.eventQueue.put(pkt)
@@ -850,9 +863,9 @@ class Linkbot:
   def __eventThread(self):
     while True:
       evt = self.eventQueue.get(block=True, timeout=None)
-      if (evt[0] == BaroboCtx.EVENT_BUTTON) and self.callbackEnabled:
+      if (evt[0] == barobo.BaroboCtx.EVENT_BUTTON) and self.callbackEnabled:
         self.callbackfunc(evt[6], evt[7], self.callbackUserData)
-      elif evt[0] == BaroboCtx.EVENT_DEBUG_MSG:
+      elif evt[0] == barobo.BaroboCtx.EVENT_DEBUG_MSG:
         s = struct.unpack(s, evt[2:-1])
         print ("Debug msg from {}: {}".format(self.serialID, s))
 
