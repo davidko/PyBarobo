@@ -56,7 +56,7 @@ if sys.version_info.major >= 3 and sys.version_info.minor >= 3:
   import socket
   class PhysicalLayer_Bluetooth():
     def __init__(self, bluetooth_mac_addr):
-      self.sock = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM)
+      self.sock = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
       self.sock.connect((bluetooth_mac_addr, 1))
 
     def disconnect(self):
@@ -70,7 +70,7 @@ if sys.version_info.major >= 3 and sys.version_info.minor >= 3:
       pass
     def read(self):
       return self.sock.recv(1)
-    def write(self):
+    def write(self, packet):
       self.sock.sendall(packet)
 
 else:

@@ -19,7 +19,7 @@ if __name__ == "__main__":
   linkbot.ping()
   for _ in range(numtries):
     try:
-      ping = linkbot.ping()
+      ping = linkbot.ping(32)
       pings.append(ping)
       sys.stdout.write('.')
       sys.stdout.flush()
