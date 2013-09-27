@@ -215,6 +215,7 @@ class BaroboCtx():
     self.children = [] # List of Linkbots
     self.scannedIDs = {}
     self.scannedIDs_cond = threading.Condition()
+    self.giant_lock = threading.Lock()
     pass
 
   def __init_comms(self):
@@ -286,7 +287,9 @@ class BaroboCtx():
 
   def getLinkbot(self, serialID=None):
     if serialID is None:
-      serialID = self.scannedIDs.keys()[0]
+      self.giant_lock.acquire()
+      serialID = list(self.scannedIDs.keys())[0]
+      self.giant_lock.release()
 
     if serialID not in self.scannedIDs:
       self.findRobot(serialID)

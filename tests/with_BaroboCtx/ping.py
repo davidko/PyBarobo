@@ -7,12 +7,11 @@ import sys
 import numpy
 
 if __name__ == "__main__":
-  import pdb
-  pdb.set_trace()
   ctx = BaroboCtx()
-  ctx.connectDongleTTY('/dev/ttyACM1')
-#linkbot = ctx.getLinkbot('WWMG')
-  linkbot = ctx.getLinkbot('LGFP')
+  ctx.connectDongleTTY('/dev/ttyACM0')
+  #linkbot = ctx.getLinkbot('WWMG')
+  #linkbot = ctx.getLinkbot('LGFP')
+  linkbot = ctx.getLinkbot()
   numerrors = 0
   numtries = 500
   pingsum = 0
