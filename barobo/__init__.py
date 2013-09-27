@@ -26,6 +26,6 @@ For more documentation, please refer to the documentation under the
 L{Linkbot<barobo.linkbot.Linkbot>} class.
 """
 
-from linkbot import *
+#from linkbot import *
 from barobo import *
 

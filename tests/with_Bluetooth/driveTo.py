@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from barobo import Linkbot
+from barobo.linkbot import Linkbot
 import time
 
 if __name__ == "__main__":

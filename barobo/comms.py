@@ -50,15 +50,17 @@ class PhysicalLayer_Socket(socket.socket):
   def write(self, packet):
     self.sendall(packet)
 
-try:
-  import bluetooth
-  class PhysicalLayer_Bluetooth(bluetooth.BluetoothSocket):
+import sys
+if sys.version_info.major >= 3 and sys.version_info.minor >= 3:
+  # We can use sockets for Bluetooth
+  import socket
+  class PhysicalLayer_Bluetooth():
     def __init__(self, bluetooth_mac_addr):
-      bluetooth.BluetoothSocket.__init__(self, bluetooth.RFCOMM)
-      self.connect((bluetooth_mac_addr, 1))
+      self.sock = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM)
+      self.sock.connect((bluetooth_mac_addr, 1))
 
     def disconnect(self):
-      self.close()
+      self.sock.close()
 
     def flush(self):
       pass
@@ -66,14 +68,36 @@ try:
       pass
     def flushOutput(self):
       pass
-
     def read(self):
-      return self.recv(1)
+      return self.sock.recv(1)
+    def write(self):
+      self.sock.sendall(packet)
 
-    def write(self, packet):
-      self.sendall(str(packet))
-except:
-  pass
+else:
+  try:
+    import bluetooth
+    class PhysicalLayer_Bluetooth(bluetooth.BluetoothSocket):
+      def __init__(self, bluetooth_mac_addr):
+        bluetooth.BluetoothSocket.__init__(self, bluetooth.RFCOMM)
+        self.connect((bluetooth_mac_addr, 1))
+
+      def disconnect(self):
+        self.close()
+
+      def flush(self):
+        pass
+      def flushInput(self):
+        pass
+      def flushOutput(self):
+        pass
+
+      def read(self):
+        return self.recv(1)
+
+      def write(self, packet):
+        self.sendall(str(packet))
+  except:
+    pass
 
 class LinkLayer_Base:
   def __init__(self, physicalLayer, readCallback):

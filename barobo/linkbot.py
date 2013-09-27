@@ -4,9 +4,9 @@ import threading
 import time
 import struct
 
-from comms import *
+from barobo.comms import *
 from barobo import *
-from util import *
+from barobo.util import *
 
 class Linkbot:
   """
