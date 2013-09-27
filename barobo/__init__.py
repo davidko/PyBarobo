@@ -189,6 +189,7 @@ class BaroboCtx():
   CMD_SMOOTHMOVE = 0x80
   CMD_SETMOTORSTATES = 0x81
   CMD_SETGLOBALACCEL = 0x82
+  CMD_PING = 0x83
 
   MOTOR_FORWARD = 1
   MOTOR_BACKWARD = 2
@@ -264,8 +265,11 @@ class BaroboCtx():
     self.phys = _comms.PhysicalLayer_TTY(ttyfilename)
     self.link = _comms.LinkLayer_TTY(self.phys, self.handlePacket)
     self.link.start()
-    self.__init_comms()
-    self.__getDongleID()
+    try:
+      self.__init_comms()
+      self.__getDongleID()
+    except:
+      raise BaroboException('Could not connect to dongle at {}'.format(ttyfilename))
 
   def disconnect(self):
     self.phys.disconnect()
@@ -353,7 +357,7 @@ class BaroboCtx():
   def __getDongleID(self):
     numtries = 0
     maxtries = 3
-    while numtries < maxtries:
+    while True:
       buf = [ self.CMD_GETSERIALID, 3, 0x00 ]
       self.writePacket(_comms.Packet(buf, 0x0000))
       try:

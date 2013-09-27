@@ -7,7 +7,7 @@ import struct
 import time
 import barobo
 
-DEBUG=True
+DEBUG=False
 
 class Packet:
   def __init__(self, data=None, addr=None):

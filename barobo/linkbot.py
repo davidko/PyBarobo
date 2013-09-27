@@ -447,9 +447,9 @@ class Linkbot:
     buf += randbytes
     buf += bytearray([0x00])
     buf[1] = len(buf)
-    response = self.__transactMessage(buf, maxtries = 1, timeout = 0.5)
-    if response != randbytes:
-      raise BaroboException('Ping did not receive correct bytes.')
+    response = self.__transactMessage(buf, maxTries = 1, timeout = 0.5)
+    if response[2:-1] != randbytes:
+      raise barobo.BaroboException('Ping did not receive correct bytes.')
     return time.time() - now
 
   def reboot(self):
@@ -835,8 +835,8 @@ class Linkbot:
     self.messageLock.acquire()
     numTries = 0
     while numTries < maxTries:
-      self.baroboCtx.writePacket(_comms.Packet(buf, self.zigbeeAddr))
       try:
+        self.baroboCtx.writePacket(_comms.Packet(buf, self.zigbeeAddr))
         response = self.responseQueue.get(block=True, timeout = timeout)
         break
       except:
@@ -845,10 +845,10 @@ class Linkbot:
           continue
         else:
           self.messageLock.release()
-          raise BaroboException('Did not receive response from robot.')
+          raise barobo.BaroboException('Did not receive response from robot.')
     if response[0] != barobo.BaroboCtx.RESP_OK:
       self.messageLock.release()
-      raise BaroboException('Robot returned error status.')
+      raise barobo.BaroboException('Robot returned error status.')
     self.messageLock.release()
     return response
 
