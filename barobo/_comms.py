@@ -51,7 +51,7 @@ class PhysicalLayer_Socket(socket.socket):
     self.sendall(packet)
 
 import sys
-if sys.version_info.major >= 3 and sys.version_info.minor >= 3:
+if sys.version_info[0] >= 3 and sys.version_info[1] >= 3:
   # We can use sockets for Bluetooth
   import socket
   class PhysicalLayer_Bluetooth():
