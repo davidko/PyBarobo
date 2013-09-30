@@ -95,7 +95,11 @@ else:
         return self.recv(1)
 
       def write(self, packet):
-        self.sendall(str(packet))
+        import os
+        if os.name == 'nt':
+          self.send(str(packet))
+        else:
+          self.sendall(str(packet))
   except:
     pass
 
