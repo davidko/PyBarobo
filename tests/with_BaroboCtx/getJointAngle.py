@@ -13,4 +13,4 @@ if __name__ == "__main__":
   linkbot = ctx.getLinkbot()
 
   for i in range(1,4):
-    print ("Joint {} angle: {}".format(i, linkbot.getJointAngle(i)))
+    print ("Joint {0} angle: {1}".format(i, linkbot.getJointAngle(i)))
