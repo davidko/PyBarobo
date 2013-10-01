@@ -2,11 +2,14 @@
 
 from barobo import Linkbot, BaroboCtx
 import time
-
+import sys
 if __name__ == "__main__":
+  if len(sys.argv) != 2:
+    print "Usage: {0} <Com_Port>".format(sys.argv[0])
+    quit()
   ctx = BaroboCtx()
-  ctx.connectDongleTTY('/dev/ttyACM0')
-  linkbot = ctx.getLinkbot('BNQD')
+  ctx.connectDongleTTY(sys.argv[1])
+  linkbot = ctx.getLinkbot()
   print (linkbot)
   print (linkbot.getVersion())
   linkbot.recordAnglesBegin()
@@ -15,8 +18,7 @@ if __name__ == "__main__":
   linkbot.recordAnglesPlot()
   for i in range(1,4):
     linkbot.setJointSpeed(i, 120)
-  while True:
-    linkbot.moveToNB(360, 0, -360)
-    linkbot.moveWait()
-    linkbot.moveToNB(0, 0, 0)
-    linkbot.moveWait()
+  linkbot.moveToNB(360, 0, -360)
+  linkbot.moveWait()
+  linkbot.moveToNB(0, 0, 0)
+  linkbot.moveWait()

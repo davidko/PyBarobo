@@ -5,6 +5,7 @@ import pylab
 import threading
 import time
 import math
+import sys
 
 class RecordAccelData(threading.Thread):
   def __init__(self, linkbot):
@@ -39,8 +40,11 @@ class RecordAccelData(threading.Thread):
     pylab.show()
 
 if __name__ == "__main__":
+  if len(sys.argv) != 2:
+    print "Usage: {0} <Com_Port>".format(sys.argv[0])
+    quit()
   ctx = BaroboCtx()
-  ctx.connectDongleTTY('/dev/ttyACM1')
+  ctx.connectDongleTTY(sys.argv[1])
   linkbot = ctx.getLinkbot()
 
   record = RecordAccelData(linkbot)

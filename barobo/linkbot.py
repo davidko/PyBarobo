@@ -731,19 +731,19 @@ class Linkbot:
         according to the right-hand-rule.
       - ROBOT_NEGATIVE: Same as above but in the negative direction.
     """
-    if self.form == ROBOTFORM_I:
-      if state3 == ROBOT_FORWARD:
-        state3 = ROBOT_BACKWARD
-      elif state3 == ROBOT_BACKWARD:
-        state3 = ROBOT_FORWARD
-      elif state3 == ROBOT_POSITIVE:
-        state3 = ROBOT_FORWARD
-      elif state3 == ROBOT_NEGATIVE:
-        state3 = ROBOT_BACKWARD
+    if self.form == barobo.ROBOTFORM_I:
+      if state3 == barobo.ROBOT_FORWARD:
+        state3 = barobo.ROBOT_BACKWARD
+      elif state3 == barobo.ROBOT_BACKWARD:
+        state3 = barobo.ROBOT_FORWARD
+      elif state3 == barobo.ROBOT_POSITIVE:
+        state3 = barobo.ROBOT_FORWARD
+      elif state3 == barobo.ROBOT_NEGATIVE:
+        state3 = barobo.ROBOT_BACKWARD
     states = [state1, state2, state3, 0]
     buf = bytearray([barobo.BaroboCtx.CMD_TIMEDACTION, 0, 0x07])
     for state in states:
-      buf += bytearray([state1, ROBOT_HOLD])
+      buf += bytearray([state1, barobo.ROBOT_HOLD])
       buf += bytearray(struct.pack('<i', -1))
     buf += bytearray([0x00])
     buf[1] = len(buf)
