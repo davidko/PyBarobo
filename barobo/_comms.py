@@ -23,6 +23,8 @@ class Packet:
 class PhysicalLayer_TTY(serial.Serial):
   def __init__(self, ttyfilename):
     serial.Serial.__init__(self, ttyfilename, baudrate=230400)
+    time.sleep(1)
+    self.stopbits = serial.STOPBITS_TWO
     self.timeout = None
 
   def disconnect(self):
@@ -127,7 +129,7 @@ class LinkLayer_TTY(LinkLayer_Base):
     newpacket += bytearray(packet)
     self.writeLock.acquire()
     if DEBUG:
-      print ("Send: {}".format(list(map(hex, newpacket))))
+      print ("Send: {0}".format(list(map(hex, newpacket))))
     self.phys.write(newpacket)
     self.writeLock.release()
 
@@ -142,15 +144,15 @@ class LinkLayer_TTY(LinkLayer_Base):
       if byte is None:
         continue
       if DEBUG:
-        print ("Byte: {}".format(list(map(hex, bytearray(byte)))))
+        print ("Byte: {0}".format(list(map(hex, bytearray(byte)))))
       self.readbuf += bytearray(byte)
       if (len(self.readbuf) <= 2):
         continue
       if len(self.readbuf) == self.readbuf[1]:
         # Received whole packet
         if DEBUG:
-          print ("Recv: {}".format(list(map(hex, self.readbuf))))
-        zigbeeAddr = struct.unpack('!H', self.readbuf[2:4])[0]
+          print ("Recv: {0}".format(list(map(hex, self.readbuf))))
+        zigbeeAddr = barobo._unpack('!H', self.readbuf[2:4])[0]
         if self.readbuf[0] != barobo.BaroboCtx.EVENT_REPORTADDRESS:
           pkt = Packet(self.readbuf[5:-1], zigbeeAddr)
         else:
@@ -165,7 +167,7 @@ class LinkLayer_Socket(LinkLayer_Base):
   def write(self, packet, address):
     self.writeLock.acquire()
     if DEBUG:
-      print ("Send: {}".format(list(map(hex, packet))))
+      print ("Send: {0}".format(list(map(hex, packet))))
     self.phys.write(packet)
     self.writeLock.release()
 
@@ -178,7 +180,7 @@ class LinkLayer_Socket(LinkLayer_Base):
     while True:
       byte = self.phys.read()
       if DEBUG:
-        print ("Byte: {}".format(list(map(hex, bytearray(byte)))))
+        print ("Byte: {0}".format(list(map(hex, bytearray(byte)))))
       if byte is None:
         continue
       self.readbuf += bytearray(byte)
@@ -187,7 +189,7 @@ class LinkLayer_Socket(LinkLayer_Base):
       if len(self.readbuf) == self.readbuf[1]:
         # Received whole packet
         if DEBUG:
-          print ("Recv: {}".format(list(map(hex, self.readbuf))))
+          print ("Recv: {0}".format(list(map(hex, self.readbuf))))
         pkt = Packet(self.readbuf, 0x8000)
         self.deliver(pkt)
         self.readbuf = self.readbuf[self.readbuf[1]:]

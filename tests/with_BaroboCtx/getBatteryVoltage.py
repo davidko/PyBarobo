@@ -5,7 +5,7 @@ import time
 
 if __name__ == "__main__":
   ctx = BaroboCtx()
-  ctx.connectDongleTTY('/dev/ttyACM0')
+  ctx.connectDongleTTY('/dev/cu.usbmodem3d11')
   linkbot = ctx.getLinkbot()
 
   for _ in range(5):

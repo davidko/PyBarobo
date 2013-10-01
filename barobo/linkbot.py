@@ -165,7 +165,7 @@ class Linkbot:
   def _getADCVolts(self, adc):
     buf = bytearray([barobo.BaroboCtx.CMD_GETENCODERVOLTAGE, 4, adc, 0])
     response = self.__transactMessage(buf)
-    voltage = struct.unpack('<f', response[2:6])[0]
+    voltage = barobo._unpack('<f', response[2:6])[0]
     return voltage
 
   def getAccelerometerData(self):
@@ -179,7 +179,7 @@ class Linkbot:
     """
     buf = bytearray([barobo.BaroboCtx.CMD_GETACCEL, 0x03, 0x00])
     response = self.__transactMessage(buf)
-    values = struct.unpack('<3h', response[2:8])
+    values = barobo._unpack('<3h', response[2:8])
     return map(lambda x: x/16384.0, values)
 
   def getBatteryVoltage(self):
@@ -191,7 +191,7 @@ class Linkbot:
     """
     buf = bytearray([barobo.BaroboCtx.CMD_GETBATTERYVOLTAGE, 0x03, 0x00])
     response = self.__transactMessage(buf)
-    voltage = struct.unpack('<f', response[2:6])[0]
+    voltage = barobo._unpack('<f', response[2:6])[0]
     return voltage
 
   def getBreakoutADC(self, adc):
@@ -206,7 +206,7 @@ class Linkbot:
     """
     buf = bytearray([barobo.BaroboCtx.TWIMSG_HEADER, barobo.BaroboCtx.TWIMSG_ANALOGREADPIN, adc])
     data = self.twiSendRecv(0x02, buf, 2)
-    return struct.unpack('!h', data)[0]
+    return barobo._unpack('!h', data)[0]
 
   def getBreakoutADCVolts(self, adc):
     """
@@ -243,7 +243,7 @@ class Linkbot:
     """
     buf = bytearray([barobo.BaroboCtx.CMD_GETRGB, 0x03, 0x00])
     response = self.__transactMessage(buf)
-    return struct.unpack('<3B', response[2:5])
+    return barobo._unpack('<3B', response[2:5])
 
   def getFormFactor(self):
     """
@@ -268,7 +268,7 @@ class Linkbot:
     """
     buf = bytearray([barobo.BaroboCtx.CMD_GETMOTORANGLE, 0x04, joint-1, 0x00])
     response = self.__transactMessage(buf)
-    return _util.rad2deg(struct.unpack('<f', response[2:6])[0])
+    return _util.rad2deg(barobo._unpack('<f', response[2:6])[0])
 
   def getJointAngles(self):
     """
@@ -279,7 +279,7 @@ class Linkbot:
     """
     buf = bytearray([barobo.BaroboCtx.CMD_GETMOTORANGLESABS, 3, 0])
     response = self.__transactMessage(buf)
-    angles = struct.unpack('<4f', response[2:18])
+    angles = barobo._unpack('<4f', response[2:18])
     return map(_util.rad2deg, angles[:3])
 
   def getJointAnglesTime(self):
@@ -292,8 +292,8 @@ class Linkbot:
     """
     buf = bytearray([barobo.BaroboCtx.CMD_GETMOTORANGLESTIMESTAMPABS, 0x03, 0x00])
     response = self.__transactMessage(buf)
-    millis = struct.unpack('<L', response[2:6])[0]
-    data = struct.unpack('<4f', response[6:-1])
+    millis = barobo._unpack('<L', response[2:6])[0]
+    data = barobo._unpack('<4f', response[6:-1])
     rc = [millis/1000.0]
     rc += map(_util.rad2deg, data[:3])
     return rc
@@ -306,7 +306,7 @@ class Linkbot:
     """
     buf = bytearray([barobo.BaroboCtx.CMD_GETSERIALID, 3, 0])
     response = self.__transactMessage(buf) 
-    botid = struct.unpack('!4s', response[2:6])[0]
+    botid = barobo._unpack('!4s', response[2:6])[0]
     self.serialID = botid
     return botid
 
@@ -869,8 +869,8 @@ class Linkbot:
       if (evt[0] == barobo.BaroboCtx.EVENT_BUTTON) and self.callbackEnabled:
         self.callbackfunc(evt[6], evt[7], self.callbackUserData)
       elif evt[0] == barobo.BaroboCtx.EVENT_DEBUG_MSG:
-        s = struct.unpack(s, evt[2:-1])
-        print ("Debug msg from {}: {}".format(self.serialID, s))
+        s = barobo._unpack(s, evt[2:-1])
+        print ("Debug msg from {0}: {1}".format(self.serialID, s))
 
 class _LinkbotRecordThread(threading.Thread):
   def __init__(self, linkbot, delay):

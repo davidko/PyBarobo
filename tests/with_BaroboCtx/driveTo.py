@@ -5,8 +5,8 @@ import time
 
 if __name__ == "__main__":
   ctx = BaroboCtx()
-  ctx.connectDongleTTY('/dev/ttyACM1')
-  linkbot = ctx.getLinkbot('WWMG')
+  ctx.connectDongleTTY('/dev/cu.usbmodem3d11')
+  linkbot = ctx.getLinkbot()
 
   linkbot.resetToZero()
   print ("Moving joints to 90 degrees...")

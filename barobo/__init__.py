@@ -27,6 +27,7 @@ L{Linkbot<barobo.linkbot.Linkbot>} class.
 """
 
 import struct
+import sys
 try:
   import Queue
 except:
@@ -89,6 +90,13 @@ def __checkLinkbotTTY(comport):
         numtries+=1
       else:
         return True
+
+def _unpack(fmt, buffer):
+  if sys.version_info[0] == 2 and sys.version_info[1] == 6:
+    return struct.unpack(fmt, bytes(buffer))
+  else:
+    return struct.unpack(fmt, buffer)
+
 
 class BaroboException(Exception):
   def __init__(self, *args, **kwargs):
@@ -270,7 +278,7 @@ class BaroboCtx():
       self.__init_comms()
       self.__getDongleID()
     except:
-      raise BaroboException('Could not connect to dongle at {}'.format(ttyfilename))
+      raise BaroboException('Could not connect to dongle at {0}'.format(ttyfilename))
 
   def disconnect(self):
     self.phys.disconnect()
@@ -318,7 +326,7 @@ class BaroboCtx():
       numtries += 1
       if numtries >= 3:
         self.scannedIDs_cond.release()
-        raise BaroboException('Robot {} not found.'.format(serialID))
+        raise BaroboException('Robot {0} not found.'.format(serialID))
     self.scannedIDs_cond.release()
     return serialID in self.scannedIDs
 
@@ -331,8 +339,8 @@ class BaroboCtx():
       # First, see if these are "Report Address" events. We want to filter
       # those out and use them for our own purposes
       if packet.data[0] == self.EVENT_REPORTADDRESS:
-        botid = struct.unpack('!4s', packet.data[4:8])[0]
-        zigbeeAddr = struct.unpack('!H', packet[2:4])[0]
+        botid = _unpack('!4s', packet.data[4:8])[0]
+        zigbeeAddr = _unpack('!H', packet[2:4])[0]
         if botid not in self.scannedIDs:
           self.scannedIDs_cond.acquire()
           self.scannedIDs[botid.decode('ascii')] = zigbeeAddr
@@ -372,11 +380,11 @@ class BaroboCtx():
           continue
         else:
           raise
-    serialID = struct.unpack('!4s', response[2:6])[0]
+    serialID = _unpack('!4s', response[2:6])[0]
     buf = [self.CMD_GETADDRESS, 3, 0x00]
     self.writePacket(_comms.Packet(buf, 0x0000))
     response = self.ctxReadQueue.get(block=True, timeout=2.0)
-    zigbeeAddr = struct.unpack('!H', response[2:4])[0]
+    zigbeeAddr = _unpack('!H', response[2:4])[0]
     self.scannedIDs[serialID] = zigbeeAddr
    
 
