@@ -18,8 +18,21 @@ case, a typical control program will look something like this::
   from barobo import Linkbot, BaroboCtx
 
   ctx = BaroboCtx()
-  ctx.connectDongleTTY('COM3')
-  linkbot = ctx.getLinkbot() # or linkbot = ctx.getLinkbot('2B2C')
+  ctx.connectDongleTTY('COM3')  # where 'COM3' is the com port the Linkbot is 
+                                # connected on. In Windows, the COM port of the
+                                # Linkbot can be identified by inspecting the
+                                # Device Manager. On a Mac, the com port will
+                                # appear in the "/dev/" directory, usually as
+                                # something like "/dev/cu.usbmodem1d11". In
+                                # Linux, it should be something like 
+                                # "/dev/ttyACM0".
+  linkbot = ctx.getLinkbot() # or linkbot = ctx.getLinkbot('2B2C') where '2B2C'
+                             # should be replace with the serial ID of your 
+                             # Linkbot. Note that the serial ID used here can
+                             # be that of a nearby Linkbot that you wish to 
+                             # connect to wirelessly. If no serial ID is 
+                             # provided, the new linkbot will refer to the 
+                             # Linkbot currently connected via USB.
   linkbot.moveTo(180, 0, -180)
 
 For more documentation, please refer to the documentation under the
