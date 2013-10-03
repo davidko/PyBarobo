@@ -281,9 +281,15 @@ class BaroboCtx():
 
   def connectBluetooth(self, macaddr):
     self.phys = _comms.PhysicalLayer_Bluetooth(macaddr)
-    self.link = _comms.LinkLayer_Socket(self.phys, self.handlePacket)
+    #self.link = _comms.LinkLayer_Socket(self.phys, self.handlePacket)
+    self.link = _comms.LinkLayer_TTY(self.phys, self.handlePacket)
     self.link.start()
-    self.__init_comms()
+    try:
+      self.__init_comms()
+      self.__checkStatus()
+      self.__getDongleID()
+    except:
+      raise BaroboException('Could not connect to Bluetooth at {0}'.format(macaddr))
 
   def connectDongleTTY(self, ttyfilename):
     self.phys = _comms.PhysicalLayer_TTY(ttyfilename)
@@ -291,6 +297,7 @@ class BaroboCtx():
     self.link.start()
     try:
       self.__init_comms()
+      self.__checkStatus()
       self.__getDongleID()
     except:
       raise BaroboException('Could not connect to dongle at {0}'.format(ttyfilename))
@@ -380,6 +387,22 @@ class BaroboCtx():
       packet = self.writeQueue.get()
       self.link.write(packet.data, packet.addr)
 
+  def __checkStatus(self):
+    numtries = 0
+    maxtries = 3
+    while True:
+      buf = [ self.CMD_STATUS, 3, 0x00 ]
+      self.writePacket(_comms.Packet(buf, 0x0000))
+      try:
+        response = self.ctxReadQueue.get(block=True, timeout=2.0)
+        break
+      except:
+        if numtries < maxtries:
+          numtries+=1
+          continue
+        else:
+          raise
+
   def __getDongleID(self):
     numtries = 0
     maxtries = 3
@@ -400,6 +423,7 @@ class BaroboCtx():
     self.writePacket(_comms.Packet(buf, 0x0000))
     response = self.ctxReadQueue.get(block=True, timeout=2.0)
     zigbeeAddr = _unpack('!H', response[2:4])[0]
+    self.zigbeeAddr = zigbeeAddr
     self.scannedIDs[serialID] = zigbeeAddr
    
 

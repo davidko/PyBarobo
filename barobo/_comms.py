@@ -3,9 +3,9 @@
 import socket
 try:
   import serial
-  hasPySerial = True
+  havePySerial = True
 except:
-  hasPySerial = False
+  havePySerial = False
 import threading
 import struct
 import time
@@ -24,7 +24,7 @@ class Packet:
   def __len__(self):
     return len(self.data)
 
-if hasPySerial:
+if havePySerial:
   class PhysicalLayer_TTY(serial.Serial):
     def __init__(self, ttyfilename):
       serial.Serial.__init__(self, ttyfilename, baudrate=230400)
