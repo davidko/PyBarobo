@@ -308,6 +308,14 @@ class Linkbot:
     rc += map(_util.rad2deg, data[:3])
     return rc
 
+  def getLinkbot(self, addr):
+    """
+    Use an instance of a Linkbot to get instances to other Linkbots. Note that
+    this only works for Linkbots that are connected via Bluetooth or TTY, but
+    does not work for Linkbots that are connected to BaroboLink.
+    """
+    return self.baroboCtx.getLinkbot(addr)
+
   def getSerialID(self):
     """
     Get the serial ID from the Linkbot
