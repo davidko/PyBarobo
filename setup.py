@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(name='PyBarobo',
-    version='0.1.0',
+    version='0.1.1',
     description='Native Python Barobo robotics control library',
     author='David Ko',
     author_email='david@barobo.com',
