@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 
 import socket
-import serial
+try:
+  import serial
+  hasPySerial = True
+except:
+  hasPySerial = False
 import threading
 import struct
 import time
@@ -20,15 +24,16 @@ class Packet:
   def __len__(self):
     return len(self.data)
 
-class PhysicalLayer_TTY(serial.Serial):
-  def __init__(self, ttyfilename):
-    serial.Serial.__init__(self, ttyfilename, baudrate=230400)
-    time.sleep(1)
-    self.stopbits = serial.STOPBITS_TWO
-    self.timeout = None
+if hasPySerial:
+  class PhysicalLayer_TTY(serial.Serial):
+    def __init__(self, ttyfilename):
+      serial.Serial.__init__(self, ttyfilename, baudrate=230400)
+      time.sleep(1)
+      self.stopbits = serial.STOPBITS_TWO
+      self.timeout = None
 
-  def disconnect(self):
-    pass
+    def disconnect(self):
+      pass
 
 class PhysicalLayer_Socket(socket.socket):
   def __init__(self, hostname, port):

@@ -72,6 +72,7 @@ AREF_INTERNAL2V56 = 0x03
 AREF_EXTERNAL = 0x04
 
 def _getSerialPorts():
+  import serial
   if os.name == 'nt':
     available = []
     for i in range(256):
@@ -88,6 +89,7 @@ def _getSerialPorts():
 
 # Check if a device connected at 'comport' is a Linkbot
 def __checkLinkbotTTY(comport):
+  import serial
   s = serial.Serial(comport, baudrate=230400)
   s.timeout = 2
   numtries = 0
