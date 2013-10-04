@@ -22,6 +22,7 @@ barobo._getSerialPorts	barobo-module.html#_getSerialPorts
 barobo.AREF_INTERNAL2V56	barobo-module.html#AREF_INTERNAL2V56
 barobo.ROBOT_HOLD	barobo-module.html#ROBOT_HOLD
 barobo._comms	barobo._comms-module.html
+barobo._comms.havePySerial	barobo._comms-module.html#havePySerial
 barobo._comms.__package__	barobo._comms-module.html#__package__
 barobo._comms.DEBUG	barobo._comms-module.html#DEBUG
 barobo._util	barobo._util-module.html
@@ -84,9 +85,9 @@ barobo.BaroboCtx.CMD_SETMOTORANGLEDIRECT	barobo.BaroboCtx-class.html#CMD_SETMOTO
 barobo.BaroboCtx.CMD_GETMOTORANGLEABS	barobo.BaroboCtx-class.html#CMD_GETMOTORANGLEABS
 barobo.BaroboCtx.CMD_SETSERIALID	barobo.BaroboCtx-class.html#CMD_SETSERIALID
 barobo.BaroboCtx.CMD_BLINKLED	barobo.BaroboCtx-class.html#CMD_BLINKLED
+barobo.BaroboCtx.CMD_GETBATTERYVOLTAGE	barobo.BaroboCtx-class.html#CMD_GETBATTERYVOLTAGE
 barobo.BaroboCtx.CMD_SETMOTORANGLESPID	barobo.BaroboCtx-class.html#CMD_SETMOTORANGLESPID
 barobo.BaroboCtx.CMD_SET_GRP	barobo.BaroboCtx-class.html#CMD_SET_GRP
-barobo.BaroboCtx.CMD_SETMOTORANGLESDIRECT	barobo.BaroboCtx-class.html#CMD_SETMOTORANGLESDIRECT
 barobo.BaroboCtx.RESP_END	barobo.BaroboCtx-class.html#RESP_END
 barobo.BaroboCtx.TWIMSG_DIGITALREADPIN	barobo.BaroboCtx-class.html#TWIMSG_DIGITALREADPIN
 barobo.BaroboCtx.getLinkbot	barobo.BaroboCtx-class.html#getLinkbot
@@ -100,6 +101,7 @@ barobo.BaroboCtx._commsInEngine	barobo.BaroboCtx-class.html#_commsInEngine
 barobo.BaroboCtx.CMD_GETFORMFACTOR	barobo.BaroboCtx-class.html#CMD_GETFORMFACTOR
 barobo.BaroboCtx.CMD_QUERYADDRESSES	barobo.BaroboCtx-class.html#CMD_QUERYADDRESSES
 barobo.BaroboCtx.CMD_PLACEHOLDER201303291416	barobo.BaroboCtx-class.html#CMD_PLACEHOLDER201303291416
+barobo.BaroboCtx.__checkStatus	barobo.BaroboCtx-class.html#__checkStatus
 barobo.BaroboCtx.EVENT_DEBUG_MSG	barobo.BaroboCtx-class.html#EVENT_DEBUG_MSG
 barobo.BaroboCtx.CMD_REQUESTADDRESS	barobo.BaroboCtx-class.html#CMD_REQUESTADDRESS
 barobo.BaroboCtx.CMD_GETMOTORSTATE	barobo.BaroboCtx-class.html#CMD_GETMOTORSTATE
@@ -122,7 +124,7 @@ barobo.BaroboCtx.CMD_GETQUERIEDADDRESSES	barobo.BaroboCtx-class.html#CMD_GETQUER
 barobo.BaroboCtx.TWIMSG_ANALOGREF	barobo.BaroboCtx-class.html#TWIMSG_ANALOGREF
 barobo.BaroboCtx.findRobot	barobo.BaroboCtx-class.html#findRobot
 barobo.BaroboCtx.CMD_SETMOTORANGLES	barobo.BaroboCtx-class.html#CMD_SETMOTORANGLES
-barobo.BaroboCtx.CMD_GETBATTERYVOLTAGE	barobo.BaroboCtx-class.html#CMD_GETBATTERYVOLTAGE
+barobo.BaroboCtx.CMD_SETMOTORANGLESDIRECT	barobo.BaroboCtx-class.html#CMD_SETMOTORANGLESDIRECT
 barobo.BaroboCtx.RESP_OK	barobo.BaroboCtx-class.html#RESP_OK
 barobo.BaroboCtx.getScannedRobots	barobo.BaroboCtx-class.html#getScannedRobots
 barobo.BaroboCtx.CMD_GETMOTORANGLE	barobo.BaroboCtx-class.html#CMD_GETMOTORANGLE
@@ -249,6 +251,7 @@ barobo.linkbot.Linkbot.getBreakoutDigitalPin	barobo.linkbot.Linkbot-class.html#g
 barobo.linkbot.Linkbot.getBreakoutADC	barobo.linkbot.Linkbot-class.html#getBreakoutADC
 barobo.linkbot.Linkbot.__eventThread	barobo.linkbot.Linkbot-class.html#__eventThread
 barobo.linkbot.Linkbot.reset	barobo.linkbot.Linkbot-class.html#reset
+barobo.linkbot.Linkbot.getLinkbot	barobo.linkbot.Linkbot-class.html#getLinkbot
 barobo.linkbot.Linkbot.resetToZero	barobo.linkbot.Linkbot-class.html#resetToZero
 barobo.linkbot.Linkbot.__messageThread	barobo.linkbot.Linkbot-class.html#__messageThread
 barobo.linkbot.Linkbot.twiSendRecv	barobo.linkbot.Linkbot-class.html#twiSendRecv
@@ -258,6 +261,7 @@ barobo.linkbot.Linkbot.moveJoint	barobo.linkbot.Linkbot-class.html#moveJoint
 barobo.linkbot.Linkbot.moveNB	barobo.linkbot.Linkbot-class.html#moveNB
 barobo.linkbot.Linkbot.setJointSpeed	barobo.linkbot.Linkbot-class.html#setJointSpeed
 barobo.linkbot.Linkbot.moveJointToNB	barobo.linkbot.Linkbot-class.html#moveJointToNB
+barobo.linkbot.Linkbot.checkStatus	barobo.linkbot.Linkbot-class.html#checkStatus
 barobo.linkbot.Linkbot.setJointState	barobo.linkbot.Linkbot-class.html#setJointState
 barobo.linkbot.Linkbot.setBreakoutPinMode	barobo.linkbot.Linkbot-class.html#setBreakoutPinMode
 barobo.linkbot.Linkbot.getJointAngle	barobo.linkbot.Linkbot-class.html#getJointAngle
