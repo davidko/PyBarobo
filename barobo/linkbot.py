@@ -15,10 +15,48 @@ import barobo._util as _util
 class Linkbot:
   """
   The Linkbot Class
+  =================
 
   Each instance of this class can be used to represent a physical Linkbot. The
   member functions of this class can be used to get data, set motor angles,
   beep the buzzer, scan for button events, and more.  
+
+  Blocking and Non-Blocking Member Functions
+  ==========================================
+
+  The member functions of the Linkbot class which are responsible for moving
+  the joints of the Linkbot can be categorized into two general types of
+  functions; "blocking" functions and "non-blocking" functions. A blocking
+  function is a function that "hangs" until the complete motion is done,
+  whereas a "non-blocking" function returns as soon as the motion begins,
+  but does not wait until it is done. In the Linkbot class, all functions
+  are blocking unless the have the suffix "NB", such as "Linkbot.moveNB()".
+
+  For example, consider the following lines of code::
+    linkbot.move(360, 0, 0)
+    linkbot.setBuzzerFrequency(440)
+  When the above lines of code are executed, the Linkbot will rotate joint 1
+  360 degrees. Once the joint has rotated the full revolution, the buzzer will
+  sound. Now consider the following code::
+    linkbot.moveNB(360, 0, 0)
+    linkbot.setBuzzerFrequency(440)
+  For these lines of code, joint 1 also moves 360 degrees. The difference is 
+  that with these lines of code, the buzzer will begin emitting a tone as soon
+  as the joint begins turning, instead of waiting for the motion to finish.
+  This is because the non-blocking version of move() was used, which returns
+  immediately after the joint begins moving allowing the setBuzzerFrequency() 
+  function to execute as the joint begins moving.
+
+  The L{moveWait()<barobo.linkbot.Linkbot.moveWait>} function can be used to block until non-blocking motion 
+  functions are finished. For instance, the following two blocks of code
+  will accomplish the same task::
+    linkbot.move(360, 0, 0)
+    linkbot.setBuzzerFrequency(440)
+
+    linkbot.moveNB(360, 0, 0)
+    linkbot.moveWait()
+    linkbot.setBuzzerFrequency(440)
+
   """
 
   def __init__(self):

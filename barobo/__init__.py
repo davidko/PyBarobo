@@ -27,7 +27,7 @@ case, a typical control program will look something like this::
                                 # Linux, it should be something like 
                                 # "/dev/ttyACM0".
   linkbot = ctx.getLinkbot() # or linkbot = ctx.getLinkbot('2B2C') where '2B2C'
-                             # should be replace with the serial ID of your 
+                             # should be replaced with the serial ID of your 
                              # Linkbot. Note that the serial ID used here can
                              # be that of a nearby Linkbot that you wish to 
                              # connect to wirelessly. If no serial ID is 
