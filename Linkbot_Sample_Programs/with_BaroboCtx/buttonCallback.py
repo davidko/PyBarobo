@@ -9,7 +9,7 @@ def callback(mask, buttons, userdata):
 
 if __name__ == "__main__":
   if len(sys.argv) < 2:
-    print ("Usage: {0} <Com_Port>".format(sys.argv[0]))
+    print ("Usage: {0} <Com_Port> [Linkbot Serial ID]".format(sys.argv[0]))
     quit()
   if len(sys.argv) == 3:
     serialID = sys.argv[2]
