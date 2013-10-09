@@ -495,6 +495,12 @@ class Linkbot:
     while self.isMoving():
       time.sleep(0.1)
 
+  def _pairParent(self):
+    buf = bytearray([barobo.BaroboCtx.CMD_PAIRPARENT, 5])
+    buf += bytearray(struct.pack('!H', self.baroboCtx.zigbeeAddr))
+    buf += bytearray([0x00])
+    self.__transactMessage(buf)
+
   def ping(self, numbytes=4):
     import random
     now = time.time()

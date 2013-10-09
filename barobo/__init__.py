@@ -118,6 +118,12 @@ class BaroboException(Exception):
     Exception.__init__(self, *args, **kwargs)
 
 class BaroboCtx():
+  """
+  The BaroboCtx (BaroboContext) is the entity which manages all of the Linkbots
+  in a computational environment. If loosely represents a ZigBee dongle which 
+  can communicate and with and control all Linkbots within its communication
+  range. 
+  """
   RESP_OK = 0x10
   RESP_END = 0x11
   RESP_ERR = 0xff
@@ -270,9 +276,11 @@ class BaroboCtx():
     self.foundComPortCond.acquire()
     while self.__foundComPort == None:
       self.foundComPortCond.wait()
-    
 
   def connect(self):
+    """
+    Connect the BaroboContext to BaroboLink.
+    """
     # Try to connect to BaroboLink running on localhost
     self.phys = _comms.PhysicalLayer_Socket('localhost', 5768)
     self.link = _comms.LinkLayer_Socket(self.phys, self.handlePacket)
@@ -280,6 +288,9 @@ class BaroboCtx():
     self.__init_comms()
 
   def connectBluetooth(self, macaddr):
+    """
+    Connect the BaroboContext to a Bluetooth LinkPod.
+    """
     self.phys = _comms.PhysicalLayer_Bluetooth(macaddr)
     #self.link = _comms.LinkLayer_Socket(self.phys, self.handlePacket)
     self.link = _comms.LinkLayer_TTY(self.phys, self.handlePacket)
@@ -292,6 +303,9 @@ class BaroboCtx():
       raise BaroboException('Could not connect to Bluetooth at {0}'.format(macaddr))
 
   def connectDongleTTY(self, ttyfilename):
+    """
+    Connect the BaroboCtx to a Linkbot that is connected with a USB cable.
+    """
     self.phys = _comms.PhysicalLayer_TTY(ttyfilename)
     self.link = _comms.LinkLayer_TTY(self.phys, self.handlePacket)
     self.link.start()
@@ -330,6 +344,8 @@ class BaroboCtx():
     l.baroboCtx = self
     self.children.append(l)
     l.form = l.getFormFactor()
+    if l.zigbeeAddr != self.zigbeeAddr:
+      l._pairParent()
     return l
 
   def findRobot(self, serialID):

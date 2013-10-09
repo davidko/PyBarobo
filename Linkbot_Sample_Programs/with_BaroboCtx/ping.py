@@ -7,14 +7,16 @@ import sys
 import numpy
 
 if __name__ == "__main__":
-  if len(sys.argv) != 2:
+  if len(sys.argv) < 2:
     print "Usage: {0} <Com_Port>".format(sys.argv[0])
     quit()
+  if len(sys.argv) == 3:
+    serialID = sys.argv[2]
+  else:
+    serialID = None
   ctx = BaroboCtx()
   ctx.connectDongleTTY(sys.argv[1])
-  #linkbot = ctx.getLinkbot('WWMG')
-  #linkbot = ctx.getLinkbot('LGFP')
-  linkbot = ctx.getLinkbot()
+  linkbot = ctx.getLinkbot(serialID)
   numerrors = 0
   numtries = 500
   pingsum = 0
