@@ -6,7 +6,7 @@ import sys
 
 if __name__ == "__main__":
   if len(sys.argv) < 2:
-    print "Usage: {0} <Com_Port> [Linkbot Serial ID]".format(sys.argv[0])
+    print ("Usage: {0} <Com_Port> [Linkbot Serial ID]".format(sys.argv[0]))
     quit()
   if len(sys.argv) == 3:
     serialID = sys.argv[2]
@@ -21,10 +21,10 @@ if __name__ == "__main__":
   linkbot.stop()
   linkbot.setMotorPowers(-255, -255, -255)
   time.sleep(5)
-  print linkbot.getJointAngles()
+  print (linkbot.getJointAngles())
   linkbot.resetToZero()
   linkbot.stop()
   linkbot.setMotorPowers(255, 255, 255)
   time.sleep(5)
-  print linkbot.getJointAngles()
+  print (linkbot.getJointAngles())
   linkbot.stop()

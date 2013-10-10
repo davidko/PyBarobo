@@ -5,9 +5,12 @@ from barobo import Linkbot, BaroboCtx
 import time
 import sys
 
+if sys.version_info[0] == 3:
+  raw_input = input
+
 if __name__ == "__main__":
   if len(sys.argv) < 2:
-    print "Usage: {0} <Com_Port> [Linkbot Serial ID]".format(sys.argv[0])
+    print ("Usage: {0} <Com_Port> [Linkbot Serial ID]".format(sys.argv[0]))
     quit()
   if len(sys.argv) == 3:
     serialID = sys.argv[2]

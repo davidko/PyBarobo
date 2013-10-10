@@ -228,7 +228,7 @@ class Linkbot:
     buf = bytearray([barobo.BaroboCtx.CMD_GETACCEL, 0x03, 0x00])
     response = self.__transactMessage(buf)
     values = barobo._unpack('<3h', response[2:8])
-    return map(lambda x: x/16384.0, values)
+    return list(map(lambda x: x/16384.0, values))
 
   def getBatteryVoltage(self):
     """
@@ -328,7 +328,7 @@ class Linkbot:
     buf = bytearray([barobo.BaroboCtx.CMD_GETMOTORANGLESABS, 3, 0])
     response = self.__transactMessage(buf)
     angles = barobo._unpack('<4f', response[2:18])
-    return map(_util.rad2deg, angles[:3])
+    return list(map(_util.rad2deg, angles[:3]))
 
   def getJointAnglesTime(self):
     """
@@ -343,7 +343,7 @@ class Linkbot:
     millis = barobo._unpack('<L', response[2:6])[0]
     data = barobo._unpack('<4f', response[6:-1])
     rc = [millis/1000.0]
-    rc += map(_util.rad2deg, data[:3])
+    rc += list(map(_util.rad2deg, data[:3]))
     return rc
 
   def getLinkbot(self, addr):
@@ -739,7 +739,7 @@ class Linkbot:
       states += [0]*(4-len(states))
     if len(speeds) < 4:
       speeds += [0.0]*(4-len(speeds))
-    speeds = map(_util.deg2rad, speeds)
+    speeds = list(map(_util.deg2rad, speeds))
     buf = bytearray([barobo.BaroboCtx.CMD_SETMOTORSTATES, 23])
     buf += bytearray(states)
     buf += bytearray(struct.pack('<4f', speeds[0], speeds[1], speeds[2], speeds[3]))

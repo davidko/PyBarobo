@@ -4,6 +4,9 @@ from barobo import Linkbot, BaroboCtx
 import time
 import sys
 
+if sys.version_info[0] == 3:
+  raw_input = input
+
 def callback(mask, buttons, userdata):
   print ("Button press! mask: {0} buttons: {1}".format(hex(mask), hex(buttons)))
 

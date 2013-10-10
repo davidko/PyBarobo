@@ -7,6 +7,9 @@ import time
 import math
 import sys
 
+if sys.version_info[0] == 3:
+  raw_input = input
+
 class RecordAccelData(threading.Thread):
   def __init__(self, linkbot):
     threading.Thread.__init__(self)
@@ -41,7 +44,7 @@ class RecordAccelData(threading.Thread):
 
 if __name__ == "__main__":
   if len(sys.argv) < 2:
-    print "Usage: {0} <Com_Port> [Linkbot Serial ID]".format(sys.argv[0])
+    print ("Usage: {0} <Com_Port> [Linkbot Serial ID]".format(sys.argv[0]))
     quit()
   if len(sys.argv) == 3:
     serialID = sys.argv[2]
