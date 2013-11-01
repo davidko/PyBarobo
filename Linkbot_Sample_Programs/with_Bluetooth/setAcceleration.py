@@ -6,7 +6,7 @@ import time
 
 if __name__ == "__main__":
   linkbot = Linkbot()
-  linkbot.connectBluetooth('00:06:66:45:D9:F5')
+  linkbot.connectBluetooth('00:06:66:4D:F6:6F')
 
   linkbot.setAcceleration(240)
   linkbot.recordAnglesBegin()

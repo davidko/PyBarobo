@@ -47,9 +47,9 @@ class Linkbot:
   immediately after the joint begins moving allowing the setBuzzerFrequency() 
   function to execute as the joint begins moving.
 
-  The L{moveWait()<barobo.linkbot.Linkbot.moveWait>} function can be used to block until non-blocking motion 
-  functions are finished. For instance, the following two blocks of code
-  will accomplish the same task::
+  The L{moveWait()<barobo.linkbot.Linkbot.moveWait>} function can be used to
+  block until non-blocking motion functions are finished. For instance, the
+  following two blocks of code will accomplish the same task::
     linkbot.move(360, 0, 0)
     linkbot.setBuzzerFrequency(440)
 
@@ -511,7 +511,10 @@ class Linkbot:
     buf[1] = len(buf)
     response = self.__transactMessage(buf, maxTries = 1, timeout = 0.5)
     if response[2:-1] != randbytes:
-      raise barobo.BaroboException('Ping did not receive correct bytes.')
+      raise barobo.BaroboException(
+          'Ping did not receive correct bytes. Expected {0}, got {1}'.format(
+            list(map(hex, randbytes)),
+            list(map(hex, response)) ))
     return time.time() - now
 
   def reboot(self):
