@@ -24,14 +24,16 @@ if __name__ == "__main__":
   linkbot.ping()
   for _ in range(numtries):
     try:
-      ping = linkbot.ping(32)
-      pings.append(ping)
       sys.stdout.write('.')
       sys.stdout.flush()
-    except:
+      ping = linkbot.ping(4)
+      pings.append(ping)
+    except Exception as e:
+      print(e)
       numerrors += 1
       sys.stdout.write('x')
       sys.stdout.flush()
+      time.sleep(1)
 
   sys.stdout.write('\n')
   print("{} tries, {} errors".format(numtries, numerrors))

@@ -899,8 +899,12 @@ class Linkbot:
   def __transactMessage(self, buf, maxTries = 3, timeout = 2.0):
     self.messageLock.acquire()
     numTries = 0
+    response = [0xff]
     while numTries < maxTries:
       try:
+        # Flush the responseQueue
+        while not self.responseQueue.empty():
+          self.responseQueue.get(block=False)
         self.baroboCtx.writePacket(_comms.Packet(buf, self.zigbeeAddr))
         response = self.responseQueue.get(block=True, timeout = timeout)
         break
