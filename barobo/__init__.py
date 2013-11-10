@@ -316,6 +316,20 @@ class BaroboCtx():
     except:
       raise BaroboException('Could not connect to dongle at {0}'.format(ttyfilename))
 
+  def connectDongleSFP(self, ttyfilename):
+    """
+    Connect the BaroboCtx to a Linkbot using libsfp that is connected with a USB cable.
+    """
+    self.phys = _comms.PhysicalLayer_TTY(ttyfilename)
+    self.link = _comms.LinkLayer_SFP(self.phys, self.handlePacket)
+    self.link.start()
+    try:
+      self.__init_comms()
+      self.__checkStatus()
+      self.__getDongleID()
+    except:
+      raise BaroboException('Could not connect to dongle at {0}'.format(ttyfilename))
+
   def disconnect(self):
     self.phys.disconnect()
 
