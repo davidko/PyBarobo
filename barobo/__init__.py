@@ -311,8 +311,6 @@ class BaroboCtx():
     self.link.start()
     try:
       self.__init_comms()
-      self.__checkStatus()
-      self.__getDongleID()
     except:
       raise BaroboException('Could not connect to Bluetooth at {0}'.format(macaddr))
 

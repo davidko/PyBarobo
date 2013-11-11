@@ -125,12 +125,12 @@ class Linkbot:
     @param bluetooth_mac_addr: The MAC address of the bluetooth Linkbot. Should
       be something like '00:06:66:6D:12:34'
     """
-    self.zigbeeAddr = 0x0000
+    self.zigbeeAddr = 0x8000
     if not self.baroboCtx:
       self.baroboCtx = barobo.BaroboCtx()
       self.baroboCtx.connectMobotBluetooth(bluetooth_mac_addr)
       self.baroboCtx.addLinkbot(self)
-      self.zigbeeAddr = self.baroboCtx.zigbeeAddr
+      #self.zigbeeAddr = self.baroboCtx.zigbeeAddr
     self.checkStatus()
     self.getSerialID()
     self.form = self.getFormFactor()
