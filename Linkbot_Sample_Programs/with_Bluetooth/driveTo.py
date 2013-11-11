@@ -2,10 +2,14 @@
 
 from barobo.linkbot import Linkbot
 import time
+import sys
 
 if __name__ == "__main__":
+  if len(sys.argv) != 2:
+    print('Usage: {0} <Bluetooth MAC Address>'.format(sys.argv[0]))
+    sys.exit(0)
   linkbot = Linkbot()
-  linkbot.connectBluetooth('00:06:66:4D:F6:6F')
+  linkbot.connectBluetooth(sys.argv[1])
 
   linkbot.resetToZero()
   print ("Moving joints to 90 degrees...")

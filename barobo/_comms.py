@@ -106,7 +106,7 @@ else:
         if os.name == 'nt':
           self.send(str(packet))
         else:
-          self.sendall(str(packet))
+          self.sendall(str(bytearray((packet))))
   except:
     pass
 
@@ -171,9 +171,9 @@ class LinkLayer_Socket(LinkLayer_Base):
 
   def write(self, packet, address):
     self.writeLock.acquire()
+    self.phys.write(packet)
     if DEBUG:
       print ("Send: {0}".format(list(map(hex, packet))))
-    self.phys.write(packet)
     self.writeLock.release()
 
   def _run(self):

@@ -302,6 +302,21 @@ class BaroboCtx():
     except:
       raise BaroboException('Could not connect to Bluetooth at {0}'.format(macaddr))
 
+  def connectMobotBluetooth(self, macaddr):
+    """
+    Connect the BaroboContext to a Bluetooth Mobot or legacy Bluetooth Linkbot.
+    """
+    self.phys = _comms.PhysicalLayer_Bluetooth(macaddr)
+    self.link = _comms.LinkLayer_Socket(self.phys, self.handlePacket)
+    self.link.start()
+    try:
+      self.__init_comms()
+      self.__checkStatus()
+      self.__getDongleID()
+    except:
+      raise BaroboException('Could not connect to Bluetooth at {0}'.format(macaddr))
+
+
   def connectDongleTTY(self, ttyfilename):
     """
     Connect the BaroboCtx to a Linkbot that is connected with a USB cable.
