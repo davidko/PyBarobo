@@ -11,6 +11,15 @@ import struct
 import time
 import barobo
 
+import ctypes
+try:
+  _sfp = ctypes.CDLL("libsfp.so")
+  haveSFP = True
+  # This is the only enum value in libsfp's header that we need
+  _SFP_WRITE_MULTIPLE = 1
+except:
+  haveSFP = False
+
 DEBUG=False
 
 class Packet:
@@ -164,6 +173,88 @@ class LinkLayer_TTY(LinkLayer_Base):
           pkt = Packet(self.readbuf, zigbeeAddr)
         self.deliver(pkt)
         self.readbuf = self.readbuf[self.readbuf[1]:]
+
+class LinkLayer_SFP(LinkLayer_Base):
+  def __init__(self, physicalLayer, readCallback):
+    LinkLayer_Base.__init__(self, physicalLayer, readCallback)
+    self.ctx = (ctypes.c_ubyte * _sfp.sfpGetSizeof())()
+    _sfp.sfpInit(self.ctx)
+
+    # I think the function prototypes (SFP*fun) and the callbacks themselves
+    # (sfp_*_cb) need to be saved in the object instance, otherwise they'll be
+    # garbage collected and all hell will break loose when libsfp calls one of
+    # the callbacks.
+
+    self.SFPdeliverfun = ctypes.CFUNCTYPE(None,
+        ctypes.POINTER(ctypes.c_ubyte), ctypes.c_ulong, ctypes.c_void_p)
+    self.SFPwritenfun = ctypes.CFUNCTYPE(ctypes.c_int,
+        ctypes.POINTER(ctypes.c_ubyte), ctypes.c_ulong,
+        ctypes.POINTER(ctypes.c_ulong), ctypes.c_void_p)
+    self.SFPlockfun = ctypes.CFUNCTYPE(None, ctypes.c_void_p)
+    self.SFPunlockfun = ctypes.CFUNCTYPE(None, ctypes.c_void_p)
+
+    self.sfp_deliver_cb = self.SFPdeliverfun(self.sfp_deliver)
+    self.sfp_write_cb = self.SFPwritenfun(self.sfp_write)
+    self.sfp_lock_tx_cb = self.SFPlockfun(self.sfp_lock_tx)
+    self.sfp_unlock_tx_cb = self.SFPunlockfun(self.sfp_unlock_tx)
+
+    _sfp.sfpSetDeliverCallback(self.ctx, self.sfp_deliver_cb, None)
+    _sfp.sfpSetWriteCallback(self.ctx, _SFP_WRITE_MULTIPLE, self.sfp_write_cb, None)
+    _sfp.sfpSetLockCallback(self.ctx, self.sfp_lock_tx_cb, None)
+    _sfp.sfpSetUnlockCallback(self.ctx, self.sfp_unlock_tx_cb, None)
+
+  def sfp_deliver(self, buf, size, userdata):
+    if (size <= 2):
+      return
+    if size == buf[1]:
+      # Received whole packet
+      if DEBUG:
+        print ("Recv: {0}".format(list(map(hex, buf[:size]))))
+      zigbeeAddr = barobo._unpack('!H', bytearray(buf[2:4]))[0]
+      if buf[0] != barobo.BaroboCtx.EVENT_REPORTADDRESS:
+        pkt = Packet(bytearray(buf[5:size]), zigbeeAddr)
+      else:
+        pkt = Packet(bytearray(buf[:size]), zigbeeAddr)
+      self.deliver(pkt)
+    
+  def sfp_write(self, buf, size, outlen, userdata):
+    if DEBUG:
+      print ("Send: {0}".format(list(map(hex, buf[:size]))))
+    outlen_w = ctypes.cast(outlen, ctypes.POINTER(ctypes.c_ulong))
+    addr = ctypes.addressof(outlen_w.contents)
+    outlen_w2 = ctypes.c_ulong.from_address(addr)
+    outlen_w2 = self.phys.write(bytearray(buf[:size]))
+    return 0
+
+  def sfp_lock_tx(self, userdata):
+    self.writeLock.acquire()
+
+  def sfp_unlock_tx(self, userdata):
+    self.writeLock.release()
+
+  def write(self, packet, address):
+    newpacket = bytearray([ packet[0],
+                            len(packet)+5,
+                            address>>8,
+                            address&0x00ff,
+                            1 ])
+    newpacket += bytearray(packet)
+    buf = (ctypes.c_ubyte * len(newpacket))(*newpacket)
+    _sfp.sfpWritePacket(self.ctx, buf, len(buf), None)
+
+  def _run(self):
+    # Try to read byte from physical layer
+    self.phys.flush()
+    self.phys.flushInput()
+    self.phys.flushOutput()
+    _sfp.sfpConnect(self.ctx)
+    while True:
+      byte = self.phys.read()
+      if byte is None:
+        continue
+      if DEBUG:
+        print ("Byte: {0}".format(list(map(hex, bytearray(byte)))))
+      rc = _sfp.sfpDeliverOctet(self.ctx, byte[0], None, 0, None)
 
 class LinkLayer_Socket(LinkLayer_Base):
   def __init__(self, physicalLayer, readCallback):
