@@ -356,7 +356,7 @@ class BaroboCtx():
   def getScannedRobots(self):
     return self.scannedIDs
 
-  def getLinkbot(self, serialID=None):
+  def getLinkbot(self, serialID=None, linkbotClass=None):
     if serialID is None:
       self.giant_lock.acquire()
       serialID = list(self.scannedIDs.keys())[0]
@@ -365,7 +365,9 @@ class BaroboCtx():
     if serialID not in self.scannedIDs:
       self.findRobot(serialID)
       self.waitForRobot(serialID)
-    l = Linkbot()
+    if linkbotClass is None:
+      linkbotClass = Linkbot
+    l = linkbotClass()
     l.zigbeeAddr = self.scannedIDs[serialID]
     l.serialID = serialID
     l.baroboCtx = self
