@@ -11,7 +11,7 @@ except:
 import barobo
 import barobo._comms as _comms
 import barobo._util as _util
-import mobot
+import barobo.mobot as mobot
 
 class Linkbot(mobot.Mobot):
   """
