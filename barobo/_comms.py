@@ -12,6 +12,8 @@ import time
 import barobo
 
 import ctypes
+import ctypes.util
+
 try:
   from sys import platform as platform
   if "win32" == platform:
