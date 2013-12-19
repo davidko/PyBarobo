@@ -13,7 +13,11 @@ import barobo
 
 import ctypes
 try:
-  _sfp = ctypes.CDLL("libsfp.so.0")
+  from sys import platform as platform
+  if "win32" == platform:
+    _sfp = ctypes.CDLL("libsfp.dll")
+  else:
+    _sfp = ctypes.CDLL(ctypes.util.find_library("sfp"))
   haveSFP = True
   # This is the only enum value in libsfp's header that we need
   _SFP_WRITE_MULTIPLE = 1
