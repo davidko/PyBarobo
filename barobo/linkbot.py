@@ -308,7 +308,7 @@ class Linkbot(mobot.Mobot):
     buf = bytearray([barobo.BaroboCtx.TWIMSG_HEADER, barobo.BaroboCtx.TWIMSG_ANALOGWRITEPIN, pin, value])
     self.twiSend(0x02, buf)
 
-  def setBreakoutAnalogRef(self, pin, ref):
+  def setBreakoutAnalogRef(self, ref):
     """
     Set the reference voltage of an analog input pin. 
 
@@ -317,7 +317,7 @@ class Linkbot(mobot.Mobot):
       barobo.AREF_INTERNAL1V1, barobo.AREF_INTERNAL2V56, and
       barobo.AREF_EXTERNAL.
     """
-    buf = bytearray([barobo.BaroboCtx.TWIMSG_HEADER, barobo.BaroboCtx.TWIMSG_ANALOGREF, pin, ref])
+    buf = bytearray([barobo.BaroboCtx.TWIMSG_HEADER, barobo.BaroboCtx.TWIMSG_ANALOGREF, ref])
     self.twiSend(0x02, buf)
 
   def setBreakoutDigitalPin(self, pin, value):
