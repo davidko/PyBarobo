@@ -12,8 +12,14 @@ import time
 import barobo
 
 import ctypes
+import ctypes.util
+
 try:
-  _sfp = ctypes.CDLL("libsfp.so")
+  from sys import platform as platform
+  if "win32" == platform:
+    _sfp = ctypes.CDLL("libsfp.dll")
+  else:
+    _sfp = ctypes.CDLL(ctypes.util.find_library("sfp"))
   haveSFP = True
   # This is the only enum value in libsfp's header that we need
   _SFP_WRITE_MULTIPLE = 1
@@ -254,7 +260,12 @@ class LinkLayer_SFP(LinkLayer_Base):
         continue
       if DEBUG:
         print ("Byte: {0}".format(list(map(hex, bytearray(byte)))))
-      rc = _sfp.sfpDeliverOctet(self.ctx, byte[0], None, 0, None)
+      from sys import version_info
+      if version_info < (3,0):
+        octet = ord(byte[0])
+      else:
+        octet = byte[0]
+      rc = _sfp.sfpDeliverOctet(self.ctx, octet, None, 0, None)
 
 class LinkLayer_Socket(LinkLayer_Base):
   def __init__(self, physicalLayer, readCallback):
