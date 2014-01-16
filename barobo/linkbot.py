@@ -168,6 +168,17 @@ class Linkbot(mobot.Mobot):
     response = self._transactMessage(buf)
     return barobo._unpack('<3B', response[2:5])
 
+  def getHWRev(self):
+    """ 
+    Get the hardware revision of the Linkbot
+
+    @rtype: [major, minor, micro]
+    @return: The major, minor, and micro version numbers
+    """
+    buf = bytearray([barobo.BaroboCtx.CMD_GET_HW_REV, 0x03, 0x00])
+    response = self._transactMessage(buf)
+    return barobo._unpack('<3B', response[2:5])
+
   def getLinkbot(self, addr):
     """
     Use an instance of a Linkbot to get instances to other Linkbots. Note that
@@ -202,7 +213,7 @@ class Linkbot(mobot.Mobot):
     self.moveToNB(angle1+angles[0], angle2+angles[1], angle3+angles[2])
 
   def moveContinuous(self, dir1, dir2, dir3):
-    mobot.Mobot.moveContinuous(self, dir1, dir2, dir3)
+    mobot.Mobot.moveContinuous(self, dir1, dir2, dir3, 0)
 
   def moveTo(self, angle1, angle2, angle3):
     self.moveToNB(angle1, angle2, angle3)
@@ -348,6 +359,14 @@ class Linkbot(mobot.Mobot):
     buf = bytearray([0x6A, 0x05, (freq>>8)&0xff, freq&0xff, 0x00])
     self._transactMessage(buf)
 
+  def setHWRev(self, major, minor, micro):
+    """
+    Set the HW revision of the Linkbot.
+    """
+    buf = bytearray([barobo.BaroboCtx.CMD_SET_HW_REV, 0, major, minor, micro, 0x00])
+    buf[1] = len(buf)
+    self._transactMessage(buf)
+
   def setJointSpeeds(self, speed1, speed2, speed3):
     self.setJointSpeed(1, speed1)
     self.setJointSpeed(2, speed2)
@@ -393,6 +412,13 @@ class Linkbot(mobot.Mobot):
     _angle = _util.deg2rad(angle)
     buf = bytearray([barobo.BaroboCtx.CMD_SMOOTHMOVE, 20, joint-1])
     buf += bytearray(struct.pack('<4f', _accel0, _accelf, _vmax, _angle))
+    buf += bytearray([0x00])
+    buf[1] = len(buf)
+    self._transactMessage(buf)
+
+  def _setSerialID(self, text):
+    buf = bytearray([barobo.BaroboCtx.CMD_SETSERIALID, 0])
+    buf += bytearray(text)
     buf += bytearray([0x00])
     buf[1] = len(buf)
     self._transactMessage(buf)

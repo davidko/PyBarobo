@@ -374,7 +374,7 @@ class Mobot:
         according to the right-hand-rule.
       - ROBOT_NEGATIVE: Same as above but in the negative direction.
     """
-    self.setMovementState(dir1, dir2, dir3, dir4)
+    Mobot.setMovementState(self, dir1, dir2, dir3, dir4)
 
   def moveTo(self, angle1, angle2, angle3, angle4):
     self.moveToNB(angle1, angle2, angle3, angle4)
