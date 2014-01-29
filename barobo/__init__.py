@@ -110,7 +110,7 @@ def _unpack(fmt, buffer):
   if sys.version_info[0] == 2 and sys.version_info[1] == 6:
     return struct.unpack(fmt, bytes(buffer))
   else:
-    return struct.unpack(fmt, buffer)
+    return struct.unpack(fmt, str(buffer))
 
 
 class BaroboException(Exception):
