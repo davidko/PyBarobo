@@ -57,6 +57,13 @@
 </table>
 <!-- ==================== CLASS DESCRIPTION ==================== -->
 <h1 class="epydoc">Class Linkbot</h1><p class="nomargin-top"><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+<a href="barobo.mobot.Mobot-class.html">mobot.Mobot</a> --+
+              |
+             <strong class="uidshort">Linkbot</strong>
+</pre>
+
+<hr />
 <h1 class="heading">The Linkbot Class</h1>
     <p>Each instance of this class can be used to represent a physical 
     Linkbot. The member functions of this class can be used to get data, 
@@ -91,7 +98,7 @@
     move() was used, which returns immediately after the joint begins 
     moving allowing the setBuzzerFrequency() function to execute as the 
     joint begins moving.</p>
-    <p>The <a href="barobo.linkbot.Linkbot-class.html#moveWait" 
+    <p>The <a href="barobo.mobot.Mobot-class.html#moveWait" 
     class="link">moveWait()</a> function can be used to block until 
     non-blocking motion functions are finished. For instance, the following
     two blocks of code will accomplish the same task:</p>
@@ -127,134 +134,11 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="__init__"></a><span class="summary-sig-name">__init__</span>(<span class="summary-sig-arg">self</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.__init__">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#checkStatus" class="summary-sig-name">checkStatus</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Check to see if the Linkbot is online.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.checkStatus">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="connect"></a><span class="summary-sig-name">connect</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      Connect to a Linkbot through BaroboLink</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.connect">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
           <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#connectBluetooth" class="summary-sig-name">connectBluetooth</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">bluetooth_mac_addr</span>)</span><br />
       Connect to a bluetooth enabled Linkbot.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.connectBluetooth">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#disableButtonCallback" class="summary-sig-name">disableButtonCallback</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Disable the button callback.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.disableButtonCallback">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="disconnect"></a><span class="summary-sig-name">disconnect</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      Disconnect from the Linkbot.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.disconnect">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#driveJointTo" class="summary-sig-name">driveJointTo</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">joint</span>,
-        <span class="summary-sig-arg">angle</span>)</span><br />
-      Drive a single joint to a position as fast as possible, using the 
-      on-board PID motor controller.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.driveJointTo">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#driveJointToNB" class="summary-sig-name">driveJointToNB</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">joint</span>,
-        <span class="summary-sig-arg">angle</span>)</span><br />
-      Non-blocking version of driveJointTo().</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.driveJointToNB">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -296,25 +180,6 @@
       Non-blocking version of driveTo().</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.driveToNB">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#enableButtonCallback" class="summary-sig-name">enableButtonCallback</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">callbackfunc</span>,
-        <span class="summary-sig-arg">userdata</span>=<span class="summary-sig-default">None</span>)</span><br />
-      Enable button callbacks.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.enableButtonCallback">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -447,66 +312,14 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">Robot Form</span>
+      <span class="summary-type">[major, minor, micro]</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#getFormFactor" class="summary-sig-name">getFormFactor</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Get the form factor.</td>
+          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#getHWRev" class="summary-sig-name">getHWRev</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Get the hardware revision of the Linkbot</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.getFormFactor">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">number</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#getJointAngle" class="summary-sig-name">getJointAngle</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">joint</span>)</span><br />
-      Get the current angle position of a joint.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.getJointAngle">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">[float, float, float]</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#getJointAngles" class="summary-sig-name">getJointAngles</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Get the current joint angles.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.getJointAngles">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">[numbers]</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#getJointAnglesTime" class="summary-sig-name">getJointAnglesTime</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Get the joint angles with a timestamp.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.getJointAnglesTime">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.getHWRev">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -555,102 +368,9 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="getVersion"></a><span class="summary-sig-name">getVersion</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      Get the firmware version of the Linkbot</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.getVersion">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="isMoving"></a><span class="summary-sig-name">isMoving</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#isMoving" class="summary-sig-name">isMoving</a>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.isMoving">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#moveJoint" class="summary-sig-name">moveJoint</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">joint</span>,
-        <span class="summary-sig-arg">angle</span>)</span><br />
-      Move a joint from it's current position by 'angle' degrees.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.moveJoint">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#moveJointNB" class="summary-sig-name">moveJointNB</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">joint</span>,
-        <span class="summary-sig-arg">angle</span>)</span><br />
-      Non-blocking version of moveJoint().</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.moveJointNB">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#moveJointTo" class="summary-sig-name">moveJointTo</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">joint</span>,
-        <span class="summary-sig-arg">angle</span>)</span><br />
-      Move a joint to an angle.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.moveJointTo">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#moveJointToNB" class="summary-sig-name">moveJointToNB</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">joint</span>,
-        <span class="summary-sig-arg">angle</span>)</span><br />
-      Non-blocking version of moveJointTo.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.moveJointToNB">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -724,7 +444,7 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="moveTo"></a><span class="summary-sig-name">moveTo</span>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#moveTo" class="summary-sig-name">moveTo</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">angle1</span>,
         <span class="summary-sig-arg">angle2</span>,
         <span class="summary-sig-arg">angle3</span>)</span></td>
@@ -757,16 +477,15 @@
       
     </td>
   </tr>
-<tr>
+<tr class="private">
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="moveWait"></a><span class="summary-sig-name">moveWait</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      Wait until the current robotic motion is finished.</td>
+          <td><span class="summary-sig"><a name="_pairParent"></a><span class="summary-sig-name">_pairParent</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.moveWait">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot._pairParent">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -832,7 +551,7 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="recordAnglesEnd"></a><span class="summary-sig-name">recordAnglesEnd</span>(<span class="summary-sig-arg">self</span>)</span><br />
+          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#recordAnglesEnd" class="summary-sig-name">recordAnglesEnd</a>(<span class="summary-sig-arg">self</span>)</span><br />
       End recording angles and return a list consisting of [time_values, 
       joint1angles, joint2angles, joint3angles]</td>
           <td align="right" valign="top">
@@ -850,60 +569,9 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="recordAnglesPlot"></a><span class="summary-sig-name">recordAnglesPlot</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#recordAnglesPlot" class="summary-sig-name">recordAnglesPlot</a>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.recordAnglesPlot">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="reset"></a><span class="summary-sig-name">reset</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      Reset the multi-revolution counter on the joints.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.reset">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="resetToZero"></a><span class="summary-sig-name">resetToZero</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      Reset the multi-revolution counter and move all the joints to zero 
-      positions.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.resetToZero">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="resetToZeroNB"></a><span class="summary-sig-name">resetToZeroNB</span>(<span class="summary-sig-arg">self</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.resetToZeroNB">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -955,7 +623,6 @@
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#setBreakoutAnalogRef" class="summary-sig-name">setBreakoutAnalogRef</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">pin</span>,
         <span class="summary-sig-arg">ref</span>)</span><br />
       Set the reference voltage of an analog input pin.</td>
           <td align="right" valign="top">
@@ -1029,31 +696,13 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#setJointMovementState" class="summary-sig-name">setJointMovementState</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">joint</span>,
-        <span class="summary-sig-arg">state</span>)</span><br />
-      Set a joint movement state</td>
+          <td><span class="summary-sig"><a name="setHWRev"></a><span class="summary-sig-name">setHWRev</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">major</span>,
+        <span class="summary-sig-arg">minor</span>,
+        <span class="summary-sig-arg">micro</span>)</span><br />
+      Set the HW revision of the Linkbot.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setJointMovementState">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#setJointSpeed" class="summary-sig-name">setJointSpeed</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">joint</span>,
-        <span class="summary-sig-arg">speed</span>)</span><br />
-      Set the speed of a joint.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setJointSpeed">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setHWRev">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -1087,44 +736,6 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#setJointState" class="summary-sig-name">setJointState</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">joint</span>,
-        <span class="summary-sig-arg">state</span>)</span><br />
-      Set a joint's movement state.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setJointState">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#setJointStates" class="summary-sig-name">setJointStates</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">states</span>,
-        <span class="summary-sig-arg">speeds</span>)</span><br />
-      Set the joint states for all 3 joints simultaneously.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setJointStates">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
           <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#setLEDColor" class="summary-sig-name">setLEDColor</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">r</span>,
         <span class="summary-sig-arg">g</span>,
@@ -1145,26 +756,7 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#setMotorPower" class="summary-sig-name">setMotorPower</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">joint</span>,
-        <span class="summary-sig-arg">power</span>)</span><br />
-      Set the power of a motor.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setMotorPower">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="setMotorPowers"></a><span class="summary-sig-name">setMotorPowers</span>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="barobo.linkbot.Linkbot-class.html#setMotorPowers" class="summary-sig-name">setMotorPowers</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">power1</span>,
         <span class="summary-sig-arg">power2</span>,
         <span class="summary-sig-arg">power3</span>)</span></td>
@@ -1220,15 +812,16 @@
       
     </td>
   </tr>
-<tr>
+<tr class="private">
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="stop"></a><span class="summary-sig-name">stop</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a name="_setSerialID"></a><span class="summary-sig-name">_setSerialID</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">text</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.stop">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot._setSerialID">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -1294,55 +887,42 @@
       
     </td>
   </tr>
-<tr class="private">
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="__transactMessage"></a><span class="summary-sig-name">__transactMessage</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">buf</span>,
-        <span class="summary-sig-arg">maxTries</span>=<span class="summary-sig-default">3</span>,
-        <span class="summary-sig-arg">timeout</span>=<span class="summary-sig-default">2.0</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.__transactMessage">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr class="private">
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="__messageThread"></a><span class="summary-sig-name">__messageThread</span>(<span class="summary-sig-arg">self</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.__messageThread">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr class="private">
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="__eventThread"></a><span class="summary-sig-name">__eventThread</span>(<span class="summary-sig-arg">self</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.__eventThread">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="barobo.mobot.Mobot-class.html">mobot.Mobot</a></code></b>:
+      <code><a href="barobo.mobot.Mobot-class.html#__init__">__init__</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#checkStatus">checkStatus</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#connect">connect</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#connectMobotBluetooth">connectMobotBluetooth</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#disableButtonCallback">disableButtonCallback</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#disconnect">disconnect</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#driveJointTo">driveJointTo</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#driveJointToNB">driveJointToNB</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#enableButtonCallback">enableButtonCallback</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#getFormFactor">getFormFactor</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#getJointAngle">getJointAngle</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#getJointAngles">getJointAngles</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#getJointAnglesTime">getJointAnglesTime</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#getJointState">getJointState</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#getVersion">getVersion</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#moveJoint">moveJoint</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#moveJointNB">moveJointNB</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#moveJointTo">moveJointTo</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#moveJointToNB">moveJointToNB</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#moveWait">moveWait</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#reset">reset</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#resetToZero">resetToZero</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#resetToZeroNB">resetToZeroNB</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#setJointMovementState">setJointMovementState</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#setJointSpeed">setJointSpeed</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#setJointState">setJointState</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#setJointStates">setJointStates</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#setMotorPower">setMotorPower</a></code>,
+      <code><a href="barobo.mobot.Mobot-class.html#stop">stop</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="barobo.mobot.Mobot-class.html">mobot.Mobot</a></code></b> (private):
+      <code><a href="barobo.mobot.Mobot-class.html#_transactMessage" onclick="show_private();">_transactMessage</a></code>
+      </p></div>
     </td>
   </tr>
 </table>
@@ -1364,26 +944,6 @@
   </td>
 </tr>
 </table>
-<a name="checkStatus"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">checkStatus</span>(<span class="sig-arg">self</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.checkStatus">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Check to see if the Linkbot is online. Raises an exception if the 
-  Linkbot is not online.</p>
-  <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
 <a name="connectBluetooth"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -1406,75 +966,9 @@
         <li><strong class="pname"><code>bluetooth_mac_addr</code></strong> (string) - The MAC address of the bluetooth Linkbot. Should be something 
           like '00:06:66:6D:12:34'</li>
     </ul></dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="disableButtonCallback"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">disableButtonCallback</span>(<span class="sig-arg">self</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.disableButtonCallback">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Disable the button callback.</p>
-  <p>See also: enableButtonCallback()</p>
-  <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
-<a name="driveJointTo"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">driveJointTo</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">joint</span>,
-        <span class="sig-arg">angle</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.driveJointTo">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Drive a single joint to a position as fast as possible, using the 
-  on-board PID motor controller.</p>
-  <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>joint</code></strong> (number [1,3]) - The joint to move</li>
-        <li><strong class="pname"><code>angle</code></strong> (number) - The angle to move the joint to, in degrees</li>
-    </ul></dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="driveJointToNB"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">driveJointToNB</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">joint</span>,
-        <span class="sig-arg">angle</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.driveJointToNB">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Non-blocking version of driveJointTo(). Please see driveJointTo() for 
-  more details.</p>
-  <dl class="fields">
+    <dt>Overrides:
+        <a href="barobo.mobot.Mobot-class.html#connectBluetooth">mobot.Mobot.connectBluetooth</a>
+    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -1500,10 +994,14 @@
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>angle1</code></strong> (number) - Position to move the joint, in degrees</li>
-        <li><strong class="pname"><code>angle2</code></strong> (number) - Position to move the joint, in degrees</li>
-        <li><strong class="pname"><code>angle3</code></strong> (number) - Position to move the joint, in degrees</li>
+        <li><strong class="pname"><code>angle1</code></strong> - Position to move the joint, in degrees</li>
+        <li><strong class="pname"><code>angle2</code></strong> - Position to move the joint, in degrees</li>
+        <li><strong class="pname"><code>angle3</code></strong> - Position to move the joint, in degrees</li>
     </ul></dd>
+    <dt>Overrides:
+        <a href="barobo.mobot.Mobot-class.html#driveTo">mobot.Mobot.driveTo</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -1526,41 +1024,10 @@
   
   <p>Non-blocking version of driveTo(). See driveTo() for more details</p>
   <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
-<a name="enableButtonCallback"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">enableButtonCallback</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">callbackfunc</span>,
-        <span class="sig-arg">userdata</span>=<span class="sig-default">None</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.enableButtonCallback">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Enable button callbacks. This function temporarily disables the 
-  robot's default button actions. Instead, whenever a button is pressed or 
-  released, the function given as the parameter 'callbackfunc' is 
-  called.</p>
-  <p>See also: disableButtonCallback()</p>
-  <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>userdata</code></strong> (Anything) - This is data that will be passed into the callbackfunc whenever 
-          it is called.</li>
-        <li><strong class="pname"><code>callbackfunc</code></strong> (function: func(buttonMask, buttonDown, userdata) . The 
-          'buttonMask' parameter of the callback function will contain a 
-          bitmask indicating which buttons have changed. The buttonDown 
-          parameter is another bitmask, indicating the current state of 
-          each button.)</li>
-    </ul></dd>
+    <dt>Overrides:
+        <a href="barobo.mobot.Mobot-class.html#driveToNB">mobot.Mobot.driveToNB</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -1707,94 +1174,24 @@
   </dl>
 </td></tr></table>
 </div>
-<a name="getFormFactor"></a>
+<a name="getHWRev"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">getFormFactor</span>(<span class="sig-arg">self</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getHWRev</span>(<span class="sig-arg">self</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.getFormFactor">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.getHWRev">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
-  <p>Get the form factor.</p>
+  <p>Get the hardware revision of the Linkbot</p>
   <dl class="fields">
-    <dt>Returns: Robot Form</dt>
-        <dd>Returns barobo.ROBOTFORM_MOBOT, barobo.ROBOTFORM_I, 
-          barobo.ROBOTFORM_L, or barobo.ROBOTFORM_T</dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="getJointAngle"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">getJointAngle</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">joint</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.getJointAngle">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Get the current angle position of a joint.</p>
-  <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>joint</code></strong> (number) - Get the position of this joint. Can be 1, 2, or 3</li>
-    </ul></dd>
-    <dt>Returns: number</dt>
-        <dd>Return the joint angle in degrees</dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="getJointAngles"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">getJointAngles</span>(<span class="sig-arg">self</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.getJointAngles">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Get the current joint angles.</p>
-  <dl class="fields">
-    <dt>Returns: [float, float, float]</dt>
-        <dd>The joint angles in degrees</dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="getJointAnglesTime"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">getJointAnglesTime</span>(<span class="sig-arg">self</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.getJointAnglesTime">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Get the joint angles with a timestamp. The timestamp is the number of 
-  seconds since the robot has powered on.</p>
-  <dl class="fields">
-    <dt>Returns: [numbers]</dt>
-        <dd>[seconds, angle1, angle2, angle3], all angles in degrees</dd>
+    <dt>Returns: [major, minor, micro]</dt>
+        <dd>The major, minor, and micro version numbers</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1841,106 +1238,25 @@
   </dl>
 </td></tr></table>
 </div>
-<a name="moveJoint"></a>
+<a name="isMoving"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">moveJoint</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">joint</span>,
-        <span class="sig-arg">angle</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">isMoving</span>(<span class="sig-arg">self</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.moveJoint">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.isMoving">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
-  <p>Move a joint from it's current position by 'angle' degrees.</p>
-  <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>joint</code></strong> (number) - The joint to move: 1, 2, or 3</li>
-        <li><strong class="pname"><code>angle</code></strong> (number) - The number of degrees to move the joint from it's current 
-          position. For example, &quot;45&quot; will move the joint in the 
-          positive direction by 45 degrees from it's current location, and 
-          &quot;-30&quot; will move the joint in the negative direction by 
-          30 degrees.</li>
-    </ul></dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="moveJointNB"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">moveJointNB</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">joint</span>,
-        <span class="sig-arg">angle</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.moveJointNB">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
   
-  <p>Non-blocking version of moveJoint(). See moveJoint() for more 
-  details.</p>
   <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
-<a name="moveJointTo"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">moveJointTo</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">joint</span>,
-        <span class="sig-arg">angle</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.moveJointTo">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Move a joint to an angle.</p>
-  <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>joint</code></strong> (number) - The joint to move: 1, 2, or 3</li>
-        <li><strong class="pname"><code>angle</code></strong> (number) - The absolute position you want the joint to move to. Values are 
-          in degrees and can be any value. For example, the value 
-          &quot;720&quot; means two full rotations in the positive 
-          directions past &quot;0&quot;.</li>
-    </ul></dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="moveJointToNB"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">moveJointToNB</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">joint</span>,
-        <span class="sig-arg">angle</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.moveJointToNB">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Non-blocking version of moveJointTo. See moveJointTo for more 
-  details.</p>
-  <dl class="fields">
+    <dt>Overrides:
+        <a href="barobo.mobot.Mobot-class.html#isMoving">mobot.Mobot.isMoving</a>
+    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -1965,9 +1281,13 @@
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>angle1</code></strong> (number) - Number of degrees to move joint 1. Similar for parameters 
+        <li><strong class="pname"><code>angle1</code></strong> - Number of degrees to move joint 1. Similar for parameters 
           'angle2' and 'angle3'.</li>
     </ul></dd>
+    <dt>Overrides:
+        <a href="barobo.mobot.Mobot-class.html#move">mobot.Mobot.move</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -1990,6 +1310,10 @@
   
   <p>Non-blocking version of move(). See move() for more details</p>
   <dl class="fields">
+    <dt>Overrides:
+        <a href="barobo.mobot.Mobot-class.html#moveNB">mobot.Mobot.moveNB</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -2014,7 +1338,7 @@
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>dir1</code></strong> (Barobo Direction Macro) - This parameter may take the following values:
+        <li><strong class="pname"><code>dir1</code></strong> - This parameter may take the following values:
           <ul>
             <li>
               ROBOT_NEUTRAL: Makes the joint relax
@@ -2038,6 +1362,35 @@
             </li>
           </ul></li>
     </ul></dd>
+    <dt>Overrides:
+        <a href="barobo.mobot.Mobot-class.html#moveContinuous">mobot.Mobot.moveContinuous</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="moveTo"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">moveTo</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">angle1</span>,
+        <span class="sig-arg">angle2</span>,
+        <span class="sig-arg">angle3</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.moveTo">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="barobo.mobot.Mobot-class.html#moveTo">mobot.Mobot.moveTo</a>
+    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -2067,10 +1420,14 @@
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>angle1</code></strong> (number) - Position to move the joint, in degrees</li>
-        <li><strong class="pname"><code>angle2</code></strong> (number) - Position to move the joint, in degrees</li>
-        <li><strong class="pname"><code>angle3</code></strong> (number) - Position to move the joint, in degrees</li>
+        <li><strong class="pname"><code>angle1</code></strong> - Position to move the joint, in degrees</li>
+        <li><strong class="pname"><code>angle2</code></strong> - Position to move the joint, in degrees</li>
+        <li><strong class="pname"><code>angle3</code></strong> - Position to move the joint, in degrees</li>
     </ul></dd>
+    <dt>Overrides:
+        <a href="barobo.mobot.Mobot-class.html#moveToNB">mobot.Mobot.moveToNB</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -2115,6 +1472,54 @@
     <dd><ul class="nomargin-top">
         <li><strong class="pname"><code>delay</code></strong> (number) - The number of seconds to delay between joint angles readings.</li>
     </ul></dd>
+    <dt>Overrides:
+        <a href="barobo.mobot.Mobot-class.html#recordAnglesBegin">mobot.Mobot.recordAnglesBegin</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="recordAnglesEnd"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">recordAnglesEnd</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.recordAnglesEnd">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>End recording angles and return a list consisting of [time_values, 
+  joint1angles, joint2angles, joint3angles]</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="barobo.mobot.Mobot-class.html#recordAnglesEnd">mobot.Mobot.recordAnglesEnd</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="recordAnglesPlot"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">recordAnglesPlot</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.recordAnglesPlot">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="barobo.mobot.Mobot-class.html#recordAnglesPlot">mobot.Mobot.recordAnglesPlot</a>
+    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -2178,7 +1583,6 @@
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">setBreakoutAnalogRef</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">pin</span>,
         <span class="sig-arg">ref</span>)</span>
   </h3>
   </td><td align="right" valign="top"
@@ -2190,10 +1594,9 @@
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>ref</code></strong> - Valid values are barobo.AREF_DEFAULT, barobo.AREF_INTERNAL, 
+        <li><strong class="pname"><code>ref</code></strong> (integer from 0-7) - Valid values are barobo.AREF_DEFAULT, barobo.AREF_INTERNAL, 
           barobo.AREF_INTERNAL1V1, barobo.AREF_INTERNAL2V56, and 
           barobo.AREF_EXTERNAL.</li>
-        <li><strong class="pname"><code>pin</code></strong> (integer from 0-7)</li>
     </ul></dd>
   </dl>
 </td></tr></table>
@@ -2269,79 +1672,6 @@
   </dl>
 </td></tr></table>
 </div>
-<a name="setJointMovementState"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">setJointMovementState</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">joint</span>,
-        <span class="sig-arg">state</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setJointMovementState">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Set a joint movement state</p>
-  <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>state</code></strong> (Barobo Direction Macro) - This parameter may take the following values:
-          <ul>
-            <li>
-              ROBOT_NEUTRAL: Makes the joint relax
-            </li>
-            <li>
-              ROBOT_FORWARD: Rotates the joint to move the robot in the 
-              &quot;forward&quot; direction, if the robot has wheels.
-            </li>
-            <li>
-              ROBOT_BACKWARD: Same as above but backwards
-            </li>
-            <li>
-              ROBOT_HOLD: Hold the joint at its current position
-            </li>
-            <li>
-              ROBOT_POSITIVE: Rotates the joint in the &quot;positive&quot;
-              direction, according to the right-hand-rule.
-            </li>
-            <li>
-              ROBOT_NEGATIVE: Same as above but in the negative direction.
-            </li>
-          </ul></li>
-    </ul></dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="setJointSpeed"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">setJointSpeed</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">joint</span>,
-        <span class="sig-arg">speed</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setJointSpeed">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Set the speed of a joint.</p>
-  <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>joint</code></strong> (number) - The joint to change the speed. Can be 1, 2, or 3</li>
-        <li><strong class="pname"><code>speed</code></strong> (number) - The speed to set the joint to, in degrees/second.</li>
-    </ul></dd>
-  </dl>
-</td></tr></table>
-</div>
 <a name="setJointSpeeds"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -2362,102 +1692,10 @@
   <p>Set all three motor speed simultaneously. Parameters in 
   degrees/second.</p>
   <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
-<a name="setJointState"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">setJointState</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">joint</span>,
-        <span class="sig-arg">state</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setJointState">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Set a joint's movement state.</p>
-  <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>joint</code></strong> - The joint id: 1, 2, or 3</li>
-        <li><strong class="pname"><code>state</code></strong> (Barobo Direction Macro) - This parameter may take the following values:
-          <ul>
-            <li>
-              ROBOT_NEUTRAL: Makes the joint relax
-            </li>
-            <li>
-              ROBOT_FORWARD: Rotates the joint to move the robot in the 
-              &quot;forward&quot; direction, if the robot has wheels.
-            </li>
-            <li>
-              ROBOT_BACKWARD: Same as above but backwards
-            </li>
-            <li>
-              ROBOT_HOLD: Hold the joint at its current position
-            </li>
-            <li>
-              ROBOT_POSITIVE: Rotates the joint in the &quot;positive&quot;
-              direction, according to the right-hand-rule.
-            </li>
-            <li>
-              ROBOT_NEGATIVE: Same as above but in the negative direction.
-            </li>
-          </ul></li>
-    </ul></dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="setJointStates"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">setJointStates</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">states</span>,
-        <span class="sig-arg">speeds</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setJointStates">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Set the joint states for all 3 joints simultaneously.</p>
-  <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>states</code></strong> ([state1, state2...]) - Each state may take the following values:
-          <ul>
-            <li>
-              ROBOT_NEUTRAL: Makes the joint relax
-            </li>
-            <li>
-              ROBOT_FORWARD: Rotates the joint to move the robot in the 
-              &quot;forward&quot; direction, if the robot has wheels.
-            </li>
-            <li>
-              ROBOT_BACKWARD: Same as above but backwards
-            </li>
-            <li>
-              ROBOT_HOLD: Hold the joint at its current position
-            </li>
-            <li>
-              ROBOT_POSITIVE: Rotates the joint in the &quot;positive&quot;
-              direction, according to the right-hand-rule.
-            </li>
-            <li>
-              ROBOT_NEGATIVE: Same as above but in the negative direction.
-            </li>
-          </ul></li>
-        <li><strong class="pname"><code>speeds</code></strong> ([speed1, speed2 ...]) - The speeds to set each joint</li>
-    </ul></dd>
+    <dt>Overrides:
+        <a href="barobo.mobot.Mobot-class.html#setJointSpeeds">mobot.Mobot.setJointSpeeds</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -2489,29 +1727,28 @@
   </dl>
 </td></tr></table>
 </div>
-<a name="setMotorPower"></a>
+<a name="setMotorPowers"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">setMotorPower</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">joint</span>,
-        <span class="sig-arg">power</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setMotorPowers</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">power1</span>,
+        <span class="sig-arg">power2</span>,
+        <span class="sig-arg">power3</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setMotorPower">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="barobo.linkbot-pysrc.html#Linkbot.setMotorPowers">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
-  <p>Set the power of a motor.</p>
+  
   <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>joint</code></strong> (number) - The joint to control. Can be 1, 2, or 3</li>
-        <li><strong class="pname"><code>power</code></strong> (integer) - An integer between -255 and 255.</li>
-    </ul></dd>
+    <dt>Overrides:
+        <a href="barobo.mobot.Mobot-class.html#setMotorPowers">mobot.Mobot.setMotorPowers</a>
+    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -2536,7 +1773,7 @@
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>state1</code></strong> (movement_state) - This parameter may take the following values:
+        <li><strong class="pname"><code>state1</code></strong> - This parameter may take the following values:
           <ul>
             <li>
               ROBOT_NEUTRAL: Makes the joint relax
@@ -2560,6 +1797,10 @@
             </li>
           </ul></li>
     </ul></dd>
+    <dt>Overrides:
+        <a href="barobo.mobot.Mobot-class.html#setMovementState">mobot.Mobot.setMovementState</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -2709,7 +1950,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Mon Oct  7 14:08:45 2013
+    Generated by Epydoc 3.0.1 on Thu Feb 13 15:27:02 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
