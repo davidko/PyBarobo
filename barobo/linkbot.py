@@ -62,7 +62,10 @@ class Linkbot(mobot.Mobot):
 
   def connectBluetooth(self, bluetooth_mac_addr):
     """
-    Connect to a bluetooth enabled Linkbot.
+    Connect to a bluetooth enabled Linkbot. Note that you must have a bluetooth
+    enabled LinkPod connected to your Linkbot for this function to work. Most
+    Linkbots do not come with BlueTooth, and instead use a ZigBee like protocol
+    to communicate with each other.
 
     @type bluetooth_mac_addr: string
     @param bluetooth_mac_addr: The MAC address of the bluetooth Linkbot. Should
