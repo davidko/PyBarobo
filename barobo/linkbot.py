@@ -323,7 +323,7 @@ class Linkbot(mobot.Mobot):
     """
     Set the reference voltage of an analog input pin. 
 
-    @type pin: integer from 0-7
+    @type ref: integer from 0-7
     @param ref: Valid values are barobo.AREF_DEFAULT, barobo.AREF_INTERNAL,
       barobo.AREF_INTERNAL1V1, barobo.AREF_INTERNAL2V56, and
       barobo.AREF_EXTERNAL.
