@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import math
 import threading
 import time
 import struct
@@ -76,6 +77,8 @@ class Mobot:
     self.eventThread.start()
 
     self.callbackEnabled = False
+    self.jointCallbackEnabled = False
+    self.accelCallbackEnabled = False
 
   def checkStatus(self):
     """
@@ -671,6 +674,16 @@ class Mobot:
       evt = self.eventQueue.get(block=True, timeout=None)
       if (evt[0] == barobo.BaroboCtx.EVENT_BUTTON) and self.callbackEnabled:
         self.callbackfunc(evt[6], evt[7], self.callbackUserData)
+      elif (evt[0] == barobo.BaroboCtx.EVENT_JOINT_MOVED) and self.jointCallbackEnabled:
+        values = barobo._unpack('<Lfff', evt[2:18]) 
+        self.jointcallbackfunc(
+            values[0], 
+            values[1]*180.0/math.pi,
+            values[2]*180.0/math.pi,
+            values[3]*180.0/math.pi)
+      elif (evt[0] == barobo.BaroboCtx.EVENT_ACCEL_CHANGED) and self.accelCallbackEnabled:
+        values =  barobo._unpack('<L', evt[2:6]) + barobo._unpack('>3h', evt[6:12])
+        self.accelcallbackfunc(values[0], values[1]/16384.0, values[2]/16384.0, values[3]/16384.0)
       elif evt[0] == barobo.BaroboCtx.EVENT_DEBUG_MSG:
         s = barobo._unpack(s, evt[2:-1])
         print ("Debug msg from {0}: {1}".format(self.serialID, s))

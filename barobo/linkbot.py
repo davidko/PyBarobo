@@ -88,6 +88,39 @@ class Linkbot(mobot.Mobot):
   def driveToNB(self, angle1, angle2, angle3):
     mobot.Mobot.driveToNB(self, angle1, angle2, angle3, 0)
 
+  def disableAccelEventCallback(self):
+    buf = bytearray([barobo.BaroboCtx.CMD_SET_ENABLE_ACCEL_EVENT, 4, 0x00, 0x00])
+    self._transactMessage(buf)
+    self.accelCallbackEnabled = False
+
+  def disableJointEventCallback(self):
+    buf = bytearray([barobo.BaroboCtx.CMD_SET_ENABLE_JOINT_EVENT, 4, 0x00, 0x00])
+    self._transactMessage(buf)
+    self.jointCallbackEnabled = False
+
+  def enableJointEventCallback(self, cb):
+    """ 
+    Enable the joint event callback. Whenever any joint on the robot moves, the 
+    callback function 'cb' will be called. The callback function should be
+    of the form cb(millis_timestamp, j1, j2, j3) where 'millis_timestamp' 
+    will contain a timestamp from the robot, and j1, j2, and j3 will contain
+    the new angles of all of the joints in degrees. 
+    """
+    buf = bytearray([barobo.BaroboCtx.CMD_SET_ENABLE_JOINT_EVENT, 4, 0x07, 0x00])
+    self._transactMessage(buf)
+    self.jointcallbackfunc = cb
+    self.jointCallbackEnabled = True
+
+  def enableAccelEventCallback(self, cb):
+    """
+    Enable the acceleration event callback. Whenever a change in acceleration
+    happens on the robot, the callback function will be called.
+    """
+    buf = bytearray([barobo.BaroboCtx.CMD_SET_ENABLE_ACCEL_EVENT, 4, 0x07, 0x00])
+    self._transactMessage(buf)
+    self.accelcallbackfunc = cb
+    self.accelCallbackEnabled = True
+
   def _getADCVolts(self, adc):
     buf = bytearray([barobo.BaroboCtx.CMD_GETENCODERVOLTAGE, 4, adc, 0])
     response = self._transactMessage(buf)
