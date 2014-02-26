@@ -278,7 +278,7 @@ class Mobot:
     buf = bytearray([barobo.BaroboCtx.CMD_GETMOTORANGLESTIMESTAMPABS, 0x03, 0x00])
     response = self._transactMessage(buf)
     millis = barobo._unpack('<L', response[2:6])[0]
-    data = barobo._unpack('<4f', response[6:-1])
+    data = barobo._unpack('<4f', response[6:6+16])
     rc = [millis/1000.0]
     rc += list(map(_util.rad2deg, data))
     return rc

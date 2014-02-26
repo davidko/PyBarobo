@@ -3,6 +3,7 @@
 import threading
 import time
 import struct
+import math
 try:
   import Queue
 except:
@@ -393,6 +394,40 @@ class Linkbot(mobot.Mobot):
       zero to turn the buzzer off.
     """
     buf = bytearray([0x6A, 0x05, (freq>>8)&0xff, freq&0xff, 0x00])
+    self._transactMessage(buf)
+
+  def setAccelEventThreshold(self, g_force):
+    """
+    Set the minimum change in g-force required for the robot to report an
+    acceleration event.
+
+    See also: enableAccelEventCallback()
+
+    @type g_force: floating point number
+    @param g_force: The acceleration in standard earth gravity "G's".
+    """
+    assert g_force >= 0
+    buf = bytearray([barobo.BaroboCtx.CMD_SET_ACCEL_EVENT_THRESHOLD,
+        0])
+    buf += bytearray(struct.pack('!H', g_force * 16384))
+    buf += bytearray([0x0])
+    self._transactMessage(buf)
+
+  def setJointEventThreshold(self, angle):
+    """
+    Set the minimum amount the joint must move before a joint motion event is
+    reported.
+
+    Also see enableJointEventCallback()
+
+    @type angle: floating point number
+    @param angle: An angle in degrees.
+    """
+    assert angle >= 0
+    buf = bytearray([barobo.BaroboCtx.CMD_SET_JOINT_EVENT_THRESHOLD,
+        0])
+    buf += bytearray(struct.pack('<f', angle*math.pi/180.0))
+    buf += bytearray([0x0])
     self._transactMessage(buf)
 
   def setHWRev(self, major, minor, micro):

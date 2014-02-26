@@ -48,6 +48,7 @@ if havePySerial:
       self.timeout = None
 
     def disconnect(self):
+      self.close()
       pass
 
 class PhysicalLayer_Socket(socket.socket):
@@ -130,11 +131,15 @@ class LinkLayer_Base:
     self.phys = physicalLayer
     self.deliver = readCallback
     self.writeLock = threading.Lock()
+    self.stopflag = False
 
   def start(self):
     self.thread = threading.Thread(target=self._run)
     self.thread.daemon = True
     self.thread.start()
+
+  def stop(self):
+    self.stopflag = True
 
 class LinkLayer_TTY(LinkLayer_Base):
   def __init__(self, physicalLayer, readCallback):
@@ -161,6 +166,8 @@ class LinkLayer_TTY(LinkLayer_Base):
     self.phys.flushOutput()
     while True:
       byte = self.phys.read()
+      if self.stopflag:
+        break
       if byte is None:
         continue
       if DEBUG:
@@ -256,6 +263,8 @@ class LinkLayer_SFP(LinkLayer_Base):
     _sfp.sfpConnect(self.ctx)
     while True:
       byte = self.phys.read()
+      if self.stopflag:
+        break
       if byte is None:
         continue
       if DEBUG:
@@ -286,6 +295,8 @@ class LinkLayer_Socket(LinkLayer_Base):
     self.phys.flushOutput()
     while True:
       byte = self.phys.read()
+      if self.stopflag:
+        break
       if DEBUG:
         print ("Byte: {0}".format(list(map(hex, bytearray(byte)))))
       if byte is None:

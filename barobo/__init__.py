@@ -335,7 +335,9 @@ class BaroboCtx():
       self.__checkStatus()
       self.__getDongleID()
     except:
-      raise BaroboException('Could not connect to dongle at {0}'.format(ttyfilename))
+      self.phys.close()
+      self.link.stop()
+      self.connectDongleSFP(ttyfilename)
 
   def connectDongleSFP(self, ttyfilename):
     """
