@@ -274,7 +274,7 @@ class Linkbot(mobot.Mobot):
     buf += bytearray([0x00])
     buf[1] = len(buf)
     response = self._transactMessage(buf, maxTries = 1, timeout = 0.5)
-    if response[2:-1] != randbytes:
+    if response[2:2+numbytes] != randbytes:
       raise barobo.BaroboException(
           'Ping did not receive correct bytes. Expected {0}, got {1}'.format(
             list(map(hex, randbytes)),
