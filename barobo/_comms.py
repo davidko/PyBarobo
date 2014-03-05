@@ -275,6 +275,8 @@ class LinkLayer_SFP(LinkLayer_Base):
       else:
         octet = byte[0]
       rc = _sfp.sfpDeliverOctet(self.ctx, octet, None, 0, None)
+    if DEBUG:
+      print ("SFP Link Layer stopping...")
 
 class LinkLayer_Socket(LinkLayer_Base):
   def __init__(self, physicalLayer, readCallback):

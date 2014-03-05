@@ -354,7 +354,9 @@ class BaroboCtx():
       raise BaroboException('Could not connect to dongle at {0}'.format(ttyfilename))
 
   def disconnect(self):
+    self.link.stop()
     self.phys.disconnect()
+    self.children = []
 
   def handlePacket(self, packet):
     self.readQueue.put(packet)
