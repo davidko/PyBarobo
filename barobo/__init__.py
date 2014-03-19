@@ -109,6 +109,8 @@ def __checkLinkbotTTY(comport):
 def _unpack(fmt, buffer):
   if sys.version_info[0] == 2 and sys.version_info[1] == 6:
     return struct.unpack(fmt, bytes(buffer))
+  elif sys.version_info[0] == 3:
+    return struct.unpack(fmt, buffer)
   else:
     return struct.unpack(fmt, str(buffer))
 

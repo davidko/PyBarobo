@@ -13,11 +13,16 @@ import barobo
 
 import ctypes
 import ctypes.util
+import os
 
 try:
   from sys import platform as platform
   if "win32" == platform:
-    _sfp = ctypes.CDLL("libsfp.dll")
+    for p in sys.path:
+      fname = os.path.join(p, "libsfp.dll")
+      if os.path.isfile(fname):
+        _sfp = ctypes.CDLL("libsfp.dll")
+        break
   else:
     _sfp = ctypes.CDLL(ctypes.util.find_library("sfp"))
   haveSFP = True
