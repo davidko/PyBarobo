@@ -28,7 +28,6 @@ try:
   else:
     for p in sys.path:
       fname = os.path.join(p, "barobo/lib/libsfp.so")
-      print('Checking {0}...'.format(fname))
       if os.path.isfile(fname):
         _sfp = ctypes.CDLL(fname)
         haveSFP = True
