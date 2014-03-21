@@ -16,6 +16,10 @@ sources = ['libsfp/src/net_byte_order.c', 'libsfp/src/serial_framing_protocol.c'
 objects = ['libsfp/src/net_byte_order.o', 'libsfp/src/serial_framing_protocol.o']
 if sys.platform == "win32":
   print('Building for WIN32')
+  cc = unixccompiler.UnixCCompiler()
+  cc.add_include_dir('libsfp/include')
+  cc.compile(sources, extra_preargs=['-fPIC'])
+  cc.link_shared_object(objects, 'barobo/lib/libsfp.dll')
   setup(name='PyBarobo',
       version=VERSION,
       description=DESC,

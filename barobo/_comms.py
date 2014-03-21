@@ -21,9 +21,10 @@ try:
   from sys import platform as platform
   if "win32" == platform:
     for p in sys.path:
-      fname = os.path.join(p, "libsfp.dll")
+      fname = os.path.join(p, "barobo/lib/libsfp.dll")
       if os.path.isfile(fname):
         _sfp = ctypes.CDLL(fname)
+        haveSFP = True
         break
   else:
     for p in sys.path:
