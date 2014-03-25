@@ -78,6 +78,55 @@ if os.name == 'nt':
   else:
     import _winreg as winreg
 
+
+if sys.platform.startswith('linux'):
+  def __FROM(x):
+    return ' find ' + x + ' -maxdepth 0 -print '
+
+  def __SELECT():
+    return " | xargs -I}{ find '}{' "
+
+  def __AND():
+    return __SELECT() + ' -maxdepth 1 '
+
+  def __SUBSYSTEM(x):
+    return " -type l -name subsystem -lname \\*/" + x + " -printf '%h\\n' "
+
+  def __SUBSYSTEMF(x):
+    return " -type l -name subsystem -lname \\*/" +x+ " -printf '%%h\\n' "
+
+  def __SYSATTR(x, y):
+    return " -type f -name " +x+ " -execdir grep -q '" +y+ "' '{}' \\; -printf '%h\\n' "
+
+  def __SYSATTRF(x, y):
+    return " -type f -name " +x+ " -execdir grep -q '" +y+ "' '{}' \\; -printf '%%h\\n' "
+
+  def __FIRST():
+    return " -quit "
+
+  def __SELECTUP():
+    return " | xargs -I}{ sh -c 'x=\"}{\"; while [ \"/\" != \"$x\" ]; do dirname \"$x\"; x=$(dirname \"$x\"); done' " + __AND()
+
+  def findDongle():
+    dongleIDs = [ ('Barobo, Inc.', 'Mobot USB-Serial Adapter'),
+                  ('Barobo, Inc.', 'Linkbot USB-Serial Adapter'),
+                  ('Barobo, Inc.', 'Barobo USB-Serial Adapter') ]
+    import os
+    import subprocess
+    try: 
+      sysfs = os.environ['SYSFS_PATH']
+    except:
+      sysfs = '/sys'
+    for (manufacturer, productid) in dongleIDs:
+      cmd = __FROM(sysfs+'/devices')+__SELECT()+__SYSATTR('manufacturer', manufacturer)+\
+            __AND() + __SYSATTR('product', productid) +\
+            __SELECT() + __SUBSYSTEM('tty') +\
+            " | xargs -I{} grep DEVNAME '{}'/uevent"  +\
+            " | cut -d= -f2"
+      p = subprocess.check_output(['/bin/sh', '-c', cmd])
+      if len(p) > 1:
+        return (str('/dev/')+p.decode('utf-8')).rstrip()
+
 def _getSerialPorts():
   import serial
   if os.name == 'nt':
@@ -277,10 +326,12 @@ class BaroboCtx():
     self.children.append(linkbot)
 
   def autoConnect(self):
-    myports = _getSerialPorts()
+    if os.name == 'nt':
+      myports = _getSerialPorts()
+    else:
+      myports = [findDongle()]
     connected = False
     for port in myports:
-      print('Trying {0}...'.format(port))
       try:
         self.connectDongleSFP(port)
         connected = True
