@@ -71,17 +71,25 @@ AREF_INTERNAL1V1 = 0x02
 AREF_INTERNAL2V56 = 0x03
 AREF_EXTERNAL = 0x04
 
+import os
+if os.name == 'nt':
+  if sys.version_info[0] == 3:
+    import winreg
+  else:
+    import _winreg as winreg
+
 def _getSerialPorts():
   import serial
   if os.name == 'nt':
     available = []
+    handle = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, 'HARDWARE\\DEVICEMAP\\SERIALCOMM')
     for i in range(256):
       try:
-        s = serial.Serial(i)
-        available.append('\\\\.\\COM'+str(i+1))
-        s.close()
-      except Serial.SerialException:
-        pass
+        name, port, _ = winreg.EnumValue(handle, i)
+        if name[:14] == '\\Device\\USBSER':
+          available.append(port)
+      except:
+        break
     return available
   else:
     from serial.tools import list_ports
@@ -268,24 +276,18 @@ class BaroboCtx():
   def addLinkbot(self, linkbot):
     self.children.append(linkbot)
 
-  def __autoConnectWorker(self, comport):
-    pass
-
   def autoConnect(self):
-    import threading
-    # Try to connect to all COM ports simultaneously.
-    self.__foundComPort = None
-    self.__foundComPortCond= threading.Condition()
     myports = _getSerialPorts()
-    self.__workerThreads = []
+    connected = False
     for port in myports:
-      thread = threading.Thread(target=self.__autoConnectWorker, args=(port))
-      self.__workerThreads.append(thread)
-      thread.daemon = True
-      thread.start()
-    self.foundComPortCond.acquire()
-    while self.__foundComPort == None:
-      self.foundComPortCond.wait()
+      print('Trying {0}...'.format(port))
+      try:
+        self.connectDongleSFP(port)
+        connected = True
+      except:
+        pass
+    if not connected:
+      raise BaroboException('Could not find attached dongle.')
 
   def connect(self):
     """
