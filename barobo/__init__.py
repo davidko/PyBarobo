@@ -48,6 +48,7 @@ except:
 import threading
 import barobo._comms as _comms
 from barobo.linkbot import Linkbot
+from barobo.mobot import Mobot
 
 ROBOTFORM_MOBOT=1
 ROBOTFORM_I=2

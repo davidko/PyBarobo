@@ -60,6 +60,9 @@ class Linkbot(mobot.Mobot):
     linkbot.setBuzzerFrequency(440)
 
   """
+  def __init__(self, *args, **kwargs):
+    mobot.Mobot.__init__(self, *args, **kwargs)
+    self.numJoints = 3
 
   def connectBluetooth(self, bluetooth_mac_addr):
     """
