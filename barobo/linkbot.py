@@ -106,9 +106,10 @@ class Linkbot(mobot.Mobot):
     """ 
     Enable the joint event callback. Whenever any joint on the robot moves, the 
     callback function 'cb' will be called. The callback function should be
-    of the form cb(millis_timestamp, j1, j2, j3) where 'millis_timestamp' 
+    of the form cb(millis_timestamp, j1, j2, j3, mask) where 'millis_timestamp' 
     will contain a timestamp from the robot, and j1, j2, and j3 will contain
-    the new angles of all of the joints in degrees. 
+    the new angles of all of the joints in degrees, and mask will be a 
+    mask of all of the joints that triggered the event.
     """
     buf = bytearray([barobo.BaroboCtx.CMD_SET_ENABLE_JOINT_EVENT, 4, 0x07, 0x00])
     self._transactMessage(buf)

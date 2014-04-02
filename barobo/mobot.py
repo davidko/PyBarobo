@@ -272,7 +272,7 @@ class Mobot:
 
     @rtype: (float, float, float, float)
     """
-    return list(map(self.getJointSpeed, list(range(1, self.numJoints+1))))
+    return list(map(self.getJointSpeed, range(1, self.numJoints+1)))
 
   def getJointState(self, joint):
     """
@@ -701,7 +701,8 @@ class Mobot:
             values[0], 
             values[1]*180.0/math.pi,
             values[2]*180.0/math.pi,
-            values[3]*180.0/math.pi)
+            values[3]*180.0/math.pi,
+            evt[22])
       elif (evt[0] == barobo.BaroboCtx.EVENT_ACCEL_CHANGED) and self.accelCallbackEnabled:
         values =  barobo._unpack('<L', evt[2:6]) + barobo._unpack('>3h', evt[6:12])
         self.accelcallbackfunc(values[0], values[1]/16384.0, values[2]/16384.0, values[3]/16384.0)
