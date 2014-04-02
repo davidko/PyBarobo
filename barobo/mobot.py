@@ -79,6 +79,7 @@ class Mobot:
     self.callbackEnabled = False
     self.jointCallbackEnabled = False
     self.accelCallbackEnabled = False
+    self.numJoints = 4
 
   def checkStatus(self):
     """
@@ -252,6 +253,26 @@ class Mobot:
     response = self._transactMessage(buf)
     angles = barobo._unpack('<4f', response[2:18])
     return list(map(_util.rad2deg, angles))
+
+  def getJointSpeed(self, joint):
+    """
+    Get the speed setting of a joint. Returned value is in deg/s
+    
+    @rtype: float
+    @return: The joint speed in deg/sec
+    """
+    buf = bytearray([barobo.BaroboCtx.CMD_GETMOTORSPEED, 4, joint-1, 0])
+    response = self._transactMessage(buf)
+    speed = barobo._unpack('<f', response[2:6])[0]
+    return _util.rad2deg(speed)
+
+  def getJointSpeeds(self):
+    """
+    Get a tuple of all joint speeds. See getJointSpeed()
+
+    @rtype: (float, float, float, float)
+    """
+    return list(map(self.getJointSpeed, range(1, self.numJoints+1)))
 
   def getJointState(self, joint):
     """
@@ -680,7 +701,8 @@ class Mobot:
             values[0], 
             values[1]*180.0/math.pi,
             values[2]*180.0/math.pi,
-            values[3]*180.0/math.pi)
+            values[3]*180.0/math.pi,
+            evt[22])
       elif (evt[0] == barobo.BaroboCtx.EVENT_ACCEL_CHANGED) and self.accelCallbackEnabled:
         values =  barobo._unpack('<L', evt[2:6]) + barobo._unpack('>3h', evt[6:12])
         self.accelcallbackfunc(values[0], values[1]/16384.0, values[2]/16384.0, values[3]/16384.0)
