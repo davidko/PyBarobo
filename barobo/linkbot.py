@@ -417,7 +417,7 @@ class Linkbot(mobot.Mobot):
     buf += bytearray([0x0])
     self._transactMessage(buf)
 
-  def setJointEventThreshold(self, angle):
+  def setJointEventThreshold(self, joint, angle):
     """
     Set the minimum amount the joint must move before a joint motion event is
     reported.
@@ -429,9 +429,10 @@ class Linkbot(mobot.Mobot):
     """
     assert angle >= 0
     buf = bytearray([barobo.BaroboCtx.CMD_SET_JOINT_EVENT_THRESHOLD,
-        0])
+        0, joint-1])
     buf += bytearray(struct.pack('<f', angle*math.pi/180.0))
     buf += bytearray([0x0])
+    buf[1] = len(buf)
     self._transactMessage(buf)
 
   def setHWRev(self, major, minor, micro):
