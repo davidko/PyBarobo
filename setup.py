@@ -3,13 +3,36 @@
 from distutils.core import setup
 import distutils.unixccompiler as unixccompiler
 import sys
-VERSION = '0.1.11'
+import os
+VERSION = '0.1.12'
 DESC = 'Native Python Barobo robotics control library'
 AUTHOR = 'David Ko'
 AUTHOR_EMAIL = 'david@barobo.com'
 MAINTAINER = 'David Ko'
 MAINTAINER_EMAIL = 'david@barobo.com'
 URL = 'http://www.barobo.com'
+
+def isPackage( filename ):
+    return (
+        os.path.isdir(filename) and
+        os.path.isfile( os.path.join(filename,'__init__.py'))
+    )
+
+def packagesFor( filename, basePackage="" ):
+    """Find all packages in filename"""
+    set = {}
+    for item in os.listdir(filename):
+        dir = os.path.join(filename, item)
+        if isPackage( dir ):
+            if basePackage:
+                moduleName = basePackage+'.'+item
+            else:
+                moduleName = item
+            set[ moduleName] = dir
+            set.update( packagesFor( dir, moduleName))
+    return set
+
+packages = packagesFor( ".", basePackage="barobo" )
 
 # sources and stuff for libsfp library
 sources = ['libsfp/src/net_byte_order.c', 'libsfp/src/serial_framing_protocol.c']
@@ -52,8 +75,8 @@ else:
       url=URL,
       license='GPL',
       platforms='any',
-      packages=['barobo'],
-      package_dir={'barobo': 'barobo'},
+      packages=packages.keys(),
+      package_dir=packages,
       package_data={'barobo': ['lib/libsfp.so']}
       #py_modules=['pybarobo']
       )

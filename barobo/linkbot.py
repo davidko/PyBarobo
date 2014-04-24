@@ -170,7 +170,7 @@ class Linkbot(mobot.Mobot):
     """
     buf = bytearray([barobo.BaroboCtx.TWIMSG_HEADER, barobo.BaroboCtx.TWIMSG_ANALOGREADPIN, adc])
     data = self.twiSendRecv(0x02, buf, 2)
-    return barobo._unpack('!h', data)[0]
+    return barobo._unpack('!h', data[0:2])[0]
 
   def getBreakoutADCVolts(self, adc):
     """

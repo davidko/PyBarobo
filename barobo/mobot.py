@@ -707,7 +707,7 @@ class Mobot:
         values =  barobo._unpack('<L', evt[2:6]) + barobo._unpack('>3h', evt[6:12])
         self.accelcallbackfunc(values[0], values[1]/16384.0, values[2]/16384.0, values[3]/16384.0)
       elif evt[0] == barobo.BaroboCtx.EVENT_DEBUG_MSG:
-        s = barobo._unpack(s, evt[2:-1])
+        s = barobo._unpack('s', evt[2:-1])
         print ("Debug msg from {0}: {1}".format(self.serialID, s))
 
 class _MobotRecordThread(threading.Thread):
