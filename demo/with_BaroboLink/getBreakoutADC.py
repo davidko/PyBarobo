@@ -10,4 +10,4 @@ if __name__ == "__main__":
   linkbot.connect()
 
   adcs = map(linkbot.getBreakoutADC, range(0,8))
-  print map(lambda x: x/1024.0*5.0, adcs)
+  print(map(lambda x: x/1024.0*5.0, adcs))
