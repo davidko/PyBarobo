@@ -177,7 +177,7 @@ class BaroboException(Exception):
   def __init__(self, *args, **kwargs):
     Exception.__init__(self, *args, **kwargs)
 
-class BaroboCtx():
+class Dongle():
   """
   The BaroboCtx (BaroboContext) is the entity which manages all of the Linkbots
   in a computational environment. If loosely represents a ZigBee dongle which 
@@ -342,6 +342,9 @@ class BaroboCtx():
       raise BaroboException('Could not find attached dongle.')
 
   def connect(self):
+    autoConnect(self)
+
+  def connectBaroboLink(self):
     """
     Connect the BaroboContext to BaroboLink.
     """
@@ -538,5 +541,5 @@ class BaroboCtx():
     zigbeeAddr = _unpack('!H', response[2:4])[0]
     self.zigbeeAddr = zigbeeAddr
     self.scannedIDs[serialID] = zigbeeAddr
-   
-
+  
+BaroboCtx = Dongle 
