@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from barobo.linkbot import Linkbot
-from barobo import BaroboCtx
+from barobo import Dongle
 import time
 import sys
 import numpy
@@ -14,9 +14,9 @@ if __name__ == "__main__":
     serialID = sys.argv[2]
   else:
     serialID = None
-  ctx = BaroboCtx()
-  ctx.connectDongleTTY(sys.argv[1])
-  linkbot = ctx.getLinkbot(serialID)
+  dongle = Dongle()
+  dongle.connectDongleTTY(sys.argv[1])
+  linkbot = dongle.getLinkbot(serialID)
   numerrors = 0
   numtries = 500
   pingsum = 0

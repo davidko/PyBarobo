@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from barobo import Linkbot, BaroboCtx
+from barobo import Linkbot, Dongle
 import time
 
 if __name__ == "__main__":

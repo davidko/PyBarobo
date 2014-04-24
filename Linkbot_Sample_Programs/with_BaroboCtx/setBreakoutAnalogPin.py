@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from barobo import Linkbot, BaroboCtx
+from barobo import Linkbot, Dongle
 import barobo
 import math
 import time
@@ -14,9 +14,9 @@ if __name__ == "__main__":
     serialID = sys.argv[2]
   else:
     serialID = None
-  ctx = BaroboCtx()
-  ctx.connectDongleTTY(sys.argv[1])
-  linkbot = ctx.getLinkbot(serialID)
+  dongle = Dongle()
+  dongle.connectDongleTTY(sys.argv[1])
+  linkbot = dongle.getLinkbot(serialID)
 
   # Set pin to output
   pin = 11

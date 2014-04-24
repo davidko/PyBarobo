@@ -342,7 +342,7 @@ class Dongle():
       raise BaroboException('Could not find attached dongle.')
 
   def connect(self):
-    autoConnect(self)
+    self.autoConnect()
 
   def connectBaroboLink(self):
     """
