@@ -80,6 +80,7 @@ class Mobot:
     self.jointCallbackEnabled = False
     self.accelCallbackEnabled = False
     self.numJoints = 4
+    self.packetSequenceNumber = 0
 
   def checkStatus(self):
     """
@@ -654,25 +655,31 @@ class Mobot:
     buf = bytearray([barobo.BaroboCtx.CMD_STOP, 0x03, 0x00])
     self._transactMessage(buf)
 
-  def _transactMessage(self, buf, maxTries = 3, timeout = 2.0):
+  def _transactMessage(self, buf, maxTries = 3, timeout = 10.0):
     self.messageLock.acquire()
     numTries = 0
     response = [0xff]
-    while numTries < maxTries:
-      try:
-        # Flush the responseQueue
-        while not self.responseQueue.empty():
-          self.responseQueue.get(block=False)
-        self.baroboCtx.writePacket(_comms.Packet(buf, self.zigbeeAddr))
+    buf[-1] = self.packetSequenceNumber
+    # Flush the responseQueue
+    while not self.responseQueue.empty():
+      self.responseQueue.get(block=False)
+    self.baroboCtx.writePacket(_comms.Packet(buf, self.zigbeeAddr))
+    try:
+      while True:
         response = self.responseQueue.get(block=True, timeout = timeout)
-        break
-      except:
-        if numTries < maxTries:
-          numTries+=1
-          continue
-        else:
-          self.messageLock.release()
-          raise barobo.BaroboException('Did not receive response from robot.')
+        if response[-2] == self.packetSequenceNumber:
+          break
+    except Queue.Empty:
+      self.messageLock.release()
+      self.packetSequenceNumber += 1
+      self.packetSequenceNumber %= 0xff
+      if self.packetSequenceNumber == 0:
+        self.packetSequenceNumber += 1
+      raise barobo.BaroboException('Did not receive response from robot.')
+    self.packetSequenceNumber += 1
+    self.packetSequenceNumber %= 0xff
+    if self.packetSequenceNumber == 0:
+      self.packetSequenceNumber += 1
     if response[0] != barobo.BaroboCtx.RESP_OK:
       self.messageLock.release()
       raise barobo.BaroboException('Robot returned error status.')
