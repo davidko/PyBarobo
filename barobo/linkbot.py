@@ -269,15 +269,18 @@ class Linkbot(mobot.Mobot):
     buf += bytearray([0x00])
     self._transactMessage(buf)
 
-  def ping(self, numbytes=4):
+  def ping(self, numbytes=4, sendbytes=[]):
     import random
     now = time.time()
     buf = bytearray([barobo.BaroboCtx.CMD_PING, 0])
-    randbytes = bytearray([random.randint(0, 255) for _ in range(numbytes)])
+    if len(sendbytes) != numbytes:
+      randbytes = bytearray([random.randint(0, 255) for _ in range(numbytes)])
+    else:
+      randbytes = sendbytes
     buf += randbytes
     buf += bytearray([0x00])
     buf[1] = len(buf)
-    response = self._transactMessage(buf, maxTries = 1, timeout = 0.5)
+    response = self._transactMessage(buf, maxTries = 1)
     if response[2:2+numbytes] != randbytes:
       raise barobo.BaroboException(
           'Ping did not receive correct bytes. Expected {0}, got {1}'.format(
@@ -340,6 +343,23 @@ class Linkbot(mobot.Mobot):
     """
     buf = bytearray([barobo.BaroboCtx.CMD_SETGLOBALACCEL, 0])
     buf += struct.pack('<f', _util.deg2rad(accel))
+    buf += bytearray([0x00])
+    buf[1] = len(buf)
+    self._transactMessage(buf)
+
+  def startJointAcceleration(self, joint, accel, timeout=0):
+    """
+    Make a robot's joint start accelerating forwards (positive accel value) or
+    backwards.
+    
+    @type joint: number
+    @type accel: float, degrees/s/s
+    @type timeout: float, number of seconds. After this number of seconds,
+      accel for the joint will be set to 0.
+    """
+    buf = bytearray([barobo.BaroboCtx.CMD_SET_ACCEL, 0, joint-1])
+    buf += struct.pack('<f', _util.deg2rad(accel))
+    buf += bytearray(struct.pack('<i', timeout))
     buf += bytearray([0x00])
     buf[1] = len(buf)
     self._transactMessage(buf)
