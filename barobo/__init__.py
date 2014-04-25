@@ -15,10 +15,10 @@ joints 1 and 3 on the first connected Linkbot in BaroboLink::
 
 You may also use this package to control Linkbots without BaroboLink. In that
 case, a typical control program will look something like this::
-  from barobo import Linkbot, BaroboCtx
+  from barobo import Linkbot, Dongle
 
-  ctx = BaroboCtx()
-  ctx.connectDongleTTY('COM3')  # where 'COM3' is the com port the Linkbot is 
+  dongle = Dongle()
+  dongle.connectDongleTTY('COM3')  # where 'COM3' is the com port the Linkbot is 
                                 # connected on. In Windows, the COM port of the
                                 # Linkbot can be identified by inspecting the
                                 # Device Manager. On a Mac, the com port will
@@ -26,7 +26,7 @@ case, a typical control program will look something like this::
                                 # something like "/dev/cu.usbmodem1d11". In
                                 # Linux, it should be something like 
                                 # "/dev/ttyACM0".
-  linkbot = ctx.getLinkbot() # or linkbot = ctx.getLinkbot('2B2C') where '2B2C'
+  linkbot = dongle.getLinkbot() # or linkbot = dongle.getLinkbot('2B2C') where '2B2C'
                              # should be replaced with the serial ID of your 
                              # Linkbot. Note that the serial ID used here can
                              # be that of a nearby Linkbot that you wish to 
@@ -276,7 +276,7 @@ class Dongle():
   CMD_TWI_SEND = 0x7C
   CMD_TWI_RECV = 0x7D
   CMD_TWI_SENDRECV = 0x7E
-  CMD_PLACEHOLDER201306271044 = 0x7F
+  CMD_SET_ACCEL = 0x7F
   CMD_SMOOTHMOVE = 0x80
   CMD_SETMOTORSTATES = 0x81
   CMD_SETGLOBALACCEL = 0x82
