@@ -80,7 +80,7 @@ class Mobot:
     self.jointCallbackEnabled = False
     self.accelCallbackEnabled = False
     self.numJoints = 4
-    self.packetSequenceNumber = 0
+    self.packetSequenceNumber = 1
 
   def checkStatus(self):
     """
