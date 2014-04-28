@@ -4,7 +4,7 @@ from distutils.core import setup
 import distutils.unixccompiler as unixccompiler
 import sys
 import os
-VERSION = '0.1.12'
+VERSION = '0.1.13'
 DESC = 'Native Python Barobo robotics control library'
 AUTHOR = 'David Ko'
 AUTHOR_EMAIL = 'david@barobo.com'
@@ -33,6 +33,8 @@ def packagesFor( filename, basePackage="" ):
     return set
 
 packages = packagesFor( ".", basePackage="barobo" )
+packages['barobo'] = './barobo'
+packages.pop('barobo.barobo')
 
 # sources and stuff for libsfp library
 sources = ['libsfp/src/net_byte_order.c', 'libsfp/src/serial_framing_protocol.c']
