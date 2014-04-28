@@ -80,7 +80,7 @@ class Mobot:
     self.jointCallbackEnabled = False
     self.accelCallbackEnabled = False
     self.numJoints = 4
-    self.packetSequenceNumber = 0
+    self.packetSequenceNumber = 0x80
 
   def checkStatus(self):
     """
@@ -669,17 +669,19 @@ class Mobot:
         response = self.responseQueue.get(block=True, timeout = timeout)
         if response[-2] == self.packetSequenceNumber:
           break
+        if response[-2] == 0x11:
+          break
     except Queue.Empty:
       self.messageLock.release()
       self.packetSequenceNumber += 1
       self.packetSequenceNumber %= 0xff
       if self.packetSequenceNumber == 0:
-        self.packetSequenceNumber += 1
+        self.packetSequenceNumber = 0x80
       raise barobo.BaroboException('Did not receive response from robot.')
     self.packetSequenceNumber += 1
     self.packetSequenceNumber %= 0xff
     if self.packetSequenceNumber == 0:
-      self.packetSequenceNumber += 1
+      self.packetSequenceNumber = 0x80
     if response[0] != barobo.BaroboCtx.RESP_OK:
       self.messageLock.release()
       raise barobo.BaroboException('Robot returned error status.')
