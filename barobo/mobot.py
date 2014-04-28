@@ -308,11 +308,19 @@ class Mobot:
   def getVersion(self):
     """
     Get the firmware version of the Linkbot
+
+    @return: Something like (0, 0, 94) or (3, 0, 3), depending on the oldness of the firmware
     """
-    buf = bytearray([barobo.BaroboCtx.CMD_GETVERSION, 3, 0])
-    response = self._transactMessage(buf)
-    return response[2]
-  
+    try:
+      buf = bytearray([barobo.BaroboCtx.CMD_GETVERSIONS, 3, 0])
+      response = self._transactMessage(buf)
+      version = barobo._unpack('!3B', response[2:5])
+    except Exception as e:
+      buf = bytearray([barobo.BaroboCtx.CMD_GETVERSION, 3, 0])
+      response = self._transactMessage(buf)
+      version = (0, 0, response[2])
+    return version 
+
   def isMoving(self):
     for i in range(4):
       state = self.getJointState(i)

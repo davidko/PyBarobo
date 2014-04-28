@@ -35,7 +35,6 @@ def packagesFor( filename, basePackage="" ):
 packages = packagesFor( ".", basePackage="barobo" )
 packages['barobo'] = './barobo'
 packages.pop('barobo.barobo')
-print packages
 
 # sources and stuff for libsfp library
 sources = ['libsfp/src/net_byte_order.c', 'libsfp/src/serial_framing_protocol.c']
