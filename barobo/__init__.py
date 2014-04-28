@@ -309,7 +309,7 @@ class Dongle():
     self.ctxReadQueue = Queue.Queue()
     self.link = None
     self.phys = None
-    self.children = [] # List of Linkbots
+    self.children = {} # List of Linkbots
     self.scannedIDs = {}
     self.scannedIDs_cond = threading.Condition()
     self.giant_lock = threading.Lock()
@@ -324,7 +324,7 @@ class Dongle():
     self.commsOutThread.start()
 
   def addLinkbot(self, linkbot):
-    self.children.append(linkbot)
+    self.children[linkbot.getSerialID()] = linkbot
 
   def autoConnect(self):
     if os.name == 'nt':
@@ -415,7 +415,7 @@ class Dongle():
   def disconnect(self):
     self.link.stop()
     self.phys.disconnect()
-    self.children = []
+    self.children = {}
 
   def handlePacket(self, packet):
     self.readQueue.put(packet)
@@ -438,11 +438,13 @@ class Dongle():
       self.waitForRobot(serialID)
     if linkbotClass is None:
       linkbotClass = Linkbot
+    if serialID in self.children:
+      return self.children[serialID]
     l = linkbotClass()
     l.zigbeeAddr = self.scannedIDs[serialID]
     l.serialID = serialID
     l.baroboCtx = self
-    self.children.append(l)
+    self.children[serialID] = l
     l.form = l.getFormFactor()
     if l.zigbeeAddr != self.zigbeeAddr:
       l._pairParent()
@@ -493,7 +495,7 @@ class Dongle():
       if 0 == zigbeeAddr:
         self.ctxReadQueue.put(packet)
         continue
-      for linkbot in self.children:
+      for _, linkbot in self.children.items():
         if zigbeeAddr == linkbot.zigbeeAddr:
           linkbot.readQueue.put(packet, block=True)
           break
