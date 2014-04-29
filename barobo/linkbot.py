@@ -488,6 +488,13 @@ class Linkbot(mobot.Mobot):
 
   def smoothMoveTo(self, joint, accel0, accelf, vmax, angle):
     """
+    See: smoothMoveToNB()
+    """
+    self.smoothMoveToNB(joint, accel0, accelf, vmax, angle)
+    self.moveWait()
+
+  def smoothMoveToNB(self, joint, accel0, accelf, vmax, angle):
+    """
     Move a joint to a desired position with a specified amount of starting and
     stopping acceleration.
 
