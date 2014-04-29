@@ -536,7 +536,7 @@ class Dongle():
           continue
         else:
           raise
-    serialID = _unpack('!4s', response[2:6])[0]
+    serialID = _unpack('!4s', response[2:6])[0].decode('UTF-8')
     buf = [self.CMD_GETADDRESS, 3, 0x00]
     self.writePacket(_comms.Packet(buf, 0x0000))
     response = self.ctxReadQueue.get(block=True, timeout=2.0)
