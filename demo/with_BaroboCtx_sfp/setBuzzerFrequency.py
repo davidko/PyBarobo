@@ -17,10 +17,10 @@ if __name__ == "__main__":
   dongle.connectDongleSFP(sys.argv[1])
   linkbot = dongle.getLinkbot(serialID)
 
-  linkbot.setBuzzerFrequency(440);
-  time.sleep(1)
-  linkbot.setBuzzerFrequency(880);
-  time.sleep(1)
-  linkbot.setBuzzerFrequency(440);
-  time.sleep(1)
+  linkbot.setBuzzerFrequency(440.5);
+  time.sleep(.1)
+  linkbot.setBuzzerFrequency(880.2);
+  time.sleep(.1)
+  linkbot.setBuzzerFrequency(440.2);
+  time.sleep(.1)
   linkbot.setBuzzerFrequency(0);

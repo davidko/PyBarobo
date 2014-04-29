@@ -417,7 +417,7 @@ class Linkbot(mobot.Mobot):
     @param freq: The frequency in Hertz (Hz) for the buzzer to play. Set to
       zero to turn the buzzer off.
     """
-    buf = bytearray([0x6A, 0x05, (freq>>8)&0xff, freq&0xff, 0x00])
+    buf = bytearray([0x6A, 0x05, (int(freq)>>8)&0xff, int(freq)&0xff, 0x00])
     self._transactMessage(buf)
 
   def setAccelEventThreshold(self, g_force):
