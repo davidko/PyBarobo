@@ -432,7 +432,8 @@ class Dongle():
       self.giant_lock.acquire()
       serialID = list(self.scannedIDs.keys())[0]
       self.giant_lock.release()
-
+    
+    serialID = serialID.upper()
     if serialID not in self.scannedIDs:
       self.findRobot(serialID)
       self.waitForRobot(serialID)
