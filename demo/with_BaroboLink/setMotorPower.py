@@ -5,9 +5,9 @@ import time
 import sys
 
 if __name__ == "__main__":
-  linkbot = Linkbot()
-  linkbot.connect()
+    linkbot = Linkbot()
+    linkbot.connect()
 
-  linkbot.resetToZero()
-  linkbot.stop()
-  linkbot.setMotorPowers(-255, -255, -255)
+    linkbot.resetToZero()
+    linkbot.stop()
+    linkbot.setMotorPowers(-255, -255, -255)
