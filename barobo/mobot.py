@@ -675,10 +675,12 @@ class Mobot:
     try:
       while True:
         response = self.responseQueue.get(block=True, timeout = timeout)
-        if response[-2] == self.packetSequenceNumber:
+        if response[response[1]-1] == self.packetSequenceNumber:
           break
-        if response[-2] == 0x11:
+        elif response[response[1]-1] == 0x11:
           break
+        else:
+          print('Rejected packet; sequence number incorrect. {0} != {1}'.format(response[-2], self.packetSequenceNumber))
     except Queue.Empty:
       self.messageLock.release()
       self.packetSequenceNumber += 1
