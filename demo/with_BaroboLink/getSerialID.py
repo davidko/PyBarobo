@@ -3,7 +3,7 @@
 from barobo import Linkbot
 
 if __name__ == "__main__":
-  linkbot = Linkbot()
-  linkbot.connect()
+    linkbot = Linkbot()
+    linkbot.connect()
 
-  print (linkbot.getSerialID())
+    print (linkbot.getSerialID())

@@ -7,45 +7,45 @@ import numpy
 import pylab
 
 if __name__ == "__main__":
-  if len(sys.argv) != 2:
-    print('Usage: {0} <Bluetooth MAC Address>'.format(sys.argv[0]))
-    sys.exit(0)
-  linkbot = Linkbot()
-  linkbot.connectMobotBluetooth(sys.argv[1])
-  numerrors = 0
-  numtries = 500
-  pingsum = 0
-  pings = []
-  linkbot.setMotorPowers(255, 255, 255)
-  linkbot.ping()
-  for _ in range(numtries/2):
-    try:
-      ping = linkbot.ping(32)
-      pings.append(ping)
-      sys.stdout.write('.')
-      sys.stdout.flush()
-    except:
-      numerrors += 1
-      sys.stdout.write('x')
-      sys.stdout.flush()
-  linkbot.setMotorPowers(-255, -255, -255)
-  for _ in range(numtries/2):
-    try:
-      ping = linkbot.ping(32)
-      pings.append(ping)
-      sys.stdout.write('.')
-      sys.stdout.flush()
-    except:
-      numerrors += 1
-      sys.stdout.write('x')
-      sys.stdout.flush()
+    if len(sys.argv) != 2:
+        print('Usage: {0} <Bluetooth MAC Address>'.format(sys.argv[0]))
+        sys.exit(0)
+    linkbot = Linkbot()
+    linkbot.connectMobotBluetooth(sys.argv[1])
+    numerrors = 0
+    numtries = 500
+    pingsum = 0
+    pings = []
+    linkbot.setMotorPowers(255, 255, 255)
+    linkbot.ping()
+    for _ in range(numtries/2):
+        try:
+            ping = linkbot.ping(32)
+            pings.append(ping)
+            sys.stdout.write('.')
+            sys.stdout.flush()
+        except:
+            numerrors += 1
+            sys.stdout.write('x')
+            sys.stdout.flush()
+    linkbot.setMotorPowers(-255, -255, -255)
+    for _ in range(numtries/2):
+        try:
+            ping = linkbot.ping(32)
+            pings.append(ping)
+            sys.stdout.write('.')
+            sys.stdout.flush()
+        except:
+            numerrors += 1
+            sys.stdout.write('x')
+            sys.stdout.flush()
 
-  linkbot.stop()
-  sys.stdout.write('\n')
-  print("{} tries, {} errors".format(numtries, numerrors))
+    linkbot.stop()
+    sys.stdout.write('\n')
+    print("{} tries, {} errors".format(numtries, numerrors))
 
-  print("{} errors, avg ping: {}, stddev: {}".format(numerrors, numpy.mean(pings), numpy.std(pings)))
+    print("{} errors, avg ping: {}, stddev: {}".format(numerrors, numpy.mean(pings), numpy.std(pings)))
 
-  pylab.hist(pings)
-  pylab.show()
+    pylab.hist(pings)
+    pylab.show()
 
