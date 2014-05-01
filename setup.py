@@ -40,45 +40,45 @@ packages.pop('barobo.barobo')
 sources = ['libsfp/src/net_byte_order.c', 'libsfp/src/serial_framing_protocol.c']
 objects = ['libsfp/src/net_byte_order.o', 'libsfp/src/serial_framing_protocol.o']
 if sys.platform == "win32":
-  print('Building for WIN32')
-  cc = unixccompiler.UnixCCompiler()
-  cc.add_include_dir('libsfp/include')
-  cc.compile(sources, extra_preargs=['-fPIC'])
-  cc.link_shared_object(objects, 'barobo/lib/libsfp.dll')
-  setup(name='PyBarobo',
-      version=VERSION,
-      description=DESC,
-      author=AUTHOR,
-      author_email=AUTHOR_EMAIL,
-      maintainer=MAINTAINER,
-      maintainer_email=MAINTAINER_EMAIL,
-      url=URL,
-      license='GPL',
-      platforms='any',
-      packages=['barobo'],
-      package_dir={'barobo': 'barobo'},
-      package_data={'barobo': ['lib/*.dll']}
-      #py_modules=['pybarobo']
-      )
+    print('Building for WIN32')
+    cc = unixccompiler.UnixCCompiler()
+    cc.add_include_dir('libsfp/include')
+    cc.compile(sources, extra_preargs=['-fPIC'])
+    cc.link_shared_object(objects, 'barobo/lib/libsfp.dll')
+    setup(name='PyBarobo',
+            version=VERSION,
+            description=DESC,
+            author=AUTHOR,
+            author_email=AUTHOR_EMAIL,
+            maintainer=MAINTAINER,
+            maintainer_email=MAINTAINER_EMAIL,
+            url=URL,
+            license='GPL',
+            platforms='any',
+            packages=['barobo'],
+            package_dir={'barobo': 'barobo'},
+            package_data={'barobo': ['lib/*.dll']}
+            #py_modules=['pybarobo']
+            )
 
 else:
-  cc = unixccompiler.UnixCCompiler()
-  cc.add_include_dir('libsfp/include')
-  cc.compile(sources, extra_preargs=['-fPIC'])
-  cc.link_shared_object(objects, 'barobo/lib/libsfp.so')
+    cc = unixccompiler.UnixCCompiler()
+    cc.add_include_dir('libsfp/include')
+    cc.compile(sources, extra_preargs=['-fPIC'])
+    cc.link_shared_object(objects, 'barobo/lib/libsfp.so')
 
-  setup(name='PyBarobo',
-      version=VERSION,
-      description=DESC,
-      author=AUTHOR,
-      author_email=AUTHOR_EMAIL,
-      maintainer=MAINTAINER,
-      maintainer_email=MAINTAINER_EMAIL,
-      url=URL,
-      license='GPL',
-      platforms='any',
-      packages=packages.keys(),
-      package_dir=packages,
-      package_data={'barobo': ['lib/libsfp.so']}
-      #py_modules=['pybarobo']
-      )
+    setup(name='PyBarobo',
+            version=VERSION,
+            description=DESC,
+            author=AUTHOR,
+            author_email=AUTHOR_EMAIL,
+            maintainer=MAINTAINER,
+            maintainer_email=MAINTAINER_EMAIL,
+            url=URL,
+            license='GPL',
+            platforms='any',
+            packages=packages.keys(),
+            package_dir=packages,
+            package_data={'barobo': ['lib/libsfp.so']}
+            #py_modules=['pybarobo']
+            )
