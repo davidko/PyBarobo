@@ -294,8 +294,8 @@ class Linkbot(mobot.Mobot):
         response = self._transactMessage(buf, maxTries = 1)
         if response[2:2+numbytes] != randbytes:
             raise barobo.BaroboException(
-                    'Ping did not receive correct bytes. \
-                    Expected {0}, got {1}'.format(
+                    'Ping did not receive correct bytes. '
+                    'Expected {0}, got {1}'.format(
                         list(map(hex, randbytes)),
                         list(map(hex, response)) ))
         return time.time() - now

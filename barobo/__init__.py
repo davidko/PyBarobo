@@ -110,8 +110,8 @@ if sys.platform.startswith('linux'):
         return " -quit "
 
     def __SELECTUP():
-        return " | xargs -I}{ sh -c 'x=\"}{\"; while [ \"/\" != \"$x\" ]; \
-          do dirname \"$x\"; x=$(dirname \"$x\"); done' " + __AND()
+        return " | xargs -I}{ sh -c 'x=\"}{\"; while [ \"/\" != \"$x\" ]; "
+          "do dirname \"$x\"; x=$(dirname \"$x\"); done' " + __AND()
 
     def findDongle():
         dongleIDs = [ ('Barobo, Inc.', 'Mobot USB-Serial Adapter'),
