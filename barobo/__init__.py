@@ -344,6 +344,23 @@ class Dongle():
   def connect(self):
     self.autoConnect()
 
+  def connectBaroboBrowser(self):
+    """
+    Connect the dongle to BaroboBrowser
+    """
+    self.phys = _comms.PhysicalLayer_Socket('localhost', 5769)
+    self.link = _comms.LinkLayer_TTY(self.phys, self.handlePacket)
+    self.link.start()
+    self.__init_comms()
+    try:
+      self.__init_comms()
+      self.__checkStatus()
+      self.__getDongleID()
+    except Exception as e:
+      self.phys.close()
+      self.link.stop()
+      raise e
+
   def connectBaroboLink(self):
     """
     Connect the BaroboContext to BaroboLink.
@@ -380,7 +397,6 @@ class Dongle():
       self.__init_comms()
     except:
       raise BaroboException('Could not connect to Bluetooth at {0}'.format(macaddr))
-
 
   def connectDongleTTY(self, ttyfilename):
     """
