@@ -13,7 +13,7 @@ if __name__ == "__main__":
     else:
         serialID = None
     dongle = Dongle()
-    dongle.connectDongleTTY(sys.argv[1])
+    dongle.connectBaroboLink()
     linkbot = dongle.getLinkbot(serialID)
 
     linkbot.resetToZero()

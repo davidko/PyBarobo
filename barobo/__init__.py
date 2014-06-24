@@ -384,6 +384,7 @@ class Dongle():
         self.link = _comms.LinkLayer_Socket(self.phys, self.handlePacket)
         self.link.start()
         self.__init_comms()
+        self.__getDongleID()
 
     def connectBluetooth(self, macaddr):
         """

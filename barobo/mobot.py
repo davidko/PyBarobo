@@ -394,11 +394,14 @@ class Mobot:
         """
         Non-blocking version of move(). See move() for more details
         """
-        angles = self.getJointAngles()
-        self.moveToNB(  angle1+angles[0], 
-                        angle2+angles[1], 
-                        angle3+angles[2], 
-                        angle4+angles[3])
+        angle1 = _util.deg2rad(angle1)
+        angle2 = _util.deg2rad(angle2)
+        angle3 = _util.deg2rad(angle3)
+        angle4 = _util.deg2rad(angle4)
+        buf = bytearray([barobo.BaroboCtx.CMD_MOVE_MOTORS, 0x13])
+        buf += bytearray(struct.pack('<4f', angle1, angle2, angle3, angle4))
+        buf += bytearray([0x00])
+        self._transactMessage(buf)
 
     def moveContinuous(self, dir1, dir2, dir3, dir4):
         """

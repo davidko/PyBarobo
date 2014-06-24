@@ -5,7 +5,7 @@ import time
 
 if __name__ == "__main__":
     linkbot = Linkbot()
-    linkbot.connect()
+    linkbot.connectBaroboLink()
 
     linkbot.resetToZero()
     print ("Moving joints to 90 degrees...")

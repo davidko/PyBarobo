@@ -22,11 +22,11 @@ if __name__ == "__main__":
     pingsum = 0
     pings = []
     linkbot.ping()
-    for _ in range(numtries):
+    for i in range(numtries):
         try:
             sys.stdout.write('.')
             sys.stdout.flush()
-            ping = linkbot.ping(4)
+            ping = linkbot.ping(1)
             pings.append(ping)
         except Exception as e:
             print(e)

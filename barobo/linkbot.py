@@ -509,7 +509,7 @@ class Linkbot(mobot.Mobot):
 
         buf = bytearray(
                 [barobo.BaroboCtx.CMD_RGBLED, 
-                8, 
+                9, 
                 0xff, 
                 0xff, 
                 0xff, 
