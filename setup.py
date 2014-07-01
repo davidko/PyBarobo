@@ -79,6 +79,20 @@ else:
             platforms='any',
             packages=packages.keys(),
             package_dir=packages,
-            package_data={'barobo': ['lib/libsfp.so']}
+            package_data={'barobo': ['lib/libsfp.so']},
+            data_files = [
+                ('libsfp/src', 
+                    [ 'libsfp/src/net_byte_order.c', 
+                      'libsfp/src/queue.h',
+                      'libsfp/src/serial_framing_protocol.c'
+                    ] 
+                ), ('libsfp/include',
+                    [ 'libsfp/include/config.h',
+                      'libsfp/include/net_byte_order.h',
+                      'libsfp/include/ringbuf.h',
+                      'libsfp/include/serial_framing_protocol.h',
+                      'libsfp/include/static_assert.h',
+                    ]
+                ) ]
             #py_modules=['pybarobo']
             )
