@@ -645,7 +645,7 @@ class Mobot:
         buf +=bytearray([0x00])
         self._transactMessage(buf)
 
-    def setMovementState(self, state1, state2, state3, state4):
+    def setMovementState(self, state1, state2, state3, state4, time=-1):
         """
         Set the movement state for all three motors.
 
@@ -670,10 +670,12 @@ class Mobot:
             elif state3 == barobo.ROBOT_NEGATIVE:
                 state3 = barobo.ROBOT_BACKWARD
         states = [state1, state2, state3, state4]
+        if time > 0:
+            time = time * 1000
         buf = bytearray([barobo.BaroboCtx.CMD_TIMEDACTION, 0, 0x07])
         for state in states:
-            buf += bytearray([state1, barobo.ROBOT_HOLD])
-            buf += bytearray(struct.pack('<i', -1))
+            buf += bytearray([state, barobo.ROBOT_HOLD])
+            buf += bytearray(struct.pack('<i', time))
         buf += bytearray([0x00])
         buf[1] = len(buf)
         self._transactMessage(buf)

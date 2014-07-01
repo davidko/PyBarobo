@@ -520,8 +520,8 @@ class Linkbot(mobot.Mobot):
     def setMotorPowers(self, power1, power2, power3):
         mobot.Mobot.setMotorPowers(self, power1, power2, power3, 0)
 
-    def setMovementState(self, state1, state2, state3):
-        mobot.Mobot.setMovementState(self, state1, state2, state3, 0)
+    def setMovementState(self, state1, state2, state3, time=-1):
+        mobot.Mobot.setMovementState(self, state1, state2, state3, 0, time)
 
     def smoothMoveTo(self, joint, accel0, accelf, vmax, angle):
         """
