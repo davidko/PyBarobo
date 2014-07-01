@@ -4,7 +4,7 @@ from distutils.core import setup
 import distutils.unixccompiler as unixccompiler
 import sys
 import os
-VERSION = '0.1.15'
+VERSION = '0.1.16'
 DESC = 'Native Python Barobo robotics control library'
 AUTHOR = 'David Ko'
 AUTHOR_EMAIL = 'david@barobo.com'
