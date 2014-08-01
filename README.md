@@ -10,7 +10,9 @@ Linux Installation Instructions:
   git submodule update --init
   
 2. Build the python module
+
   python setup.py build
   
 3. Install the module
+
   python setup.py install
