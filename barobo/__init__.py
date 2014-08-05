@@ -18,15 +18,7 @@ case, a typical control program will look something like this::
     from barobo import Linkbot, Dongle
 
     dongle = Dongle()
-    dongle.connectDongleTTY('COM3') # where 'COM3' is the com port the Linkbot 
-                                    # is connected on. In Windows, the COM port 
-                                    # of the Linkbot can be identified by 
-                                    # inspecting the Device Manager. On a Mac, 
-                                    # the com port will appear in the "/dev/" 
-                                    # directory, usually as something like 
-                                    # "/dev/cu.usbmodem1d11". In
-                                    # Linux, it should be something like 
-                                    # "/dev/ttyACM0".
+    dongle.connect() # Connect to the dongle
     linkbot = dongle.getLinkbot() # or linkbot = dongle.getLinkbot('2B2C') where 
                                   # '2B2C' should be replaced with the serial ID 
                                   # of your Linkbot. Note that the serial ID 
@@ -35,7 +27,13 @@ case, a typical control program will look something like this::
                                   # no serial ID is provided, the new linkbot 
                                   # will refer to the Linkbot currently 
                                   # connected via USB.
-    linkbot.moveTo(180, 0, -180)
+                                  # Also, note that this function can be called
+                                  # multiple times to retrieve handles to 
+                                  # multiple wireless Linkbots, which can all
+                                  # be controlled in the same Python script.
+    linkbot.moveTo(180, 0, -180)  # Move joint 1 180 degrees in the positive 
+                                  # direction, joint 3 180 degrees in the 
+                                  # negative direction
 
 For more documentation, please refer to the documentation under the
 L{Linkbot<barobo.linkbot.Linkbot>} class.

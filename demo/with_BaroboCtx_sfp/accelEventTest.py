@@ -4,7 +4,7 @@ from barobo import Linkbot, Dongle
 import sys
 import time
 
-def jointcb(millis, j1, j2, j3):
+def jointcb(millis, j1, j2, j3, j4):
     print('joint: {} {} {} {}'.format(millis, j1, j2, j3))
 
 def accelcb(millis, j1, j2, j3):
@@ -23,6 +23,8 @@ if __name__ == "__main__":
     dongle.connectDongleSFP(sys.argv[1])
     linkbot = dongle.getLinkbot(serialID)
 
-    linkbot.enableAccelEventCallback(accelcb)
-    time.sleep(3)
-    raise Exception('boop.')
+    #linkbot.enableAccelEventCallback(accelcb)
+    linkbot.enableJointEventCallback(jointcb)
+    #time.sleep(3)
+    #raise Exception('boop.')
+    raw_input('Press enter to stop')
