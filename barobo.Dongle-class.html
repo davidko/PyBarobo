@@ -3,7 +3,7 @@
           "DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>barobo.BaroboCtx</title>
+  <title>barobo.Dongle</title>
   <link rel="stylesheet" href="epydoc.css" type="text/css" />
   <script type="text/javascript" src="epydoc.js"></script>
 </head>
@@ -38,7 +38,7 @@
     <td width="100%">
       <span class="breadcrumbs">
         <a href="barobo-module.html">Package&nbsp;barobo</a> ::
-        Class&nbsp;BaroboCtx
+        Class&nbsp;Dongle
       </span>
     </td>
     <td>
@@ -48,14 +48,14 @@
     onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
         <tr><td align="right"><span class="options"
             >[<a href="frames.html" target="_top">frames</a
-            >]&nbsp;|&nbsp;<a href="barobo.BaroboCtx-class.html"
+            >]&nbsp;|&nbsp;<a href="barobo.Dongle-class.html"
             target="_top">no&nbsp;frames</a>]</span></td></tr>
       </table>
     </td>
   </tr>
 </table>
 <!-- ==================== CLASS DESCRIPTION ==================== -->
-<h1 class="epydoc">Class BaroboCtx</h1><p class="nomargin-top"><span class="codelink"><a href="barobo-pysrc.html#BaroboCtx">source&nbsp;code</a></span></p>
+<h1 class="epydoc">Class Dongle</h1><p class="nomargin-top"><span class="codelink"><a href="barobo-pysrc.html#Dongle">source&nbsp;code</a></span></p>
 <p>The BaroboCtx (BaroboContext) is the entity which manages all of the 
   Linkbots in a computational environment. If loosely represents a ZigBee 
   dongle which can communicate and with and control all Linkbots within its
@@ -86,7 +86,7 @@
         <tr>
           <td><span class="summary-sig"><a name="__init__"></a><span class="summary-sig-name">__init__</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx.__init__">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle.__init__">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -102,7 +102,7 @@
         <tr>
           <td><span class="summary-sig"><a name="__init_comms"></a><span class="summary-sig-name">__init_comms</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx.__init_comms">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle.__init_comms">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -119,24 +119,7 @@
           <td><span class="summary-sig"><a name="addLinkbot"></a><span class="summary-sig-name">addLinkbot</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">linkbot</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx.addLinkbot">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr class="private">
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="__autoConnectWorker"></a><span class="summary-sig-name">__autoConnectWorker</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">comport</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx.__autoConnectWorker">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle.addLinkbot">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -152,7 +135,7 @@
         <tr>
           <td><span class="summary-sig"><a name="autoConnect"></a><span class="summary-sig-name">autoConnect</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx.autoConnect">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle.autoConnect">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -166,10 +149,44 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="connect"></a><span class="summary-sig-name">connect</span>(<span class="summary-sig-arg">self</span>)</span><br />
+          <td><span class="summary-sig"><a href="barobo.Dongle-class.html#connect" class="summary-sig-name">connect</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Automatically connect to an attached Barobo Dongle.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle.connect">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="connectBaroboBrowser"></a><span class="summary-sig-name">connectBaroboBrowser</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Connect the dongle to BaroboBrowser</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle.connectBaroboBrowser">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="connectBaroboLink"></a><span class="summary-sig-name">connectBaroboLink</span>(<span class="summary-sig-arg">self</span>)</span><br />
       Connect the BaroboContext to BaroboLink.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx.connect">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle.connectBaroboLink">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -187,7 +204,7 @@
         <span class="summary-sig-arg">macaddr</span>)</span><br />
       Connect the BaroboContext to a Bluetooth LinkPod.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx.connectBluetooth">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle.connectBluetooth">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -206,7 +223,7 @@
       Connect the BaroboContext to a Bluetooth Mobot or legacy Bluetooth 
       Linkbot.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx.connectMobotBluetooth">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle.connectMobotBluetooth">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -225,7 +242,7 @@
       Connect the BaroboCtx to a Linkbot that is connected with a USB 
       cable.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx.connectDongleTTY">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle.connectDongleTTY">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -244,7 +261,7 @@
       Connect the BaroboCtx to a Linkbot using libsfp that is connected 
       with a USB cable.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx.connectDongleSFP">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle.connectDongleSFP">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -260,7 +277,7 @@
         <tr>
           <td><span class="summary-sig"><a name="disconnect"></a><span class="summary-sig-name">disconnect</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx.disconnect">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle.disconnect">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -277,7 +294,7 @@
           <td><span class="summary-sig"><a name="handlePacket"></a><span class="summary-sig-name">handlePacket</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">packet</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx.handlePacket">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle.handlePacket">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -293,7 +310,7 @@
         <tr>
           <td><span class="summary-sig"><a name="scanForRobots"></a><span class="summary-sig-name">scanForRobots</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx.scanForRobots">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle.scanForRobots">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -309,7 +326,7 @@
         <tr>
           <td><span class="summary-sig"><a name="getScannedRobots"></a><span class="summary-sig-name">getScannedRobots</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx.getScannedRobots">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle.getScannedRobots">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -327,7 +344,7 @@
         <span class="summary-sig-arg">serialID</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">linkbotClass</span>=<span class="summary-sig-default">None</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx.getLinkbot">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle.getLinkbot">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -344,7 +361,7 @@
           <td><span class="summary-sig"><a name="findRobot"></a><span class="summary-sig-name">findRobot</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">serialID</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx.findRobot">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle.findRobot">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -362,7 +379,7 @@
         <span class="summary-sig-arg">serialID</span>,
         <span class="summary-sig-arg">timeout</span>=<span class="summary-sig-default">2.0</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx.waitForRobot">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle.waitForRobot">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -379,7 +396,7 @@
           <td><span class="summary-sig"><a name="writePacket"></a><span class="summary-sig-name">writePacket</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">packet</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx.writePacket">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle.writePacket">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -395,7 +412,7 @@
         <tr>
           <td><span class="summary-sig"><a name="_commsInEngine"></a><span class="summary-sig-name">_commsInEngine</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx._commsInEngine">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle._commsInEngine">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -411,7 +428,7 @@
         <tr>
           <td><span class="summary-sig"><a name="_commsOutEngine"></a><span class="summary-sig-name">_commsOutEngine</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx._commsOutEngine">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle._commsOutEngine">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -427,7 +444,7 @@
         <tr>
           <td><span class="summary-sig"><a name="__checkStatus"></a><span class="summary-sig-name">__checkStatus</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx.__checkStatus">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle.__checkStatus">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -443,7 +460,7 @@
         <tr>
           <td><span class="summary-sig"><a name="__getDongleID"></a><span class="summary-sig-name">__getDongleID</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="barobo-pysrc.html#BaroboCtx.__getDongleID">source&nbsp;code</a></span>
+            <span class="codelink"><a href="barobo-pysrc.html#Dongle.__getDongleID">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -977,7 +994,7 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="CMD_PLACEHOLDER201303291416"></a><span class="summary-name">CMD_PLACEHOLDER201303291416</span> = <code title="110">110</code>
+        <a name="CMD_GETVERSIONS"></a><span class="summary-name">CMD_GETVERSIONS</span> = <code title="110">110</code>
     </td>
   </tr>
 <tr>
@@ -1096,7 +1113,7 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="CMD_PLACEHOLDER201306271044"></a><span class="summary-name">CMD_PLACEHOLDER201306271044</span> = <code title="127">127</code>
+        <a name="CMD_SET_ACCEL"></a><span class="summary-name">CMD_SET_ACCEL</span> = <code title="127">127</code>
     </td>
   </tr>
 <tr>
@@ -1240,6 +1257,45 @@
     </td>
   </tr>
 </table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="connect"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">connect</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="barobo-pysrc.html#Dongle.connect">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Automatically connect to an attached Barobo Dongle. Throw an exception
+  if no dongle is found.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
 <!-- ==================== NAVIGATION BAR ==================== -->
 <table class="navbar" border="0" width="100%" cellpadding="0"
        bgcolor="#a0c0ff" cellspacing="0">
@@ -1266,7 +1322,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Tue Feb 18 13:19:25 2014
+    Generated by Epydoc 3.0.1 on Mon Aug  4 17:26:38 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

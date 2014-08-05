@@ -62,34 +62,34 @@
   python program will move joints 1 and 3 on the first connected Linkbot in
   BaroboLink:</p>
 <pre class="literalblock">
- from barobo import Linkbot
- linkbot = Linkbot()
- linkbot.connect()
- linkbot.moveTo(180, 0, -180)
+   from barobo import Linkbot
+   linkbot = Linkbot()
+   linkbot.connect()
+   linkbot.moveTo(180, 0, -180)
 </pre>
   <p>You may also use this package to control Linkbots without BaroboLink. 
   In that case, a typical control program will look something like 
   this:</p>
 <pre class="literalblock">
- from barobo import Linkbot, BaroboCtx
+   from barobo import Linkbot, Dongle
 
- ctx = BaroboCtx()
- ctx.connectDongleTTY('COM3')  # where 'COM3' is the com port the Linkbot is 
-                               # connected on. In Windows, the COM port of the
-                               # Linkbot can be identified by inspecting the
-                               # Device Manager. On a Mac, the com port will
-                               # appear in the &quot;/dev/&quot; directory, usually as
-                               # something like &quot;/dev/cu.usbmodem1d11&quot;. In
-                               # Linux, it should be something like 
-                               # &quot;/dev/ttyACM0&quot;.
- linkbot = ctx.getLinkbot() # or linkbot = ctx.getLinkbot('2B2C') where '2B2C'
-                            # should be replaced with the serial ID of your 
-                            # Linkbot. Note that the serial ID used here can
-                            # be that of a nearby Linkbot that you wish to 
-                            # connect to wirelessly. If no serial ID is 
-                            # provided, the new linkbot will refer to the 
-                            # Linkbot currently connected via USB.
- linkbot.moveTo(180, 0, -180)
+   dongle = Dongle()
+   dongle.connect() # Connect to the dongle
+   linkbot = dongle.getLinkbot() # or linkbot = dongle.getLinkbot('2B2C') where 
+                                 # '2B2C' should be replaced with the serial ID 
+                                 # of your Linkbot. Note that the serial ID 
+                                 # used here can be that of a nearby Linkbot 
+                                 # that you wish to connect to wirelessly. If 
+                                 # no serial ID is provided, the new linkbot 
+                                 # will refer to the Linkbot currently 
+                                 # connected via USB.
+                                 # Also, note that this function can be called
+                                 # multiple times to retrieve handles to 
+                                 # multiple wireless Linkbots, which can all
+                                 # be controlled in the same Python script.
+   linkbot.moveTo(180, 0, -180)  # Move joint 1 180 degrees in the positive 
+                                 # direction, joint 3 180 degrees in the 
+                                 # negative direction
 </pre>
   <p>For more documentation, please refer to the documentation under the <a
   href="barobo.linkbot.Linkbot-class.html" class="link">Linkbot</a> 
@@ -150,7 +150,16 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="barobo.BaroboCtx-class.html" class="summary-name">BaroboCtx</a><br />
+        <a href="barobo.Dongle-class.html" class="summary-name">Dongle</a><br />
+      The BaroboCtx (BaroboContext) is the entity which manages all of 
+        the Linkbots in a computational environment.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="barobo.Dongle-class.html" class="summary-name">BaroboCtx</a><br />
       The BaroboCtx (BaroboContext) is the entity which manages all of 
         the Linkbots in a computational environment.
     </td>
@@ -173,6 +182,168 @@
     </table>
   </td>
 </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__FROM"></a><span class="summary-sig-name">__FROM</span>(<span class="summary-sig-arg">x</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="barobo-pysrc.html#__FROM">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__SELECT"></a><span class="summary-sig-name">__SELECT</span>()</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="barobo-pysrc.html#__SELECT">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__AND"></a><span class="summary-sig-name">__AND</span>()</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="barobo-pysrc.html#__AND">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__SUBSYSTEM"></a><span class="summary-sig-name">__SUBSYSTEM</span>(<span class="summary-sig-arg">x</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="barobo-pysrc.html#__SUBSYSTEM">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__SUBSYSTEMF"></a><span class="summary-sig-name">__SUBSYSTEMF</span>(<span class="summary-sig-arg">x</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="barobo-pysrc.html#__SUBSYSTEMF">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__SYSATTR"></a><span class="summary-sig-name">__SYSATTR</span>(<span class="summary-sig-arg">x</span>,
+        <span class="summary-sig-arg">y</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="barobo-pysrc.html#__SYSATTR">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__SYSATTRF"></a><span class="summary-sig-name">__SYSATTRF</span>(<span class="summary-sig-arg">x</span>,
+        <span class="summary-sig-arg">y</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="barobo-pysrc.html#__SYSATTRF">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__FIRST"></a><span class="summary-sig-name">__FIRST</span>()</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="barobo-pysrc.html#__FIRST">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__SELECTUP"></a><span class="summary-sig-name">__SELECTUP</span>()</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="barobo-pysrc.html#__SELECTUP">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="findDongle"></a><span class="summary-sig-name">findDongle</span>()</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="barobo-pysrc.html#findDongle">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr class="private">
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
@@ -400,7 +571,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Feb 13 15:33:06 2014
+    Generated by Epydoc 3.0.1 on Mon Aug  4 17:26:38 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

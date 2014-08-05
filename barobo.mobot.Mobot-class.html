@@ -80,16 +80,16 @@
     &quot;Mobot.moveNB()&quot;.</p>
     <p>For example, consider the following lines of code:</p>
 <pre class="literalblock">
- mobot.move(360, 0, 0, 360)
- angles = mobot.getJointAngles()
+   mobot.move(360, 0, 0, 360)
+   angles = mobot.getJointAngles()
 </pre>
     <p>When the above lines of code are executed, the Mobot will rotate 
     joint 1 360 degrees. Once the joint has rotated the full revolution, 
     the joint angles will be retrieved and stored in the variable 
     &quot;angles&quot;. Now consider the following code:</p>
 <pre class="literalblock">
- mobot.moveNB(360, 0, 0)
- angles = mobot.getJointAngles()
+   mobot.moveNB(360, 0, 0)
+   angles = mobot.getJointAngles()
 </pre>
     <p>For these lines of code, joint 1 also moves 360 degrees. The 
     difference is that with these lines of code, the joint angles will be 
@@ -103,12 +103,12 @@
     non-blocking motion functions are finished. For instance, the following
     two blocks of code will accomplish the same task:</p>
 <pre class="literalblock">
- mobot.move(360, 0, 0)
- angles = mobot.getJointAngles()
+   mobot.move(360, 0, 0)
+   angles = mobot.getJointAngles()
 
- mobot.moveNB(360, 0, 0)
- mobot.moveWait()
- angles = mobot.getJointAngles()
+   mobot.moveNB(360, 0, 0)
+   mobot.moveWait()
+   angles = mobot.getJointAngles()
 </pre>
 
 <!-- ==================== INSTANCE METHODS ==================== -->
@@ -402,6 +402,41 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">float</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="barobo.mobot.Mobot-class.html#getJointSpeed" class="summary-sig-name">getJointSpeed</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">joint</span>)</span><br />
+      Get the speed setting of a joint.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="barobo.mobot-pysrc.html#Mobot.getJointSpeed">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">(float, float, float, float)</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="barobo.mobot.Mobot-class.html#getJointSpeeds" class="summary-sig-name">getJointSpeeds</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Get a tuple of all joint speeds.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="barobo.mobot-pysrc.html#Mobot.getJointSpeeds">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -441,7 +476,7 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="getVersion"></a><span class="summary-sig-name">getVersion</span>(<span class="summary-sig-arg">self</span>)</span><br />
+          <td><span class="summary-sig"><a href="barobo.mobot.Mobot-class.html#getVersion" class="summary-sig-name">getVersion</a>(<span class="summary-sig-arg">self</span>)</span><br />
       Get the firmware version of the Linkbot</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="barobo.mobot-pysrc.html#Mobot.getVersion">source&nbsp;code</a></span>
@@ -914,7 +949,8 @@
         <span class="summary-sig-arg">state1</span>,
         <span class="summary-sig-arg">state2</span>,
         <span class="summary-sig-arg">state3</span>,
-        <span class="summary-sig-arg">state4</span>)</span><br />
+        <span class="summary-sig-arg">state4</span>,
+        <span class="summary-sig-arg">time</span>=<span class="summary-sig-default">-1</span>)</span><br />
       Set the movement state for all three motors.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="barobo.mobot-pysrc.html#Mobot.setMovementState">source&nbsp;code</a></span>
@@ -950,7 +986,7 @@
           <td><span class="summary-sig"><a name="_transactMessage"></a><span class="summary-sig-name">_transactMessage</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">buf</span>,
         <span class="summary-sig-arg">maxTries</span>=<span class="summary-sig-default">3</span>,
-        <span class="summary-sig-arg">timeout</span>=<span class="summary-sig-default">2.0</span>)</span></td>
+        <span class="summary-sig-arg">timeout</span>=<span class="summary-sig-default">10.0</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="barobo.mobot-pysrc.html#Mobot._transactMessage">source&nbsp;code</a></span>
             
@@ -1282,6 +1318,48 @@
   </dl>
 </td></tr></table>
 </div>
+<a name="getJointSpeed"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getJointSpeed</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">joint</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="barobo.mobot-pysrc.html#Mobot.getJointSpeed">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get the speed setting of a joint. Returned value is in deg/s</p>
+  <dl class="fields">
+    <dt>Returns: float</dt>
+        <dd>The joint speed in deg/sec</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="getJointSpeeds"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getJointSpeeds</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="barobo.mobot-pysrc.html#Mobot.getJointSpeeds">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get a tuple of all joint speeds. See getJointSpeed()</p>
+  <dl class="fields">
+    <dt>Returns: (float, float, float, float)</dt>
+  </dl>
+</td></tr></table>
+</div>
 <a name="getJointState"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -1323,6 +1401,28 @@
   <dl class="fields">
     <dt>Returns: [numbers]</dt>
         <dd>[seconds, angle1, angle2, angle3], all angles in degrees</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="getVersion"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getVersion</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="barobo.mobot-pysrc.html#Mobot.getVersion">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get the firmware version of the Linkbot</p>
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>Something like (0, 0, 94) or (3, 0, 3), depending on the oldness 
+          of the firmware</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1549,7 +1649,7 @@
   
   <p>Move all joints on the Linkbot. Linkbot-I modules will ignore the 
   'angle2' parameter and Linkbot-L modules will ignore the 'angle3' 
-  parmeter.</p>
+  parameter.</p>
   <p>This function is the non-blocking version of moveTo(), meaning this 
   function will return immediately after the robot has begun moving and 
   will not wait until the motion is finished.</p>
@@ -1817,7 +1917,8 @@
         <span class="sig-arg">state1</span>,
         <span class="sig-arg">state2</span>,
         <span class="sig-arg">state3</span>,
-        <span class="sig-arg">state4</span>)</span>
+        <span class="sig-arg">state4</span>,
+        <span class="sig-arg">time</span>=<span class="sig-default">-1</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="barobo.mobot-pysrc.html#Mobot.setMovementState">source&nbsp;code</a></span>&nbsp;
@@ -1882,7 +1983,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Feb 13 15:33:06 2014
+    Generated by Epydoc 3.0.1 on Mon Aug  4 17:26:38 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
