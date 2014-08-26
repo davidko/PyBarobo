@@ -58,6 +58,7 @@ if sys.platform == "win32":
             platforms='any',
             packages=['barobo'],
             package_dir={'barobo': 'barobo'},
+            install_requires=['pyserial >= 2.7'],
             package_data={'barobo': ['lib/*.dll']}
             #py_modules=['pybarobo']
             )
@@ -81,6 +82,7 @@ else:
             packages=packages.keys(),
             package_dir=packages,
             package_data={'barobo': ['lib/libsfp.so']},
+            install_requires=['pyserial >= 2.7'],
             data_files = [
                 ('libsfp/src', 
                     [ 'libsfp/src/net_byte_order.c', 
