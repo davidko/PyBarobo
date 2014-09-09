@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import setuptools
-from distutils.core import setup
+from distutils.core import setup, Extension
 import distutils.unixccompiler as unixccompiler
 import sys
 import os
@@ -46,6 +46,7 @@ if sys.platform == "win32":
     cc.add_include_dir('libsfp/include')
     cc.compile(sources, extra_preargs=['-fPIC'])
     cc.link_shared_object(objects, 'barobo/lib/libsfp.dll')
+
     setup(name='PyBarobo',
             version=VERSION,
             description=DESC,
@@ -59,7 +60,10 @@ if sys.platform == "win32":
             packages=['barobo'],
             package_dir={'barobo': 'barobo'},
             install_requires=['pyserial >= 2.7'],
-            package_data={'barobo': ['lib/*.dll']}
+            ext_modules = [Extension('sfp', sources,
+                include_dirs=['libsfp/include'])],
+            zip_safe = False,
+            #package_data={'barobo': ['lib/*.dll']}
             #py_modules=['pybarobo']
             )
 
@@ -81,7 +85,7 @@ else:
             platforms='any',
             packages=packages.keys(),
             package_dir=packages,
-            package_data={'barobo': ['lib/libsfp.so']},
+            #package_data={'barobo': ['lib/libsfp.so']},
             install_requires=['pyserial >= 2.7'],
             data_files = [
                 ('libsfp/src', 
@@ -96,6 +100,9 @@ else:
                       'libsfp/include/serial_framing_protocol.h',
                       'libsfp/include/static_assert.h',
                     ]
-                ) ]
+                ) ],
+            ext_modules = [Extension('sfp', sources,
+                include_dirs=['libsfp/include'])],
+            zip_safe = False,
             #py_modules=['pybarobo']
             )
