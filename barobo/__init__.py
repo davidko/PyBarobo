@@ -128,7 +128,10 @@ if sys.platform.startswith('linux'):
                   __SELECT() + __SUBSYSTEM('tty') +\
                   " | xargs -I{} grep DEVNAME '{}'/uevent"    +\
                   " | cut -d= -f2"
-            p = subprocess.check_output(['/bin/sh', '-c', cmd])
+            with open('/dev/null') as nullFile:
+                p = subprocess.check_output(
+                    ['/bin/sh', '-c', cmd], 
+                    stderr=nullFile)
             if len(p) > 1:
                 return (str('/dev/')+p.decode('utf-8')).rstrip()
 
