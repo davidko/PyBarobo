@@ -40,3 +40,4 @@ if __name__ == "__main__":
                 numpy.mean(pings), 
                 numpy.std(pings)))
 
+    linkbot.disconnect()

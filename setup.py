@@ -63,7 +63,7 @@ if sys.platform == "win32":
             ext_modules = [Extension('sfp', sources,
                 include_dirs=['libsfp/include'])],
             zip_safe = False,
-            #package_data={'barobo': ['lib/*.dll']}
+            package_data={'barobo': ['lib/*.dll']}
             #py_modules=['pybarobo']
             )
 
@@ -85,7 +85,7 @@ else:
             platforms='any',
             packages=packages.keys(),
             package_dir=packages,
-            #package_data={'barobo': ['lib/libsfp.so']},
+            package_data={'barobo': ['lib/libsfp.so']},
             install_requires=['pyserial >= 2.7'],
             data_files = [
                 ('libsfp/src', 
